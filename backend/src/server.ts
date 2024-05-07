@@ -1,15 +1,15 @@
-import express, { Express, Request, Response } from "express";
-import dotenv from "dotenv";
-import { json } from "body-parser";
+import express, { Application, Request, Response } from 'express';
+import dotenv from 'dotenv';
+import { json } from 'body-parser';
 
 dotenv.config();
 
-const app: Express = express();
+const app: Application = express();
 app.use(json());
 const port = process.env.PORT || 3000;
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Express + TypeScript Server");
+app.get('/', (req: Request, res: Response) => {
+  res.status(201).send('Express + TypeScript Server');
 });
 
 app.listen(port, () => {
