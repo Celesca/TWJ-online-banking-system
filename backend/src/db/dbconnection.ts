@@ -4,7 +4,7 @@ const con = mysql.createConnection({
     host: process.env.DB_HOST,
     user: "root",
     password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
+    database: "bank_db",
   });
 
 export default con;

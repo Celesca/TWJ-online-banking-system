@@ -11,9 +11,17 @@ const port = process.env.PORT || 3000;
 app.use(json());
 app.use(urlencoded({ extended: false }))
 
-app.get('/attractions', (req: Request, res: Response) => {
-  conn.query('SELECT * FROM attractions = ?', req.params.id, (_err, rows) => {
-    res.send(rows)
+app.get('/customers/:username', (req: Request, res: Response) => {
+  const username = req.params.username;
+  conn.query(`SELECT * FROM customer WHERE customer_username = '${username}'`, (err: Error, results: any) => {
+    
+    if (err) {
+      return res.status(500).send(err);
+    }
+    if (results.length === 0) {
+      return res.status(404).send('No customer found with this username');
+    }
+    return res.status(200).send(results);
   })
 })
 
