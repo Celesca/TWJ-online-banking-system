@@ -1,5 +1,6 @@
 import express, { Application, Request, Response } from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import { json, urlencoded } from 'body-parser';
 import conn from './db/dbconnection';
 
@@ -8,6 +9,7 @@ dotenv.config();
 const app: Application = express();
 const port = process.env.PORT || 3000;
 
+app.use(cors());
 app.use(json());
 app.use(urlencoded({ extended: false }))
 
