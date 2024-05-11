@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  db:
+    image: mysql:5.7
+    container_name: bank_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: bank_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: root
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 3306:3306
+
+volumes:
+  mysql_data:
+    driver: local
