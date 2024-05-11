@@ -30,10 +30,12 @@ app.get('/customers/:username', (req: Request, res: Response) => {
   });
 });
 
-app.get('/health', (req: Request, res: Response) => {
+app.get('/api/health', (req: Request, res: Response) => {
   res.status(200).send('Express + TypeScript Server');
 });
 
-app.listen(port, () => {
+export const server = app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+
+export default app;
