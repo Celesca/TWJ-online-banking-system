@@ -2,7 +2,6 @@ import express, { Application, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import { json, urlencoded } from 'body-parser';
-import conn from './db/dbconnection';
 import { personRouter } from './routes/personRouter';
 
 dotenv.config();
@@ -15,8 +14,10 @@ app.use(cors());
 app.use(json());
 app.use(urlencoded({ extended: false }));
 
+// Routes
 app.use('/persons', personRouter);
 
+// Health Check
 app.get('/api/health', (req: Request, res: Response) => {
   res.status(200).send('Express + TypeScript Server');
 });
