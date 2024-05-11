@@ -17,8 +17,6 @@ app.use(urlencoded({ extended: false }));
 
 app.use('/persons', personRouter);
 
-
-
 app.get('/api/health', (req: Request, res: Response) => {
   res.status(200).send('Express + TypeScript Server');
 });

@@ -8,7 +8,7 @@ import conn from '../db/dbconnection';
 
 personRouter.post('/checkid', (req: Request, res: Response) => {
   const national_card_id: string = req.body.national_card_id;
-  console.log(national_card_id)
+  console.log(national_card_id);
   if (!national_card_id) {
     return res.status(400).json({ message: 'Please provide a national card id' });
   }
