@@ -13,11 +13,15 @@ userRouter.post('/checkid', (req: Request, res: Response) => {
     return res.status(400).json({ message: 'Please provide a national card id' });
   }
 
-  const sql_query = `SELECT * FROM user WHERE nation_card_id = ?`;
+  const sql_query = `SELECT * FROM person WHERE national_card_id = ?`;
 
   conn.query(sql_query, [national_card_id], (err, rows) => {
     if (err) {
       return res.status(500).send(err);
+    }
+    console.log(rows);
+    if (Array.isArray(rows) && rows.length === 0) {
+      return res.status(404).send({ message : 'No person found with this national card id'});
     }
     return res.status(200).send(rows);
   });
