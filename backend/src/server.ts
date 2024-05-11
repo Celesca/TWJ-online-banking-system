@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import morgan from 'morgan';
 import { json, urlencoded } from 'body-parser';
 import { personRouter } from './routes/personRouter';
 
@@ -11,6 +12,7 @@ const port = process.env.PORT || 3000;
 
 // Middlewares
 app.use(cors());
+app.use(morgan('tiny'));
 app.use(json());
 app.use(urlencoded({ extended: false }));
 
