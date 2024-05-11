@@ -30,8 +30,8 @@ app.get('/customers/:username', (req: Request, res: Response) => {
   });
 });
 
-app.get('/', (req: Request, res: Response) => {
-  res.status(201).send('Express + TypeScript Server');
+app.get('/health', (req: Request, res: Response) => {
+  res.status(200).send('Express + TypeScript Server');
 });
 
 app.listen(port, () => {

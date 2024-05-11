@@ -24,8 +24,13 @@ jobs:
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
 
+    - name: Change directory to backend
+      run: cd backend
+
     - run: npm install
+      working-directory: ./backend
 
     - run: npm test
+      working-directory: ./backend
       env:
         CI: true
