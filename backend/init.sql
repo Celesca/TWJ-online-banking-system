@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS account_type (
 
 CREATE TABLE IF NOT EXISTS customer (
     customer_username varchar(30) PRIMARY KEY UNIQUE NOT NULL,
-    password varchar(20) NOT NULL,
+    password varchar(40) NOT NULL,
     salary int,
     national_card_id varchar(15) NOT NULL,
     blacklist boolean DEFAULT false NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS customer (
 
 CREATE TABLE IF NOT EXISTS staff (
     username varchar(30) PRIMARY KEY UNIQUE NOT NULL,
-    password varchar(20) NOT NULL,
+    password varchar(40) NOT NULL,
     salary int NOT NULL,
     national_card_id varchar(15) NOT NULL,
     created_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
