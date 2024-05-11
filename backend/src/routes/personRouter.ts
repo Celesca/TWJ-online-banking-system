@@ -22,7 +22,7 @@ personRouter.post('/checkid', async (req: Request, res: Response) => {
     }
     console.log(rows);
     if (Array.isArray(rows) && rows.length === 0) {
-      return res.status(404).send({ message : 'No person found with this national card id'});
+      return res.status(404).send({ message: 'No person found with this national card id' });
     }
     return res.status(200).send(rows);
   });
@@ -37,11 +37,15 @@ personRouter.post('/add', async (req: Request, res: Response) => {
 
   const sql_query = `INSERT INTO person (national_card_id, first_name, last_name, birth_date, phone_number, address) VALUES (?, ?, ?, ?, ?, ?)`;
 
-  await conn.query(sql_query, [national_card_id, first_name, last_name, birth_date, phone_number, address], (err, rows) => {
-    if (err) {
-      return res.status(500).send(err);
-    }
-    return res.status(200).send({ message: 'Person added successfully' });
-  });
+  await conn.query(
+    sql_query,
+    [national_card_id, first_name, last_name, birth_date, phone_number, address],
+    (err, rows) => {
+      if (err) {
+        return res.status(500).send(err);
+      }
+      return res.status(200).send({ message: 'Person added successfully' });
+    },
+  );
   return;
-})
+});
