@@ -23,9 +23,20 @@ TWJ Online Banking System is the project from CPE241 Database Systems.
 
 `cd ../backend && npm install`
 
-5. Open MySQL database via Docker CLI in backend folder
+5. Create the .env folder
+
+6. Open MySQL database via Docker CLI in backend folder
 
 `docker-compose up --build`
+
+🛑 If having problem with using request to MySQL server tried this :
+
+`GRANT ALL PRIVILEGES ON *.* TO 'root'@'192.168.144.1' IDENTIFIED BY 'password' WITH GRANT OPTION;`
+
+You can do it with the exec in the Docker Desktop of that Docker Container.
+but If you want something hard. Let say we do it with Docker CLI with `docker exec -it bank_db bash`
+
+---
 
 All done, you have setup all the project.
 Now, let's move to how to start the server
