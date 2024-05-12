@@ -49,7 +49,7 @@ personRouter.post('/add', async (req: Request, res: Response) => {
   await conn.query(
     sql_query,
     [national_card_id, first_name, last_name, birth_date, phone_number, address],
-    (err, rows) => {
+    (err) => {
       if (err) {
         return res.status(500).send(err);
       }
@@ -67,7 +67,7 @@ personRouter.post('/remove', async (req: Request, res: Response) => {
 
   const sql_query = `DELETE FROM person WHERE national_card_id = ?`;
 
-  await conn.query(sql_query, [national_card_id], (err, rows) => {
+  await conn.query(sql_query, [national_card_id], (err) => {
     if (err) {
       return res.status(500).send(err);
     }
