@@ -5,9 +5,9 @@ import { CreatePersonDto } from 'dto/create-person-dto';
 export const personRouter = Router();
 
 // Importing connection from mysql database
-import conn from '../db/dbconnection';
+import connection from '../db/dbconnection';
 
-personRouter.post('/checkid', (req: Request, res: Response) => {
+personRouter.post('/checkid', async (req: Request, res: Response) => {
   const national_card_id: string = req.body.national_card_id;
 
   if (!national_card_id) {
@@ -25,38 +25,52 @@ personRouter.post('/checkid', (req: Request, res: Response) => {
 
   const sql_query = `SELECT * FROM person WHERE national_card_id = ?`;
 
-  conn.query(sql_query, [national_card_id], (err, rows) => {
-    if (err) {
-      return res.status(500).send(err);
-    }
-    console.log(rows);
-    if (Array.isArray(rows) && rows.length === 0) {
-      return res.status(404).send({ message: 'No person found with this national card id' });
+  try {
+    const [rows] = await connection.query(sql_query, [national_card_id]);
+    if (Array.isArray(rows) && rows.length !== 0) {
+      return res.status(400).send({ message: 'Person with this national card id already exists' });
     }
     return res.status(200).send(rows);
-  });
-  return;
+  } catch (err) {
+    return res.status(500).send(err);
+  }
 });
 
-personRouter.post('/add', async (req: Request, res: Response) => {
-  const { national_card_id, first_name, last_name, birth_date, phone_number, address }: CreatePersonDto = req.body;
-  if (!national_card_id || !first_name || !last_name || !birth_date || !phone_number || !address) {
+personRouter.post('/register', async (req: Request, res: Response) => {
+  const { national_card_id, first_name, last_name, birth_date, phone_number, email, address }: CreatePersonDto =
+    req.body;
+
+  const national_card_id_query = `SELECT * FROM person WHERE national_card_id = ?`;
+
+  try {
+    const [rows] = await connection.query(national_card_id_query, [national_card_id]);
+
+    if (Array.isArray(rows) && rows.length > 0) {
+      return res.status(400).send({ message: 'Person with this national card id already exists' });
+    }
+  } catch (err) {
+    return res.status(500).send(err);
+  }
+
+  if (!national_card_id || !first_name || !last_name || !birth_date || !phone_number || !email || !address) {
     return res.status(400).json({ message: 'Please provide all the fields' });
   }
 
-  const sql_query = `INSERT INTO person (national_card_id, first_name, last_name, birth_date, phone_number, address) VALUES (?, ?, ?, ?, ?, ?)`;
-
-  await conn.query(
-    sql_query,
-    [national_card_id, first_name, last_name, birth_date, phone_number, address],
-    (err) => {
-      if (err) {
-        return res.status(500).send(err);
-      }
-      return res.status(200).send({ message: 'Person added successfully' });
-    },
-  );
-  return;
+  const sql_query = `INSERT INTO person (national_card_id, first_name, last_name, birth_date, phone_number, email, address) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+  try {
+    await connection.query(sql_query, [
+      national_card_id,
+      first_name,
+      last_name,
+      birth_date,
+      phone_number,
+      email,
+      address,
+    ]);
+    return res.status(200).send({ message: 'Person added successfully' });
+  } catch (err) {
+    return res.status(500).send(err);
+  }
 });
 
 personRouter.post('/remove', async (req: Request, res: Response) => {
@@ -67,11 +81,20 @@ personRouter.post('/remove', async (req: Request, res: Response) => {
 
   const sql_query = `DELETE FROM person WHERE national_card_id = ?`;
 
-  await conn.query(sql_query, [national_card_id], (err) => {
-    if (err) {
-      return res.status(500).send(err);
-    }
+  try {
+    await connection.query(sql_query, [national_card_id]);
     return res.status(200).send({ message: 'Person removed successfully' });
-  });
-  return;
+  } catch (err) {
+    return res.status(500).send(err);
+  }
+});
+
+personRouter.get('/', async (req: Request, res: Response) => {
+  const sql_query = 'SELECT * FROM person';
+  try {
+    const [rows] = await connection.query(sql_query);
+    return res.status(200).send(rows);
+  } catch (err) {
+    return res.status(500).send(err);
+  }
 });
