@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "server.ts",
   "scripts": {
-    "test": "cross-env NODE_ENV=test jest --testTimeout=5000 --detectOpenHandles",
+    "test": "cross-env NODE_ENV=test jest --testTimeout=5000 --detectOpenHandles --forceExit",
     "build": "tsc",
     "build:watch": "tsc -w",
     "start": "ts-node dist/server.js",

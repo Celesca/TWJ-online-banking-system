@@ -20,7 +20,7 @@ personRouter.post('/checkid', (req: Request, res: Response) => {
   }
 
   if (national_card_id.length !== 13) {
-    return res.status(400).json({ message: 'National card id should be 13 digits' })
+    return res.status(400).json({ message: 'National card id should be 13 digits' });
   }
 
   const sql_query = `SELECT * FROM person WHERE national_card_id = ?`;
@@ -75,4 +75,3 @@ personRouter.post('/remove', async (req: Request, res: Response) => {
   });
   return;
 });
-
