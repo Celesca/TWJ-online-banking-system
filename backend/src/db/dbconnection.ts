@@ -1,4 +1,4 @@
-import mysql, { PoolOptions } from 'mysql2';
+import mysql, { PoolOptions } from 'mysql2/promise';
 
 const access: PoolOptions = {
   host: process.env.DB_HOST || 'localhost',
