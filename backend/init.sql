@@ -1,3 +1,6 @@
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
 CREATE TABLE IF NOT EXISTS person (
     national_card_id varchar(15) PRIMARY KEY UNIQUE NOT NULL,
     first_name varchar(45) NOT NULL,
@@ -39,9 +42,9 @@ CREATE TABLE IF NOT EXISTS account_type (
 
 CREATE TABLE IF NOT EXISTS customer (
     customer_username varchar(30) PRIMARY KEY UNIQUE NOT NULL,
-    password varchar(40) NOT NULL,
+    password varchar(255) NOT NULL,
     salary int,
-    national_card_id varchar(15) NOT NULL,
+    national_card_id varchar(13) NOT NULL,
     blacklist boolean DEFAULT false NOT NULL,
     created_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
     FOREIGN KEY (national_card_id) REFERENCES person(national_card_id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -49,7 +52,7 @@ CREATE TABLE IF NOT EXISTS customer (
 
 CREATE TABLE IF NOT EXISTS staff (
     username varchar(30) PRIMARY KEY UNIQUE NOT NULL,
-    password varchar(40) NOT NULL,
+    password varchar(255) NOT NULL,
     salary int NOT NULL,
     national_card_id varchar(15) NOT NULL,
     created_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
