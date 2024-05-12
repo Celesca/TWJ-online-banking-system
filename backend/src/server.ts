@@ -5,6 +5,10 @@ import morgan from 'morgan';
 import { json, urlencoded } from 'body-parser';
 import { personRouter } from './routes/personRouter';
 import { customerRouter } from './routes/customerRouter';
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
+// import bcrypt from 'bcrypt';
+// import jwt from 'jsonwebtoken';
 
 dotenv.config();
 
@@ -12,10 +16,23 @@ const app: Application = express();
 const port = process.env.PORT || 3000;
 
 // Middlewares
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: ['http://localhost:5173'],
+  }),
+);
 app.use(morgan('tiny'));
 app.use(json());
 app.use(urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(
+  session({
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: true,
+  }),
+);
 
 // Routes
 app.use('/api/persons', personRouter);
