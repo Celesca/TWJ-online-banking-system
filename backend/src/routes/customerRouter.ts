@@ -55,3 +55,22 @@ customerRouter.post('/register', async (req: Request, res: Response) => {
     return res.status(500).send(err);
   }
 });
+
+customerRouter.post('/login', async (req: Request, res: Response) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    return res.status(400).json({ message: 'username and password are required' });
+  }
+  try {
+    const [result] = await connection.query(`SELECT * FROM customer WHERE customer_username = ?`, [username]);
+    const customer = Array.from(Object.values(result))[0];
+    const match: boolean = await bcrypt.compare(password, customer.password);
+    if (!match) {
+      return res.status(400).send({ message: 'Invalid email or password' });
+    }
+
+    return res.status(200).json({ message: 'Login successful' });
+  } catch (err) {
+    return res.status(500).send(err);
+  }
+});
