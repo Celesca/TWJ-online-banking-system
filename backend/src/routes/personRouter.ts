@@ -28,7 +28,7 @@ personRouter.post('/checkid', async (req: Request, res: Response) => {
     if (Array.isArray(rows) && rows.length !== 0) {
       return res.status(400).send({ message: 'Person with this national card id already exists' });
     }
-    return res.status(200).json({ message: 'National card id is available' })
+    return res.status(200).json({ message: 'National card id is available' });
   } catch (err) {
     return res.status(500).send(err);
   }

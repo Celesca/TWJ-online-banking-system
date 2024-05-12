@@ -28,7 +28,7 @@ customerRouter.get('/:username', async (req: Request, res: Response) => {
   }
 });
 
-customerRouter.post('/register', async(req:Request, res:Response) => {
+customerRouter.post('/register', async (req: Request, res: Response) => {
   const body: CreateCustomerDto = req.body;
   const { username, password, salary, national_card_id } = body;
   if (!username || !password || !national_card_id) {
@@ -39,30 +39,27 @@ customerRouter.post('/register', async(req:Request, res:Response) => {
   try {
     const [rows] = await connection.query(username_check_query, [username]);
     if (rows) {
-      return res.status(400).json({ message : 'Username already exists' });
+      return res.status(400).json({ message: 'Username already exists' });
     }
   } catch (err) {
-      return res.status(500).send(err);
+    return res.status(500).send(err);
   }
 
   if (!salary) {
     const sql_query = `INSERT INTO customer (username, password, salary, national_card_id) VALUES ('?', '?', ?, '?')`;
     try {
       const results = await connection.query(sql_query, [username, password, salary, national_card_id]);
-      return res.status(201).json({ message : 'Customer created successfully', results });
+      return res.status(201).json({ message: 'Customer created successfully', results });
     } catch (err) {
       return res.status(500).send(err);
     }
-  
   } else {
     const sql_query = `INSERT INTO customer (username, password, national_card_id) VALUES ('?', '?', '?')`;
     try {
       const results = await connection.query(sql_query, [username, password, national_card_id]);
-      return res.status(201).json({ message : 'Customer created successfully', results });
+      return res.status(201).json({ message: 'Customer created successfully', results });
     } catch (err) {
       return res.status(500).send(err);
     }
   }
-  
-
-})
+});

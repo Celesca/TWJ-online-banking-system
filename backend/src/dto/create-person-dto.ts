@@ -6,4 +6,4 @@ export interface CreatePersonDto {
   phone_number: string;
   email: string;
   address: string;
-};
+}
