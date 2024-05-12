@@ -1,5 +1,3 @@
-SET sql_mode = '';
-
 CREATE TABLE IF NOT EXISTS person (
     national_card_id varchar(15) PRIMARY KEY UNIQUE NOT NULL,
     first_name varchar(45) NOT NULL,
