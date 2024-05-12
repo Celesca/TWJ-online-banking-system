@@ -7,16 +7,25 @@ export const personRouter = Router();
 // Importing connection from mysql database
 import conn from '../db/dbconnection';
 
-personRouter.post('/checkid', async (req: Request, res: Response) => {
+personRouter.post('/checkid', (req: Request, res: Response) => {
   const national_card_id: string = req.body.national_card_id;
-  console.log(national_card_id);
+
   if (!national_card_id) {
     return res.status(400).json({ message: 'Please provide a national card id' });
   }
 
+  // Check whether it's string
+  if (typeof national_card_id !== 'string') {
+    return res.status(400).json({ message: 'National card id should be a string' });
+  }
+
+  if (national_card_id.length !== 13) {
+    return res.status(400).json({ message: 'National card id should be 13 digits' })
+  }
+
   const sql_query = `SELECT * FROM person WHERE national_card_id = ?`;
 
-  await conn.query(sql_query, [national_card_id], (err, rows) => {
+  conn.query(sql_query, [national_card_id], (err, rows) => {
     if (err) {
       return res.status(500).send(err);
     }
@@ -49,3 +58,21 @@ personRouter.post('/add', async (req: Request, res: Response) => {
   );
   return;
 });
+
+personRouter.post('/remove', async (req: Request, res: Response) => {
+  const national_card_id: string = req.body.national_card_id;
+  if (!national_card_id) {
+    return res.status(400).json({ message: 'Please provide a national card id' });
+  }
+
+  const sql_query = `DELETE FROM person WHERE national_card_id = ?`;
+
+  await conn.query(sql_query, [national_card_id], (err, rows) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+    return res.status(200).send({ message: 'Person removed successfully' });
+  });
+  return;
+});
+
