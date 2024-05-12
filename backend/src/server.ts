@@ -4,6 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import { json, urlencoded } from 'body-parser';
 import { personRouter } from './routes/personRouter';
+import { customerRouter } from './routes/customerRouter';
 
 dotenv.config();
 
@@ -17,7 +18,8 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 
 // Routes
-app.use('/persons', personRouter);
+app.use('/api/persons', personRouter);
+app.use('/api/customers', customerRouter);
 
 // Health Check
 app.get('/api/health', (req: Request, res: Response) => {

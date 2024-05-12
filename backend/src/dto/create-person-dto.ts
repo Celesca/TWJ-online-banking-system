@@ -1,4 +1,4 @@
-export type CreatePersonDto = {
+export interface CreatePersonDto {
   national_card_id: string;
   first_name: string;
   last_name: string;
