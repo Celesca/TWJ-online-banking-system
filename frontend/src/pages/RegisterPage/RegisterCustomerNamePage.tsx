@@ -7,6 +7,7 @@ const RegisterCustomerNamePage = () => {
   const [username, setUsername] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const [repassword, setRepassword] = useState<string>("")
+  const [salary, setSalary] = useState<number>(0)
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -20,8 +21,17 @@ const RegisterCustomerNamePage = () => {
         return
       }
 
-      const response = await axios.post("http://localhost:3000/api/customer/register", { username: username, password: password })
-      if (response.status === 200) {
+      const userData = {
+        username: username,
+        password: password,
+        salary: salary,
+        national_card_id: localStorage.getItem("national_card_id")
+      }
+
+      console.log(userData);
+
+      const response = await axios.post("http://localhost:3000/api/customers/register", userData)
+      if (response.status === 201) {
         Swal.fire({
           icon: 'success',
           title: 'Success',
@@ -64,6 +74,12 @@ const RegisterCustomerNamePage = () => {
         <label htmlFor="repassword" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Re-enter Password</label>
         <input name="repassword" 
         type="password" id="repassword" value={repassword} onChange={(e) => setRepassword(e.target.value)}
+        className="outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+      </div>
+      <div className="mb-5">
+        <label htmlFor="salary" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Re-enter Password</label>
+        <input name="salary" 
+        type="number" id="salary" value={salary} onChange={(e) => setSalary(+e.target.value)}
         className="outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
       </div>
       <div className="flex justify-center">

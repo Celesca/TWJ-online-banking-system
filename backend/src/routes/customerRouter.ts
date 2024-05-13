@@ -12,28 +12,15 @@ export const customerRouter = Router();
 
 const secret = process.env.JWT_SECRET || 'mysecret';
 
-customerRouter.get('/:username', async (req: Request, res: Response) => {
-  const username = req.params.username;
-  const sql_query = `SELECT * FROM customer WHERE username = ${username}`;
-
-  try {
-    const [rows] = await connection.query(sql_query);
-    return res.status(200).send(rows);
-  } catch (err) {
-    return res.status(500).send(err);
-  }
-});
-
 customerRouter.post('/register', async (req: Request, res: Response) => {
-  const body: CreateCustomerDto = req.body;
-  const { username, password, salary, national_card_id } = body;
+  const { username, password, salary, national_card_id } = req.body as CreateCustomerDto;
   if (!username || !password || !salary || !national_card_id) {
     return res.status(400).json({ message: 'username, password and national_card_id are required' });
   }
 
-  const username_check_query = `SELECT * FROM customer WHERE customer_username = ?`;
+  const username_check_query = `SELECT * FROM customer WHERE customer_username = '${username}'`;
   try {
-    const [rows] = await connection.query(username_check_query, [username]);
+    const [rows] = await connection.query(username_check_query);
     // Convert rows to array
     const usernameCheck = Array.from(Object.values(rows));
     if (usernameCheck.length > 0) {
@@ -47,7 +34,7 @@ customerRouter.post('/register', async (req: Request, res: Response) => {
     const results = await connection.query(sql_query, customerData);
     return res.status(201).json({ message: 'Customer created successfully', results });
   } catch (err) {
-    return res.status(500).send(err);
+    return res.status(500).json(err);
   }
 });
 

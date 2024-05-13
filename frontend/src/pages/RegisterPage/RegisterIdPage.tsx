@@ -8,6 +8,7 @@ const RegisterIdPage = () => {
     e.preventDefault();
     const result = await axios.post("http://localhost:3000/api/persons/checkid" , {national_card_id: nationId})
     if (result.status === 200) {
+      localStorage.setItem("national_card_id", nationId)
       window.location.href = "/register/checkusername"
     } else {
       console.log("error")
