@@ -3,19 +3,14 @@ import { Request, Response } from 'express';
 import connection from '../db/dbconnection';
 import bcrypt from 'bcrypt';
 import { CreateCustomerDto } from 'dto/create-customer-dto';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export const customerRouter = Router();
 
-customerRouter.get('/', async (req: Request, res: Response) => {
-  const sql_query = `SELECT * FROM customer`;
-
-  try {
-    const [rows] = await connection.query(sql_query);
-    return res.status(200).send(rows);
-  } catch (err) {
-    return res.status(500).send(err);
-  }
-});
+const secret = process.env.JWT_SECRET || 'mysecret';
 
 customerRouter.get('/:username', async (req: Request, res: Response) => {
   const username = req.params.username;
@@ -69,8 +64,43 @@ customerRouter.post('/login', async (req: Request, res: Response) => {
       return res.status(400).send({ message: 'Invalid email or password' });
     }
 
-    return res.status(200).json({ message: 'Login successful' });
+    // create token jwt token
+    const token = jwt.sign({ username: customer.customer_username }, secret, { expiresIn: '1h' });
+    return res.json({
+      message: 'Login successful',
+      token,
+    });
   } catch (err) {
-    return res.status(500).send(err);
+    console.log(err);
+    return res.status(500).json(err);
+  }
+});
+
+// GET ALL customers
+customerRouter.get('/', async (req: Request, res: Response) => {
+  try {
+    const authHeader = req.headers['authorization'];
+    let authToken = '';
+    if (authHeader) {
+      authToken = authHeader.split(' ')[1];
+    }
+    const user: JwtPayload | string = jwt.verify(authToken, secret);
+    if (typeof user !== 'string' && 'username' in user) {
+      const [checkResults] = await connection.query(`SELECT * FROM customer WHERE customer_username = ?`, [
+        user.username,
+      ]);
+      const checkResultsArray = Array.from(Object.values(checkResults));
+      if (!checkResultsArray[0]) {
+        throw { meesage: 'user not found' };
+      }
+    }
+
+    const [results] = await connection.query(`SELECT * FROM customer`);
+    res.json({
+      users: results,
+    });
+  } catch (err) {
+    console.log('error', err);
+    res.status(403).json({ message: 'authentication fail', error: err });
   }
 });
