@@ -7,7 +7,8 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      window.location.href = "/home"
+      return
+      // window.location.href = "/home"
     }
   }, [])
 

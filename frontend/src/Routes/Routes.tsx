@@ -4,6 +4,7 @@ import LoginPage from "../pages/LoginPage/LoginPage";
 import MainMenuPage from "../pages/MainMenuPage/MainMenuPage";
 import RegisterIdPage from "../pages/RegisterPage/RegisterIdPage";
 import RegisterCustomerNamePage from "../pages/RegisterPage/RegisterCustomerNamePage";
+import DepositPage from "../pages/DepositPage/DepositPage";
 
 export const router = createBrowserRouter([
     {
@@ -13,6 +14,7 @@ export const router = createBrowserRouter([
             { path: "login" , element: <LoginPage />},
             { path: "register/checkid" , element: <RegisterIdPage />},
             { path: "register/checkusername" , element: <RegisterCustomerNamePage />},
+            { path: "deposit" , element: <DepositPage/> },
             { path: "main" , element: <MainMenuPage/> },
 
         ]

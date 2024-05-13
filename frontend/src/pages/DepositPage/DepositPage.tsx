@@ -5,15 +5,18 @@ const DepositPage = () => {
 
     useEffect(() => {
         const role = localStorage.getItem("role")
-        Swal.fire({
-            title: "You are not authorized to access this page",
-            text: "We are redirecting you to the homepage",
-            icon: "error",
-            timer: 2000
-        })
         if (role !== "customer") {
-            window.location.href = "/main"
+            Swal.fire({
+                title: "You are not authorized to access this page",
+                text: "We are redirecting you to the homepage",
+                icon: "error",
+                timer: 2000
+            }).then(() => {
+                window.location.href = "/main"
+            })
         }
+
+
     } , [])
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -22,7 +25,8 @@ const DepositPage = () => {
 
   return (
     <div className="bg-gradient-to-r from-indigo-500 homepage_container">
-    <div className="flex w-100vw h-24 mt-16 justify-center text-white text-5xl">Welcome to User Login</div>
+    <div className="flex w-100vw h-24 mt-16 justify-center text-white text-5xl">Deposit (ฝากเงิน)</div>
+    <img src="money.png" alt="money" className="w-24 mx-auto mb-4 "  />
       <form className="max-w-sm mx-auto bg-slate-900 rounded-lg mt-4 p-12" onSubmit={(e) => handleSubmit(e)}>
       <div className="mb-5">
         <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
