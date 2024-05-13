@@ -40,7 +40,7 @@ const RegisterCustomerNamePage = () => {
         setUsername("")
         setPassword("")
         setRepassword("")
-        window.location.href = "/register/information"
+        window.location.href = "/login"
       } else {
         Swal.fire({
           icon: 'error',

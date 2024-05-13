@@ -34,8 +34,8 @@ const LoginPage = () => {
     try {
       axios.post("http://localhost:3000/api/customers/login", userData).then((response) => {
         if (response.status === 200) {
-          console.log("response", response.data.token)
           localStorage.setItem("token", response.data.token)
+          localStorage.setItem("role", "customer")
           Swal.fire({
             title: "Login Success",
             text: "We are redirecting you to the homepage",
