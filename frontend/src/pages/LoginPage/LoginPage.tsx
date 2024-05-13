@@ -16,7 +16,7 @@ const LoginPage = () => {
     password: ""
   })
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setData({
       ...data,
@@ -31,22 +31,32 @@ const LoginPage = () => {
       password: data.password
     };
 
-    axios.post("http://localhost:3000/auth/user/login", userData).then((response) => {
-      if (response.status === 201) {
-        localStorage.setItem("token", response.data)
-        Swal.fire({
-          title: "Login Success",
-          text: "We are redirecting you to the homepage",
-          icon: "success",
-          timer: 2000,
-          
-        }).then(() => {
-          window.location.href = "/main"
-        })
-      }
-    })
-
-
+    try {
+      axios.post("http://localhost:3000/api/customers/login", userData).then((response) => {
+        if (response.status === 200) {
+          console.log("response", response.data.token)
+          localStorage.setItem("token", response.data.token)
+          Swal.fire({
+            title: "Login Success",
+            text: "We are redirecting you to the homepage",
+            icon: "success",
+            timer: 2000,
+            
+          }).then(() => {
+            window.location.href = "/main"
+          })
+        } 
+      })
+    } catch (error) {
+      console.log("error", error);
+      Swal.fire({
+        title: "Login Failed",
+        text: "Username or Password is incorrect",
+        icon: "error",
+        timer: 2000
+      })
+    }
+  
 
   }
   return (
