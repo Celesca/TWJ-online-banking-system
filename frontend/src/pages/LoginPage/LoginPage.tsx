@@ -45,6 +45,8 @@ const LoginPage = () => {
           }).then(() => {
             window.location.href = "/main"
           })
+        } else {
+          throw new Error("Login Failed")
         } 
       })
     } catch (error) {
