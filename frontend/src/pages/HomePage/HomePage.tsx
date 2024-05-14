@@ -12,7 +12,7 @@ const HomePage = () => {
           <Link to="/login">Login</Link>
         </button>
           <div className="text-white text-lg m-12">
-          don't have account? <Link to="/register" className="underline decoration-solid text-blue-900">Sign up</Link>
+          don't have account? <Link to="/register/checkid" className="underline decoration-solid text-blue-900">Sign up</Link>
           </div>
         </div>
         
