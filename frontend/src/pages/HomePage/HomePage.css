@@ -1,0 +1,6 @@
+.card-content:hover {
+    cursor: pointer;
+    background-color: #67c5f1;
+    border-radius: 10px;
+    transition: 0.3s linear;
+}
