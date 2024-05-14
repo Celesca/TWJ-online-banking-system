@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import React from "react"
 import axios from "axios"
 import Swal from "sweetalert2"
+import './LoginPage.css'
 
 const LoginPage = () => {
 
@@ -25,7 +26,7 @@ const LoginPage = () => {
     })
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const userData = {
       username: data.username,
@@ -33,31 +34,27 @@ const LoginPage = () => {
     };
 
     try {
-      axios.post("http://localhost:3000/api/customers/login", userData).then((response) => {
-        if (response.status === 200) {
-          localStorage.setItem("token", response.data.token)
-          localStorage.setItem("role", "customer")
-          Swal.fire({
-            title: "Login Success",
-            text: "We are redirecting you to the homepage",
-            icon: "success",
-            timer: 2000,
-            
-          }).then(() => {
-            window.location.href = "/main"
-          })
-        } else {
-          throw new Error("Login Failed")
-        } 
-      })
+      const response = await axios.post("http://localhost:3000/api/customers/login", userData);
+      if (response.status === 200) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("username", response.data.username);
+        localStorage.setItem("role", response.data.role);
+        Swal.fire({
+          title: "Login Success",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500
+        }).then(() => window.location.href = "/home");
+      } else {
+        throw new Error("Login Failed");
+      }
+
     } catch (error) {
-      console.log("error", error);
       Swal.fire({
         title: "Login Failed",
-        text: "Username or Password is incorrect",
         icon: "error",
-        timer: 2000
-      })
+        showConfirmButton: false,
+      });
     }
   
 
