@@ -28,6 +28,7 @@ const HomePage = () => {
     console.log(response.data);
     if (response.data.length > 0) {
       setWalletData(response.data);
+      setSelectedWallet(response.data[0].account_id);
       setHasWallet(true);
     } else {
       responseSwal("No wallet found", "error");
@@ -81,15 +82,8 @@ const HomePage = () => {
                   <div className="text-4xl font-semibold text-center pt-8">
                     ฿ {balance.toFixed(2)}
                   </div>
-                  <select
-                    value={selectedWallet}
-                    onChange={(e) => setSelectedWallet(e.target.value)}
-                  >
-                    {Object.keys(balance).map((walletId) => (
-                      <option value={walletId}>{walletId}</option>
-                    ))}
-                  </select>
                 </div>
+                SelectWall
               </>
             )}
             {!hasWallet && (
