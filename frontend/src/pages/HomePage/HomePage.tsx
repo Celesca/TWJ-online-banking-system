@@ -1,18 +1,15 @@
-interface Card {
-  title: string;
-  description: string;
-  image: string;
-  link: string;
-}
+
 
 import { useEffect, useState } from "react";
 import "./HomePage.css";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { Link } from "react-router-dom";
+import CreateWalletModal from "../../components/CreateWalletModal";
+import { Cards } from "../../dto/Card";
 
 const HomePage = () => {
   const [balance, setBalance] = useState<number>(0);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   let hasWallet = false;
 
   // const loadAllWallet = async () => {
@@ -39,6 +36,10 @@ const HomePage = () => {
     }
   };
 
+  const createWallet = async (account_id: string, username: string) => {
+    console.log(account_id, username);
+  }
+
   useEffect(() => {
     document.title = "TWJ Online Banking - Home";
     // Check the balance of the account
@@ -53,37 +54,13 @@ const HomePage = () => {
         showConfirmButton: false,
       }).then(() => (window.location.href = "/login"));
     }
-  },);
+  });
 
-  const cards: Card[] = [
-    {
-      title: "Deposit",
-      description: "ฝากเงินเข้าสู่บัญชีธนาคาร",
-      image: "deposit.jpg",
-      link: "/deposit",
-    },
-    {
-      title: "Transfer",
-      description: "โอนเงินได้ทุกที่ที่เวลา",
-      image: "transfer.jpg",
-      link: "/transfer",
-    },
-    {
-      title: "Loaning",
-      description: "ทำการกู้สินเชื่อกับธนาคาร",
-      image: "loan.jpg",
-      link: "/loan",
-    },
-    {
-      title: "Loaning",
-      description: "กู้สินเชื่อ",
-      image: "loan.jpg",
-      link: "/loan",
-    },
-  ];
+  const cards = Cards;
 
   return (
     <div className="bg-gradient-to-r from-indigo-500 homepage_container p-16">
+      
       <header className="text-greetings text-4xl p-2">
         What do you <span>want to do today?</span>
       </header>
@@ -106,12 +83,17 @@ const HomePage = () => {
                 <p className="text-gray-500 pt-2">
                   Please create a wallet to start using our services.
                 </p>
-                <Link to="/create-wallet">
-                  <button className="bg-blue-500 hover:bg-blue-700 text-white mt-4 py-2 px-4 rounded-full">
-                    สร้าง Wallet ใหม่
-                  </button>
-                </Link>
-                
+                <button
+                  className="bg-blue-500 hover:bg-blue-700 text-white mt-4 py-2 px-4 rounded-full"
+                  onClick={() => setIsModalVisible(true)}
+                >
+                  สร้าง Wallet ใหม่
+                </button>
+                <CreateWalletModal
+                  isVisible={isModalVisible}
+                  setIsVisible={setIsModalVisible}
+                  createWallet={createWallet}
+                />
               </div>
             )}
           </div>
