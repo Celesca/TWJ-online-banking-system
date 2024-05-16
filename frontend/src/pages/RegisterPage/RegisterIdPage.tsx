@@ -1,18 +1,36 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { useState } from "react";
+import Swal, { SweetAlertIcon } from "sweetalert2";
 
 const RegisterIdPage = () => {
+
+  const responseSwal = (title: string, icon: SweetAlertIcon) => {
+    return Swal.fire({
+      title: title,
+      icon: icon,
+      timer: 1500,
+      showConfirmButton: false,
+    });
+  };
 
   const [nationId, setNationId] = useState<string>("")
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const result = await axios.post("http://localhost:3000/api/persons/checkid" , {national_card_id: nationId})
+    try {
+
+
+    const result:AxiosResponse = await axios.post("http://localhost:3000/api/persons/checkid" , {national_card_id: nationId})
+    console.log(result.data)
     if (result.status === 200) {
       localStorage.setItem("national_card_id", nationId)
-      window.location.href = "/register/checkusername"
-    } else {
-      console.log("error")
+      responseSwal("Success", "success").then(() => window.location.href = "/register/checkusername")
+    } 
+    else {
+      throw new Error("Failed")
     }
+  } catch (error) {
+    responseSwal("Error format or national card id already exists", "error")
+  }
   }
 
   return (

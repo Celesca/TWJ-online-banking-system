@@ -48,7 +48,6 @@ const LoginPage = () => {
       } else {
         throw new Error("Login Failed");
       }
-
     } catch (error) {
       Swal.fire({
         title: "Login Failed",

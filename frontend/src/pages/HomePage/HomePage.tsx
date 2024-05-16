@@ -1,23 +1,16 @@
-
-
 import { useEffect, useState } from "react";
 import "./HomePage.css";
 import axios from "axios";
-import Swal, {SweetAlertIcon} from "sweetalert2";
+import Swal, { SweetAlertIcon } from "sweetalert2";
 import CreateWalletModal from "../../components/CreateWalletModal";
 import { Cards } from "../../dto/Card";
 
 const HomePage = () => {
   const [balance, setBalance] = useState<number>(0);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [walletData, setWalletData] = useState<[]>([]);
   const [hasWallet, setHasWallet] = useState<boolean>(false);
   const [selectedWallet, setSelectedWallet] = useState<string>("");
-
-  // const loadAllWallet = async () => {
-  //   const response = await axios.get('http://localhost:3000/walletByCustomerId/1')
-  //   const data = response.data
-  //   console.log(data)
-  // }
 
   const responseSwal = (title: string, icon: SweetAlertIcon) => {
     return Swal.fire({
@@ -26,15 +19,15 @@ const HomePage = () => {
       timer: 1500,
       showConfirmButton: false,
     });
-  }
+  };
 
   const queryWallet = async (username: string) => {
     const response = await axios.get(
       "http://localhost:3000/api/accounts/" + username
     );
+    console.log(response.data);
     if (response.data.length > 0) {
-      setBalance(response.data[0].balance);
-      localStorage.setItem("walletId", response.data[0].account_id);
+      setWalletData(response.data);
       setHasWallet(true);
     } else {
       responseSwal("No wallet found", "error");
@@ -43,18 +36,20 @@ const HomePage = () => {
   };
 
   const createWallet = async (account_type_id: string, username: string) => {
-    const response = await axios.post("http://localhost:3000/api/accounts/create-account", {
-      account_type_id: account_type_id,
-      username: username,
-    });
+    const response = await axios.post(
+      "http://localhost:3000/api/accounts/create-account",
+      {
+        account_type_id: account_type_id,
+        username: username,
+      }
+    );
     if (response.status === 201) {
       queryWallet(username);
       responseSwal("Wallet created successfully", "success");
     } else {
       responseSwal("Failed to create wallet", "error");
     }
-    
-  }
+  };
 
   useEffect(() => {
     document.title = "TWJ Online Banking - Home";
@@ -63,7 +58,9 @@ const HomePage = () => {
     if (username) {
       queryWallet(username);
     } else {
-      responseSwal("Please login first", "error").then(() => (window.location.href = "/login"));
+      responseSwal("Please login first", "error").then(
+        () => (window.location.href = "/login")
+      );
     }
   }, []);
 
@@ -71,7 +68,6 @@ const HomePage = () => {
 
   return (
     <div className="bg-gradient-to-r from-indigo-500 homepage_container p-16">
-      
       <header className="text-greetings text-4xl p-2">
         What do you <span>want to do today?</span>
       </header>
@@ -85,6 +81,14 @@ const HomePage = () => {
                   <div className="text-4xl font-semibold text-center pt-8">
                     ฿ {balance.toFixed(2)}
                   </div>
+                  <select
+                    value={selectedWallet}
+                    onChange={(e) => setSelectedWallet(e.target.value)}
+                  >
+                    {Object.keys(balance).map((walletId) => (
+                      <option value={walletId}>{walletId}</option>
+                    ))}
+                  </select>
                 </div>
               </>
             )}
