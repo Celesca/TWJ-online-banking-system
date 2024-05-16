@@ -40,8 +40,18 @@ const HomePage = () => {
     }
   };
 
-  const createWallet = async (account_id: string, username: string) => {
-    console.log(account_id, username);
+  const createWallet = async (account_type_id: string, username: string) => {
+    const response = await axios.post("http://localhost:3000/api/accounts/create-account", {
+      account_type_id: account_type_id,
+      username: username,
+    });
+    if (response.status === 201) {
+      queryWallet(username);
+      responseSwal("Wallet created successfully", "success");
+    } else {
+      responseSwal("Failed to create wallet", "error");
+    }
+    
   }
 
   useEffect(() => {
@@ -53,7 +63,7 @@ const HomePage = () => {
     } else {
       responseSwal("Please login first", "error").then(() => (window.location.href = "/login"));
     }
-  });
+  }, []);
 
   const cards = Cards;
 

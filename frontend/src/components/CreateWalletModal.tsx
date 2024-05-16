@@ -6,30 +6,36 @@ interface ModalProps {
   createWallet: (account_type_id: string, username: string) => void;
 }
 
-const CreateWalletModal: React.FC<ModalProps> = ({isVisible,setIsVisible,createWallet}) => {
-    const [selectedRadio, setSelectedRadio] = useState<string>("1");
+const CreateWalletModal: React.FC<ModalProps> = ({
+  isVisible,
+  setIsVisible,
+  createWallet,
+}) => {
+  const [selectedRadio, setSelectedRadio] = useState<string>("1");
 
-    useEffect(() => {
-        if (isVisible) {
-            document.getElementById('select-modal')?.focus();
-        }
-    }, [isVisible]);
-
-    const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSelectedRadio(event.target.value); 
+  useEffect(() => {
+    if (isVisible) {
+      document.getElementById("select-modal")?.focus();
     }
+  }, [isVisible]);
 
-    const handleClose = (account_type_id: string) => {
-        setIsVisible(false);
-        createWallet(account_type_id, localStorage.getItem('username') || '');
-    }
-  
-    return (
+  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedRadio(event.target.value);
+  };
+
+  const handleClose = (account_type_id: string) => {
+    setIsVisible(false);
+    createWallet(account_type_id, localStorage.getItem("username")!);
+  };
+
+  return (
     <div
       id="select-modal"
       tabIndex={-1}
       aria-hidden={!isVisible}
-      className={`overflow-y-auto overflow-x-hidden fixed inset-0 z-50 justify-center items-center flex ${isVisible ? '' : 'hidden'}`}
+      className={`overflow-y-auto overflow-x-hidden fixed inset-0 z-50 justify-center items-center flex ${
+        isVisible ? "" : "hidden"
+      }`}
     >
       <div className="relative p-4 w-full max-w-md max-h-full">
         <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -41,6 +47,7 @@ const CreateWalletModal: React.FC<ModalProps> = ({isVisible,setIsVisible,createW
               type="button"
               className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
               data-modal-toggle="select-modal"
+              onClick={() => setIsVisible(false)}
             >
               <svg
                 className="w-3 h-3"
@@ -143,9 +150,12 @@ const CreateWalletModal: React.FC<ModalProps> = ({isVisible,setIsVisible,createW
                   </svg>
                 </label>
               </li>
-            
             </ul>
-            <button type="button" onClick={() => handleClose(selectedRadio)} className="text-white inline-flex w-full justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            <button
+              type="button"
+              onClick={() => handleClose(selectedRadio)}
+              className="text-white inline-flex w-full justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
               ดำเนินการ
             </button>
           </div>
