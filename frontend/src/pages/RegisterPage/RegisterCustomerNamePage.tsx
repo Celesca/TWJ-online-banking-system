@@ -37,6 +37,7 @@ const RegisterCustomerNamePage = () => {
           title: 'Success',
           text: 'Register successfully!',
         })
+        
         setUsername("")
         setPassword("")
         setRepassword("")

@@ -10,7 +10,8 @@ import { Cards } from "../../dto/Card";
 const HomePage = () => {
   const [balance, setBalance] = useState<number>(0);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-  let hasWallet = false;
+  const [hasWallet, setHasWallet] = useState<boolean>(false);
+  const [selectedWallet, setSelectedWallet] = useState<string>("");
 
   // const loadAllWallet = async () => {
   //   const response = await axios.get('http://localhost:3000/walletByCustomerId/1')
@@ -29,14 +30,15 @@ const HomePage = () => {
 
   const queryWallet = async (username: string) => {
     const response = await axios.get(
-      "http://localhost:3000/wallet/" + username
+      "http://localhost:3000/api/accounts/" + username
     );
     if (response.data.length > 0) {
       setBalance(response.data[0].balance);
       localStorage.setItem("walletId", response.data[0].account_id);
-      hasWallet = true;
+      setHasWallet(true);
     } else {
       responseSwal("No wallet found", "error");
+      setHasWallet(false);
     }
   };
 
