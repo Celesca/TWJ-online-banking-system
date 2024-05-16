@@ -9,10 +9,10 @@ import { useEffect, useState } from "react";
 import "./HomePage.css";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
-
-  const [balance, setBalance] = useState<number>(0)
+  const [balance, setBalance] = useState<number>(0);
   let hasWallet = false;
 
   // const loadAllWallet = async () => {
@@ -22,36 +22,37 @@ const HomePage = () => {
   // }
 
   const queryWallet = async (username: string) => {
-    const response = await axios.get('http://localhost:3000/wallet/' + username)
+    const response = await axios.get(
+      "http://localhost:3000/wallet/" + username
+    );
     if (response.data.length > 0) {
-      setBalance(response.data[0].balance)
-      hasWallet = true
+      setBalance(response.data[0].balance);
+      hasWallet = true;
     } else {
       Swal.fire({
         title: "No wallet found",
         icon: "error",
         timer: 1500,
         showConfirmButton: false,
-      })
+      });
     }
-  }
+  };
 
   useEffect(() => {
     document.title = "TWJ Online Banking - Home";
     // Check the balance of the account
     const username = localStorage.getItem("username");
     if (username) {
-      queryWallet(username)
+      queryWallet(username);
     } else {
       Swal.fire({
         title: "Please login first",
         icon: "error",
         timer: 1500,
         showConfirmButton: false,
-      }).then(() => window.location.href = "/login");
+      }).then(() => (window.location.href = "/login"));
     }
-
-  }, [])
+  },);
 
   const cards: Card[] = [
     {
@@ -82,9 +83,9 @@ const HomePage = () => {
 
   return (
     <div className="bg-gradient-to-r from-indigo-500 homepage_container p-16">
-       <header className="text-greetings text-4xl p-2">
-          What do you <span>want to do today?</span>
-        </header>
+      <header className="text-greetings text-4xl p-2">
+        What do you <span>want to do today?</span>
+      </header>
       <div className="flex">
         <div className="w-1/2 p-4 mt-4 balance-container">
           <div className="bg-white rounded-lg shadow-lg p-12">
@@ -100,10 +101,17 @@ const HomePage = () => {
             )}
             {!hasWallet && (
               <div className="text-center">
-                
                 <h2 className="text-lg font-semibold">No wallet found</h2>
-                </div>
-              )}
+                <p className="text-gray-500 pt-2">
+                  Please create a wallet to start using our services.
+                </p>
+                <Link to="/create-wallet">
+                  <button className="bg-blue-500 hover:bg-blue-700 text-white mt-4 py-2 px-4 rounded-full">
+                    สร้าง Wallet ใหม่
+                  </button>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
         <div className="w-1/2 p-4">
