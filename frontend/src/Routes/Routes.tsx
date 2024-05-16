@@ -16,7 +16,6 @@ export const router = createBrowserRouter([
             { path: "register/checkusername" , element: <RegisterCustomerNamePage />},
             { path: "deposit" , element: <DepositPage/> },
             { path: "home" , element: <HomePage/> },
-
         ]
     }
 ])

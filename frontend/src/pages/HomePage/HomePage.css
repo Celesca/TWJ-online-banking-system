@@ -4,3 +4,11 @@
     border-radius: 10px;
     transition: 0.3s linear;
 }
+
+.text-greetings {
+    color: rgb(158, 255, 255);
+}
+
+.text-greetings span {
+    color: #11252e;
+}

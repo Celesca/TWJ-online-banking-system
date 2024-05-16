@@ -37,8 +37,8 @@ const LoginPage = () => {
       const response = await axios.post("http://localhost:3000/api/customers/login", userData);
       if (response.status === 200) {
         localStorage.setItem("token", response.data.token);
-        localStorage.setItem("username", response.data.username);
-        localStorage.setItem("role", response.data.role);
+        localStorage.setItem("username", userData.username);
+        localStorage.setItem("role", "customer");
         Swal.fire({
           title: "Login Success",
           icon: "success",

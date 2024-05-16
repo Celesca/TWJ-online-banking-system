@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS account_type (
     account_type_name varchar(45) NOT NULL,
     interest_rate DOUBLE(10,2) NOT NULL,
     interest_period int NOT NULL,
-    value_of_package DOUBLE(10,2) NOT NULL
+    value_of_package DOUBLE(10,2)
 );
 
 CREATE TABLE IF NOT EXISTS customer (
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS staff (
 CREATE TABLE IF NOT EXISTS account (
     account_id int PRIMARY KEY AUTO_INCREMENT NOT NULL,
     account_type_id int NOT NULL,
-    balance DOUBLE(10,2) NOT NULL,
+    balance DOUBLE(10,2) DEFAULT 0 NOT NULL,
     customer_username varchar(30) NOT NULL,
     created_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
     closed_date timestamp NULL,
@@ -95,4 +95,3 @@ CREATE TABLE IF NOT EXISTS loan (
     FOREIGN KEY (customer_username) REFERENCES customer(customer_username) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (loan_type) REFERENCES loan_type(loan_type_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
-
