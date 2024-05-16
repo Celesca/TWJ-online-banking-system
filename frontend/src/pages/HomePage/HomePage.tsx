@@ -27,6 +27,7 @@ const HomePage = () => {
     );
     if (response.data.length > 0) {
       setBalance(response.data[0].balance);
+      localStorage.setItem("walletId", response.data[0].account_id);
       hasWallet = true;
     } else {
       Swal.fire({
@@ -110,6 +111,7 @@ const HomePage = () => {
                     สร้าง Wallet ใหม่
                   </button>
                 </Link>
+                
               </div>
             )}
           </div>

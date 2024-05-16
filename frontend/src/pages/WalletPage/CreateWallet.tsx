@@ -1,6 +1,8 @@
 const CreateWallet = () => {
   return (
-    <div>CreateWallet</div>
+    <div className="bg-gradient-to-r from-indigo-500 homepage_container">
+        
+</div>
   )
 }
 
