@@ -1,1 +1,3 @@
 INSERT INTO `account_type` (`account_type_id`, `description`, `account_type_name`, `interest_rate`, `interest_period`, `value_of_package`) VALUES (1, 'Savings account', 'ฝากไม่หวังดอก', 0.105, 7, NULL);
+
+INSERT INTO `person` (`national_card_id`, `first_name`, `last_name`, `birth_date`, `phone_number`, `email`, `address`) VALUES ('1111111111111', 'John', 'Doe', '1990-01-01', '0812345678', 'test@gmail.com', '1234 Main St, Springfield, IL 62701');
