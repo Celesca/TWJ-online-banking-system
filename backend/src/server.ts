@@ -38,7 +38,7 @@ app.use(
 // Routes
 app.use('/api/persons', personRouter);
 app.use('/api/customers', customerRouter);
-app.use('/api/accounts' , accountRouter);
+app.use('/api/accounts', accountRouter);
 
 // Health Check
 app.get('/api/health', (req: Request, res: Response) => {

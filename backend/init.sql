@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS account_type (
     account_type_name varchar(45) NOT NULL,
     interest_rate DOUBLE(10,2) NOT NULL,
     interest_period int NOT NULL,
-    value_of_package DOUBLE(10,2) NOT NULL
+    value_of_package DOUBLE(10,2)
 );
 
 CREATE TABLE IF NOT EXISTS customer (

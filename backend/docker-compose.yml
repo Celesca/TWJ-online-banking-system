@@ -12,6 +12,7 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./mock_data.sql:/docker-entrypoint-initdb.d/mock_data.sql
     networks:
       - my_network
 
