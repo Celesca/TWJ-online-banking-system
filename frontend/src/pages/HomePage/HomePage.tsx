@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import "./HomePage.css";
 import axios from "axios";
-import Swal from "sweetalert2";
+import Swal, {SweetAlertIcon} from "sweetalert2";
 import CreateWalletModal from "../../components/CreateWalletModal";
 import { Cards } from "../../dto/Card";
 
@@ -18,6 +18,15 @@ const HomePage = () => {
   //   console.log(data)
   // }
 
+  const responseSwal = (title: string, icon: SweetAlertIcon) => {
+    return Swal.fire({
+      title: title,
+      icon: icon,
+      timer: 1500,
+      showConfirmButton: false,
+    });
+  }
+
   const queryWallet = async (username: string) => {
     const response = await axios.get(
       "http://localhost:3000/wallet/" + username
@@ -27,12 +36,7 @@ const HomePage = () => {
       localStorage.setItem("walletId", response.data[0].account_id);
       hasWallet = true;
     } else {
-      Swal.fire({
-        title: "No wallet found",
-        icon: "error",
-        timer: 1500,
-        showConfirmButton: false,
-      });
+      responseSwal("No wallet found", "error");
     }
   };
 
@@ -47,12 +51,7 @@ const HomePage = () => {
     if (username) {
       queryWallet(username);
     } else {
-      Swal.fire({
-        title: "Please login first",
-        icon: "error",
-        timer: 1500,
-        showConfirmButton: false,
-      }).then(() => (window.location.href = "/login"));
+      responseSwal("Please login first", "error").then(() => (window.location.href = "/login"));
     }
   });
 
