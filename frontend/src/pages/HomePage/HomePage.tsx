@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./HomePage.css";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import Swal, { SweetAlertIcon } from "sweetalert2";
 import CreateWalletModal from "../../components/CreateWalletModal";
 import { Cards } from "../../model/Card";
@@ -39,18 +39,25 @@ const HomePage = () => {
   };
 
   const createWallet = async (account_type_id: string, username: string) => {
-    const response = await axios.post(
-      import.meta.env.VITE_SERVER_URI + "/api/accounts/create-account",
-      {
-        account_type_id: account_type_id,
-        username: username,
+    try {
+      const response = await axios.post(
+        import.meta.env.VITE_SERVER_URI + "/api/accounts/create-account",
+        {
+          account_type_id: account_type_id,
+          username: username,
+        }
+      );
+      if (response.status === 201) {
+        queryWallet(username);
+        responseSwal("Wallet created successfully", "success");
       }
-    );
-    if (response.status === 201) {
-      queryWallet(username);
-      responseSwal("Wallet created successfully", "success");
-    } else {
-      responseSwal("Failed to create wallet", "error");
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      if (axiosError.response && axiosError.response.status === 400) {
+        responseSwal("Failed to create wallet", "error");
+      } else {
+        responseSwal("An error occurred", "error");
+      }
     }
   };
 
@@ -72,7 +79,11 @@ const HomePage = () => {
   return (
     <div className="bg-indigo-500 homepage_container p-16">
       <header className="text-greetings text-4xl p-2">
-        Hello, {walletData[selectedWallet] ? walletData[selectedWallet].first_name : 'User'}. <span>what to do today? </span>
+        Hello,{" "}
+        {walletData[selectedWallet]
+          ? walletData[selectedWallet].first_name
+          : "User"}
+        . <span>what to do today? </span>
       </header>
       <div className="flex">
         <div className="w-1/2 p-4 mt-4 balance-container">
@@ -85,7 +96,10 @@ const HomePage = () => {
                     ฿ {walletData[selectedWallet].balance.toFixed(2)}
                   </div>
                 </div>
-                <SelectWallet setSelectedWallet={setSelectedWallet} walletData={walletData} />
+                <SelectWallet
+                  setSelectedWallet={setSelectedWallet}
+                  walletData={walletData}
+                />
               </>
             )}
             {!hasWallet && (
@@ -94,50 +108,50 @@ const HomePage = () => {
                 <p className="text-gray-500 pt-2">
                   Please create a wallet to start using our services.
                 </p>
-                <button
-                  className="bg-blue-500 hover:bg-blue-700 text-white mt-4 py-2 px-4 rounded-full"
-                  onClick={() => setIsModalVisible(true)}
-                >
-                  สร้าง Wallet ใหม่
-                </button>
-                <CreateWalletModal
-                  isVisible={isModalVisible}
-                  setIsVisible={setIsModalVisible}
-                  createWallet={createWallet}
-                />
               </div>
             )}
+            <div className="flex justify-center">
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white mt-4 py-2 px-4 rounded-full"
+              onClick={() => setIsModalVisible(true)}
+            >
+              สร้าง Wallet ใหม่
+            </button>
+            </div>
+            <CreateWalletModal
+              isVisible={isModalVisible}
+              setIsVisible={setIsModalVisible}
+              createWallet={createWallet}
+            />
           </div>
         </div>
         <div className="w-1/2 p-4">
           <div className="flex flex-wrap justify-center">
             {cards.map((card, index) => (
-              
               <div
                 key={index}
                 className="w-1/2 min-w-0 sm:min-w-1/2 p-4 card-content"
               >
                 <Link to={card.link}>
-                <div className="bg-white rounded-lg shadow-lg pl-4 py-4 pr-0 flex">
-                  <div className="flex">
-                    <img
-                      src={card.image}
-                      alt={card.title}
-                      className="w-32 h-32"
-                    />
+                  <div className="bg-white rounded-lg shadow-lg pl-4 py-4 pr-0 flex">
+                    <div className="flex">
+                      <img
+                        src={card.image}
+                        alt={card.title}
+                        className="w-32 h-32"
+                      />
+                    </div>
+                    <div className="py-4">
+                      <h3 className="text-lg text-center font-semibold">
+                        {card.title}
+                      </h3>
+                      <p className="text-gray-500 text-center pt-2">
+                        {card.description}
+                      </p>
+                    </div>
                   </div>
-                  <div className="py-4">
-                    <h3 className="text-lg text-center font-semibold">
-                      {card.title}
-                    </h3>
-                    <p className="text-gray-500 text-center pt-2">
-                      {card.description}
-                    </p>
-                  </div>
-                </div>
                 </Link>
               </div>
-              
             ))}
           </div>
         </div>

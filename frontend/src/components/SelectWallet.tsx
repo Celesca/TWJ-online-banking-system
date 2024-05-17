@@ -1,3 +1,4 @@
+import Swal, { SweetAlertIcon } from "sweetalert2";
 import { WalletData } from "../model/Wallet";
 
 interface SelectProps {
@@ -7,9 +8,18 @@ interface SelectProps {
 
 const SelectWallet: React.FC<SelectProps> = ({ setSelectedWallet, walletData}) => {
 
+  function responseSwal(title: string, icon: SweetAlertIcon) {
+    return Swal.fire({
+      title: title,
+      icon: icon,
+      timer: 1500,
+      showConfirmButton: false,
+    });
+  }
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedWallet(parseInt(event.target.value));
+    responseSwal("Wallet selected", "success")
   };
 
   return (
