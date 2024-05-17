@@ -71,7 +71,7 @@ const HomePage = () => {
   const cards = Cards;
 
   return (
-    <div className="bg-gradient-to-r from-indigo-500 homepage_container p-16">
+    <div className="bg-indigo-500 homepage_container p-16">
       <header className="text-greetings text-4xl p-2">
         Hello, {walletData[selectedWallet] ? walletData[selectedWallet].first_name : 'User'}. <span>what to do today? </span>
       </header>

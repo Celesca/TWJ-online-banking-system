@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { Router } from 'express';
 import connection from '../db/dbconnection';
+import { QueryResult } from 'mysql2';
 
 export const accountRouter = Router();
 
@@ -17,7 +18,7 @@ accountRouter.get('/', async (req: Request, res: Response) => {
 // GET account by username
 accountRouter.get('/:username', async (req: Request, res: Response) => {
   const { username } = req.params;
-  const sql_query = `SELECT account.customer_username, account.balance, account_type.account_type_name, person.first_name, person.last_name
+  const sql_query = `SELECT account.account_id, account.customer_username, account.balance, account_type.account_type_name, person.first_name, person.last_name
   FROM account
   JOIN account_type ON account.account_type_id = account_type.account_type_id
   JOIN customer ON customer.customer_username = account.customer_username
@@ -49,3 +50,18 @@ accountRouter.post('/create-account', async (req: Request, res: Response) => {
 });
 
 // Deposit to account
+accountRouter.post('/deposit', async (req: Request, res:Response) => {
+  
+  const { amount, account_id } = req.body;
+  if (!amount || !account_id) {
+    return res.status(400).json({ message: 'amount and account_id are required' });
+  }
+  try {
+    const accountData = [amount, account_id];
+    const sql_query = `UPDATE account SET balance = balance + ? WHERE account_id = ?`;
+    const results = await connection.query(sql_query, accountData);
+    return res.status(201).json({ message: 'Deposit successful', results });
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+})

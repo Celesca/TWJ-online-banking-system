@@ -49,12 +49,13 @@ const DepositPage = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const response = await axios.post("http://localhost:3000/api/accounts/deposit", {
-      username: walletData[selectedWallet].customer_username,
-      amount: amount
+      amount: amount,
+      customer_username: walletData[selectedWallet].customer_username,
+      account_type_id: walletData[selectedWallet].account_type_id
     });
     if (response.status === 201) {
       responseSwal("Deposit successfully", "", "success").then(() => {
-        window.location.href = "/";
+        window.location.href = "/home";
       });
     } else {
       responseSwal("Deposit failed", "", "error");
