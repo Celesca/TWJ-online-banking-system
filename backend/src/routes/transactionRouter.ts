@@ -28,7 +28,7 @@ transactionRouter.get('/:account_id', async (req: Request, res: Response) => {
   } catch (err) {
     return res.status(500).json(err);
   }
-})
+});
 
 // Deposit to account
 transactionRouter.post('/deposit', async (req: Request, res: Response) => {
