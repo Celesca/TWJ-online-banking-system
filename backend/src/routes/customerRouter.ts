@@ -52,7 +52,7 @@ customerRouter.post('/login', async (req: Request, res: Response) => {
     }
     const match: boolean = await bcrypt.compare(password, customer.password);
     if (!match) {
-      return res.status(400).send({ message: 'Password does not match'});
+      return res.status(400).send({ message: 'Password does not match' });
     }
     // create token jwt token
     const token = jwt.sign({ username: customer.customer_username }, secret, { expiresIn: '1h' });

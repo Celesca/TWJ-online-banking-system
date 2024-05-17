@@ -41,7 +41,7 @@ accountRouter.post('/create-account', async (req: Request, res: Response) => {
   try {
     const checkAccountQuery = `SELECT * FROM account WHERE customer_username = ? AND account_type_id = ?`;
     const [check] = await connection.query(checkAccountQuery, [username, account_type_id]);
-    // Convert check to array
+
     const checkAccount = Array.from(Object.values(check));
     if (checkAccount.length > 0) {
       return res.status(400).json({ message: 'Account already exists' });
