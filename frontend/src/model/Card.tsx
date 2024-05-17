@@ -25,9 +25,9 @@ export const Cards: Card[] = [
       link: "/loan",
     },
     {
-      title: "Loaning",
-      description: "กู้สินเชื่อ",
+      title: "Transaction",
+      description: "ดูประวัติธุรกรรมทางการเงิน",
       image: "loan.jpg",
-      link: "/loan",
+      link: "/transaction",
     },
   ];

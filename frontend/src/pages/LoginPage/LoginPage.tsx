@@ -1,15 +1,23 @@
 import { useEffect, useState } from "react"
 import React from "react"
 import axios from "axios"
-import Swal from "sweetalert2"
+import Swal, { SweetAlertIcon } from "sweetalert2"
 import './LoginPage.css'
 
 const LoginPage = () => {
 
+  const responseSwal = (title: string, icon: SweetAlertIcon) => {
+    return Swal.fire({
+      title: title,
+      icon: icon,
+      showConfirmButton: false,
+      timer: 1500
+    })
+  }
+
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      return
-      // window.location.href = "/home"
+      window.location.href = "/home"
     }
   }, [])
 
@@ -39,22 +47,12 @@ const LoginPage = () => {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("username", userData.username);
         localStorage.setItem("role", "customer");
-        Swal.fire({
-          title: "Login Success",
-          icon: "success",
-          showConfirmButton: false,
-          timer: 1500
-        }).then(() => window.location.href = "/home");
+        responseSwal("Login Success", "success").then(() => window.location.href = "/home");
       } else {
         throw new Error("Login Failed");
       }
-
     } catch (error) {
-      Swal.fire({
-        title: "Login Failed",
-        icon: "error",
-        showConfirmButton: false,
-      });
+      responseSwal("Login Failed", "error");
     }
   
 
