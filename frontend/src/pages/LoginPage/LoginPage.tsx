@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import React from "react"
 import axios from "axios"
 import Swal, { SweetAlertIcon } from "sweetalert2"
@@ -14,12 +14,6 @@ const LoginPage = () => {
       timer: 1500
     })
   }
-
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      window.location.href = "/home"
-    }
-  }, [])
 
   const [data, setData] = useState({
     username: "",

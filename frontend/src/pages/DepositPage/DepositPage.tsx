@@ -48,7 +48,7 @@ const DepositPage = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await axios.post(import.meta.env.VITE_SERVER_URI + "/api/accounts/deposit", {
+    const response = await axios.post(import.meta.env.VITE_SERVER_URI + "/api/transactions/deposit", {
       amount: amount,
       customer_username: walletData[selectedWallet].customer_username,
       account_id: walletData[selectedWallet].account_id

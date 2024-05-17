@@ -58,19 +58,3 @@ accountRouter.post('/create-account', async (req: Request, res: Response) => {
     return res.status(500).json(err);
   }
 });
-
-// Deposit to account
-accountRouter.post('/deposit', async (req: Request, res: Response) => {
-  const { amount, account_id } = req.body;
-  if (!amount || !account_id) {
-    return res.status(400).json({ message: 'amount and account_id are required' });
-  }
-  try {
-    const accountData = [amount, account_id];
-    const sql_query = `UPDATE account SET balance = balance + ? WHERE account_id = ?`;
-    const results = await connection.query(sql_query, accountData);
-    return res.status(201).json({ message: 'Deposit successful', results });
-  } catch (err) {
-    return res.status(500).json(err);
-  }
-});
