@@ -6,6 +6,7 @@ import CreateWalletModal from "../../components/CreateWalletModal";
 import { Cards } from "../../model/Card";
 import SelectWallet from "../../components/SelectWallet";
 import { WalletData } from "../../model/Wallet";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
@@ -55,6 +56,7 @@ const HomePage = () => {
 
   useEffect(() => {
     document.title = "TWJ Online Banking - Home";
+    console.log("Test")
     // Check the balance of the account
     const username = localStorage.getItem("username");
     if (username) {
@@ -71,7 +73,7 @@ const HomePage = () => {
   return (
     <div className="bg-gradient-to-r from-indigo-500 homepage_container p-16">
       <header className="text-greetings text-4xl p-2">
-        Hello, {walletData[selectedWallet].first_name}. <span>what to do today? </span>
+        Hello, {walletData[selectedWallet] ? walletData[selectedWallet].first_name : 'User'}. <span>what to do today? </span>
       </header>
       <div className="flex">
         <div className="w-1/2 p-4 mt-4 balance-container">
@@ -111,10 +113,12 @@ const HomePage = () => {
         <div className="w-1/2 p-4">
           <div className="flex flex-wrap justify-center">
             {cards.map((card, index) => (
+              
               <div
                 key={index}
                 className="w-1/2 min-w-0 sm:min-w-1/2 p-4 card-content"
               >
+                <Link to={card.link}>
                 <div className="bg-white rounded-lg shadow-lg pl-4 py-4 pr-0 flex">
                   <div className="flex">
                     <img
@@ -132,7 +136,9 @@ const HomePage = () => {
                     </p>
                   </div>
                 </div>
+                </Link>
               </div>
+              
             ))}
           </div>
         </div>
