@@ -37,10 +37,21 @@ accountRouter.post('/create-account', async (req: Request, res: Response) => {
   if (!account_type_id || !username) {
     return res.status(400).json({ message: 'account_type_id and username are required' });
   }
-  console.log('account_type_id:', account_type_id, 'username:', username);
+
   try {
-    const accountData = [account_type_id, username];
-    const sql_query = `INSERT INTO account (account_type_id, customer_username) VALUES (?, ?)`;
+    const checkAccountQuery = `SELECT * FROM account WHERE customer_username = ? AND account_type_id = ?`;
+    const [check] = await connection.query(checkAccountQuery, [username, account_type_id]);
+    // Convert check to array
+    const checkAccount = Array.from(Object.values(check));
+    if (checkAccount.length > 0) {
+      return res.status(400).json({ message: 'Account already exists' });
+    }
+    let account_id = '';
+    for (let i = 0; i < 10; i++) {
+      account_id += Math.floor(Math.random() * 10);
+    }
+    const accountData = [account_id, account_type_id, username];
+    const sql_query = `INSERT INTO account (account_id, account_type_id, customer_username) VALUES (?, ?, ?)`;
     const results = await connection.query(sql_query, accountData);
     return res.status(201).json({ message: 'Account created successfully', results });
   } catch (err) {

@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS staff (
 );
 
 CREATE TABLE IF NOT EXISTS account (
-    account_id int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    account_id VARCHAR(10) PRIMARY KEY UNIQUE NOT NULL,
     account_type_id int NOT NULL,
     balance DOUBLE(10,2) DEFAULT 0 NOT NULL,
     customer_username varchar(30) NOT NULL,
@@ -76,8 +76,8 @@ CREATE TABLE IF NOT EXISTS transaction_tb (
     transaction_type_id varchar(10) NOT NULL,
     amount DOUBLE(10,2) NOT NULL,
     transaction_date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    from_account_id int NOT NULL,
-    to_account_id int NOT NULL,
+    from_account_id VARCHAR(10) NOT NULL,
+    to_account_id VARCHAR(10) NOT NULL,
     FOREIGN KEY (from_account_id) REFERENCES account(account_id),
     FOREIGN KEY (to_account_id) REFERENCES account(account_id),
     FOREIGN KEY (transaction_type_id) REFERENCES transaction_type(transaction_type_id) ON DELETE CASCADE ON UPDATE CASCADE

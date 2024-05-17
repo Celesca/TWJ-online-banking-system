@@ -46,11 +46,14 @@ customerRouter.post('/login', async (req: Request, res: Response) => {
   try {
     const [result] = await connection.query(`SELECT * FROM customer WHERE customer_username = ?`, [username]);
     const customer = Array.from(Object.values(result))[0];
-    const match: boolean = await bcrypt.compare(password, customer.password);
-    if (!match) {
+    console.log(customer);
+    if (!customer) {
       return res.status(400).send({ message: 'Invalid email or password' });
     }
-
+    const match: boolean = await bcrypt.compare(password, customer.password);
+    if (!match) {
+      return res.status(400).send({ message: 'Password does not match'});
+    }
     // create token jwt token
     const token = jwt.sign({ username: customer.customer_username }, secret, { expiresIn: '1h' });
     return res.json({
