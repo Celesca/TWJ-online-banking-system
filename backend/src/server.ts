@@ -8,6 +8,7 @@ import { customerRouter } from './routes/customerRouter';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import { accountRouter } from './routes/accountRouter';
+import { transactionRouter } from './routes/transactionRouter';
 // import bcrypt from 'bcrypt';
 // import jwt from 'jsonwebtoken';
 
@@ -39,6 +40,7 @@ app.use(
 app.use('/api/persons', personRouter);
 app.use('/api/customers', customerRouter);
 app.use('/api/accounts', accountRouter);
+app.use('/api/transactions', transactionRouter);
 
 // Health Check
 app.get('/api/health', (req: Request, res: Response) => {

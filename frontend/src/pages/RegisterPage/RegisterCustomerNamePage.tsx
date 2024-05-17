@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import Swal from "sweetalert2";
+import Swal, { SweetAlertIcon } from "sweetalert2";
 
 const RegisterCustomerNamePage = () => {
   const [username, setUsername] = useState<string>("");
@@ -8,16 +8,24 @@ const RegisterCustomerNamePage = () => {
   const [repassword, setRepassword] = useState<string>("");
   const [salary, setSalary] = useState<number>(0);
 
+  const responseSwal = async (title: string, text: string, icon: SweetAlertIcon) => {
+    Swal.fire({
+      title: title,
+      text: text,
+      icon: icon,
+      timer: 1500,
+      showConfirmButton: false,
+    });
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       if (password !== repassword) {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Password and Re-password are not the same!",
-        });
-        return;
+        responseSwal("Oops...", "Password and Re-password are not the same!", "error").then(() => {
+          setPassword("");
+          setRepassword("");
+        })
       }
 
       const userData = {
@@ -34,22 +42,20 @@ const RegisterCustomerNamePage = () => {
         userData
       );
       if (response.status === 201) {
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: "Register successfully!",
-        });
+        responseSwal("Success", "Register successfully!", "success").then(() => {
+          setUsername("");
+          setPassword("");
+          setRepassword("");
+          localStorage.removeItem("national_card_id");
+          window.location.href = "/login";
+        })
 
-        setUsername("");
-        setPassword("");
-        setRepassword("");
-        window.location.href = "/login";
       } else {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Username already exists!",
-        });
+        responseSwal("Oops...", "Username already exists!", "error").then(() => {
+          setUsername("");
+          setPassword("");
+          setRepassword("");
+        })
       }
     } catch (error) {
       console.log("error");

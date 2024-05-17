@@ -21,10 +21,10 @@ CREATE TABLE IF NOT EXISTS loan_type (
 );
 
 CREATE TABLE IF NOT EXISTS transaction_type (
-    transaction_type_id varchar(10) PRIMARY KEY UNIQUE NOT NULL,
+    transaction_type_id int PRIMARY KEY UNIQUE NOT NULL,
     description varchar(255) NOT NULL,
     transaction_type_name varchar(45) NOT NULL,
-    asscoiated_fee DOUBLE(10,2) NOT NULL,
+    associated_fee DOUBLE(10,2) NOT NULL,
     origin_type varchar(45) NOT NULL,
     destination_type varchar(45) NOT NULL,
     max_limit DOUBLE(10,2),
@@ -36,7 +36,6 @@ CREATE TABLE IF NOT EXISTS account_type (
     description varchar(255) NOT NULL,
     account_type_name varchar(45) NOT NULL,
     interest_rate DOUBLE(10,2) NOT NULL,
-    interest_period int NOT NULL,
     value_of_package DOUBLE(10,2)
 );
 
@@ -73,7 +72,7 @@ CREATE TABLE IF NOT EXISTS account (
 
 CREATE TABLE IF NOT EXISTS transaction_tb (
     transaction_id int PRIMARY KEY UNIQUE AUTO_INCREMENT NOT NULL,
-    transaction_type_id varchar(10) NOT NULL,
+    transaction_type_id int NOT NULL,
     amount DOUBLE(10,2) NOT NULL,
     transaction_date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
     from_account_id VARCHAR(10) NOT NULL,
