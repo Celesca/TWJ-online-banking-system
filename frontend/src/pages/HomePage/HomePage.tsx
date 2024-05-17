@@ -25,7 +25,7 @@ const HomePage = () => {
 
   const queryWallet = async (username: string) => {
     const response = await axios.get(
-      "http://localhost:3000/api/accounts/" + username
+      import.meta.env.VITE_SERVER_URI + "/api/accounts/" + username
     );
     if (response.data.length > 0) {
       setWalletData(response.data);
@@ -40,7 +40,7 @@ const HomePage = () => {
 
   const createWallet = async (account_type_id: string, username: string) => {
     const response = await axios.post(
-      "http://localhost:3000/api/accounts/create-account",
+      import.meta.env.VITE_SERVER_URI + "/api/accounts/create-account",
       {
         account_type_id: account_type_id,
         username: username,
@@ -56,7 +56,6 @@ const HomePage = () => {
 
   useEffect(() => {
     document.title = "TWJ Online Banking - Home";
-    console.log("Test")
     // Check the balance of the account
     const username = localStorage.getItem("username");
     if (username) {

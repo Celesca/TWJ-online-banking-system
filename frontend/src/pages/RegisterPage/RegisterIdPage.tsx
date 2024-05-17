@@ -19,7 +19,7 @@ const RegisterIdPage = () => {
     try {
 
 
-    const result:AxiosResponse = await axios.post("http://localhost:3000/api/persons/checkid" , {national_card_id: nationId})
+    const result:AxiosResponse = await axios.post(import.meta.env.VITE_SERVER_URI + "/api/persons/checkid" , {national_card_id: nationId})
     console.log(result.data)
     if (result.status === 200) {
       localStorage.setItem("national_card_id", nationId)

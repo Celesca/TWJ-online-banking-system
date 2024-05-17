@@ -30,7 +30,7 @@ const RegisterCustomerNamePage = () => {
       console.log(userData);
 
       const response = await axios.post(
-        "http://localhost:3000/api/customers/register",
+        import.meta.env.VITE_SERVER_URI + "/api/customers/register",
         userData
       );
       if (response.status === 201) {

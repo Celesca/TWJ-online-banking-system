@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { Router } from 'express';
 import connection from '../db/dbconnection';
-import { QueryResult } from 'mysql2';
 
 export const accountRouter = Router();
 
@@ -50,8 +49,7 @@ accountRouter.post('/create-account', async (req: Request, res: Response) => {
 });
 
 // Deposit to account
-accountRouter.post('/deposit', async (req: Request, res:Response) => {
-  
+accountRouter.post('/deposit', async (req: Request, res: Response) => {
   const { amount, account_id } = req.body;
   if (!amount || !account_id) {
     return res.status(400).json({ message: 'amount and account_id are required' });
@@ -64,4 +62,4 @@ accountRouter.post('/deposit', async (req: Request, res:Response) => {
   } catch (err) {
     return res.status(500).json(err);
   }
-})
+});
