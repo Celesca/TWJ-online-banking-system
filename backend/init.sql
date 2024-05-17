@@ -28,7 +28,8 @@ CREATE TABLE IF NOT EXISTS transaction_type (
     origin_type varchar(45) NOT NULL,
     destination_type varchar(45) NOT NULL,
     max_limit DOUBLE(10,2),
-    min_limit DOUBLE(10,2)
+    min_limit DOUBLE(10,2),
+    update_bank_balance ENUM('-1', '0', '1') NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS account_type (
