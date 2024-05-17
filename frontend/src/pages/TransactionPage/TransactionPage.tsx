@@ -4,13 +4,14 @@ import Swal, { SweetAlertIcon } from "sweetalert2";
 import axios from "axios";
 
 interface TransactionData {
-    transaction_id: number;
-    transaction_type: string;
-    amount: number;
-    transaction_date: string;
-    account_id: number;
-    account_type_name: string;
-    customer_username: string;
+  transaction_id: number;
+  amount: number;
+  transaction_date: string;
+  transaction_type_name: string;
+  update_bank_balance: number;
+  Payee: string;
+  from_account_id: string;
+  to_account_id: string;
 }
 
 const TransactionPage = () => {
@@ -93,9 +94,15 @@ const TransactionPage = () => {
             {transactionData.map((transaction, index) => {
                 return (
                 <div key={index} className="flex flex-row justify-between p-2">
-                    <div>{transaction.transaction_type}</div>
-                    <div>{transaction.amount}</div>
-                    <div>{transaction.transaction_date}</div>
+                    <div className="flex flex-col">
+                    <div className="text-sm">Transaction ID: {transaction.transaction_id}</div>
+                    <div className="text-sm">Amount: {transaction.amount}</div>
+                    <div className="text-sm">Transaction Date: {transaction.transaction_date}</div>
+                    <div className="text-sm">Transaction Type: {transaction.transaction_type_name}</div>
+                    <div className="text-sm">Payee: {transaction.Payee}</div>
+                    <div className="text-sm">From Account ID: {transaction.from_account_id}</div>
+                    <div className="text-sm">To Account ID: {transaction.to_account_id}</div>
+                    </div>
                 </div>
                 );
             })}
