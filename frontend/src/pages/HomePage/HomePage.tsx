@@ -3,14 +3,15 @@ import "./HomePage.css";
 import axios from "axios";
 import Swal, { SweetAlertIcon } from "sweetalert2";
 import CreateWalletModal from "../../components/CreateWalletModal";
-import { Cards } from "../../dto/Card";
+import { Cards } from "../../model/Card";
+import SelectWallet from "../../components/SelectWallet";
+import { WalletData } from "../../model/Wallet";
 
 const HomePage = () => {
-  const [balance, setBalance] = useState<number>(0);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-  const [walletData, setWalletData] = useState<[]>([]);
+  const [walletData, setWalletData] = useState<WalletData[]>([]);
   const [hasWallet, setHasWallet] = useState<boolean>(false);
-  const [selectedWallet, setSelectedWallet] = useState<string>("");
+  const [selectedWallet, setSelectedWallet] = useState<number>(0);
 
   const responseSwal = (title: string, icon: SweetAlertIcon) => {
     return Swal.fire({
@@ -25,10 +26,10 @@ const HomePage = () => {
     const response = await axios.get(
       "http://localhost:3000/api/accounts/" + username
     );
-    console.log(response.data);
     if (response.data.length > 0) {
       setWalletData(response.data);
-      setSelectedWallet(response.data[0].account_id);
+      console.log(response.data);
+      setSelectedWallet(0);
       setHasWallet(true);
     } else {
       responseSwal("No wallet found", "error");
@@ -70,7 +71,7 @@ const HomePage = () => {
   return (
     <div className="bg-gradient-to-r from-indigo-500 homepage_container p-16">
       <header className="text-greetings text-4xl p-2">
-        What do you <span>want to do today?</span>
+        Hello, {walletData[selectedWallet].first_name}. <span>what to do today? </span>
       </header>
       <div className="flex">
         <div className="w-1/2 p-4 mt-4 balance-container">
@@ -80,10 +81,10 @@ const HomePage = () => {
                 <h2 className="text-lg text-center font-semibold">Balance</h2>
                 <div className="flex flex-col justify-center">
                   <div className="text-4xl font-semibold text-center pt-8">
-                    ฿ {balance.toFixed(2)}
+                    ฿ {walletData[selectedWallet].balance.toFixed(2)}
                   </div>
                 </div>
-                SelectWall
+                <SelectWallet setSelectedWallet={setSelectedWallet} walletData={walletData} />
               </>
             )}
             {!hasWallet && (

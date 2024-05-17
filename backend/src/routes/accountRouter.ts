@@ -16,7 +16,12 @@ accountRouter.get('/', async (req: Request, res: Response) => {
 
 accountRouter.get('/:username', async (req: Request, res: Response) => {
   const { username } = req.params;
-  const sql_query = `SELECT * FROM account WHERE customer_username = ?`;
+  const sql_query = `SELECT account.customer_username, account.balance, account_type.account_type_name, person.first_name, person.last_name
+  FROM account
+  JOIN account_type ON account.account_type_id = account_type.account_type_id
+  JOIN customer ON customer.customer_username = account.customer_username
+  JOIN person ON customer.national_card_id = person.national_card_id
+   WHERE account.customer_username = ?`;
   try {
     const [rows] = await connection.query(sql_query, [username]);
     return res.status(200).json(rows);
