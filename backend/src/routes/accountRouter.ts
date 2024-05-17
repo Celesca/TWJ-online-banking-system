@@ -14,6 +14,7 @@ accountRouter.get('/', async (req: Request, res: Response) => {
   }
 });
 
+// GET account by username
 accountRouter.get('/:username', async (req: Request, res: Response) => {
   const { username } = req.params;
   const sql_query = `SELECT account.customer_username, account.balance, account_type.account_type_name, person.first_name, person.last_name
@@ -30,6 +31,7 @@ accountRouter.get('/:username', async (req: Request, res: Response) => {
   }
 });
 
+// Create account
 accountRouter.post('/create-account', async (req: Request, res: Response) => {
   const { account_type_id, username } = req.body;
   if (!account_type_id || !username) {
@@ -45,3 +47,5 @@ accountRouter.post('/create-account', async (req: Request, res: Response) => {
     return res.status(500).json(err);
   }
 });
+
+// Deposit to account
