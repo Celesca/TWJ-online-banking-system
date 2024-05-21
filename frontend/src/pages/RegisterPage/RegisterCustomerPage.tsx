@@ -11,6 +11,9 @@ const RegisterCustomerPage = () => {
   const [firstname, setFirstname] = useState<string>("");
   const [lastname, setLastname] = useState<string>("");
   const [dob, setDob] = useState(new Date());
+  const [nationalCardId, setNationalCardId] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [address, setAddress] = useState<string>("");
 
   const responseSwal = async (
     title: string,
@@ -77,7 +80,7 @@ const RegisterCustomerPage = () => {
     <div className="homepage_container overflow-y-auto">
       <div className="flex flex-1 justify-evenly">
         <div className="w-1/2">
-          <section className="">
+          <section className="pb-12">
             <div className="flex flex-col items-center justify-center px-6 py-12 mx-auto">
               <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-xl xl:p-0 register-container">
                 <div className="p-4 space-y-4 md:space-y-6 sm:p-8">
@@ -127,35 +130,91 @@ const RegisterCustomerPage = () => {
                       </div>
                     </div>
                     <div>
-                    <label
+                      <label
                         htmlFor="date-of-birth"
                         className="block text-sm mb-2 font-medium text-gray-900 dark:text-white"
                       >
                         Date of Birth
                       </label>
-                    <div className="relative max-w-sm pt-0">
-                      
-                      <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                        <svg
-                          className="w-4 h-4 text-gray-500 dark:text-gray-400"
-                          aria-hidden="true"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                        </svg>
-                      </div>
+                      <div className="relative max-w-sm pt-0">
+                        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                          <svg
+                            className="w-4 h-4 text-gray-500 dark:text-gray-400"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                          </svg>
+                        </div>
 
+                        <input
+                          onChange={(e) => setDob(new Date(e.target.value))}
+                          value={dob.toISOString().slice(0, 10)}
+                          datepicker-autohide
+                          type="date"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          placeholder="Select date"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="national_card_id"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Thailand National Card ID
+                      </label>
                       <input
-                        onChange={(e) => setDob(new Date(e.target.value))}
-                        value={dob.toISOString().slice(0, 10)}
-                        datepicker-autohide
-                        type="date"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Select date"
+                        type="text"
+                        name="national_card_id"
+                        id="national_card_id"
+                        value={nationalCardId}
+                        onChange={(e) => setNationalCardId(e.target.value)}
+                        className="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="ex. 1100800000000"
+                        required
                       />
                     </div>
+                    <div>
+                      <label
+                        htmlFor="phone_number"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Phone Number
+                      </label>
+                      <input
+                        type="text"
+                        name="phone_number"
+                        id="phone_number"
+                        value={phoneNumber}
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        className="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="ex. 0812345678"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label
+                        htmlFor="phone_number"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Address
+                      </label>
+                      <input
+                        type="text"
+                        name="address"
+                        id="address"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                        className="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="ex. 123/456 Bangkok Thailand 10100"
+                        required
+                      />
                     </div>
 
                     <div>
