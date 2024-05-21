@@ -332,8 +332,8 @@ const RegisterCustomerPage = () => {
             <h1 className="text-xl">The journey begins!</h1>
             <div className="image-container">
               <img
-                src="https://cdn.pixabay.com/photo/2024/01/13/09/18/coins-8505363_1280.jpg"
-                width={600}
+                src="pocket.svg"
+                width={500}
                 className="border-x-emerald-200"
               ></img>
             </div>

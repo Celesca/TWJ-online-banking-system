@@ -15,3 +15,7 @@
     background-color: #4048FF;
     width: 100%;
 }
+
+.login-form input {
+    outline: none;
+}
