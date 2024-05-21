@@ -10,3 +10,8 @@
     width: 100vw;
     height: 100vh;
 }
+
+.login-form-container {
+    background-color: #4048FF;
+    width: 100%;
+}
