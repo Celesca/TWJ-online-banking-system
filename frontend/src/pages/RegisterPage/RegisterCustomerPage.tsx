@@ -48,9 +48,9 @@ const RegisterCustomerPage = () => {
         password: password,
         firstname: firstname,
         lastname: lastname,
-        dob: dob,
-        nationalCardId: nationalCardId,
-        phoneNumber: phoneNumber,
+        dob: dob.toISOString().slice(0, 10),
+        national_card_id: nationalCardId,
+        phone_number: phoneNumber,
         address: address,
       };
 
