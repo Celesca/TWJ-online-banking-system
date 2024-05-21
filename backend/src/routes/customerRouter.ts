@@ -13,7 +13,8 @@ export const customerRouter = Router();
 const secret = process.env.JWT_SECRET || 'mysecret';
 
 customerRouter.post('/register', async (req: Request, res: Response) => {
-  const { email, password, firstname, lastname, dob, national_card_id, phone_number, address } = req.body as CreateCustomerDto;
+  const { email, password, firstname, lastname, dob, national_card_id, phone_number, address } =
+    req.body as CreateCustomerDto;
   if (!email || !password || !firstname || !lastname || !dob || !national_card_id || !phone_number || !address) {
     return res.status(400).json({ message: 'field are not fulfilled' });
   }
