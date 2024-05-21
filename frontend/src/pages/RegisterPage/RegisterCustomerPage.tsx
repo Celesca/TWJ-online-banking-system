@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import Swal, { SweetAlertIcon } from "sweetalert2";
 
-const RegisterCustomerNamePage = () => {
+const RegisterCustomerPage = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [repassword, setRepassword] = useState<string>("");
@@ -62,24 +62,26 @@ const RegisterCustomerNamePage = () => {
     }
   };
   return (
-    <div className="bg-gradient-to-r from-indigo-500 homepage_container overflow-y-auto">
-      <div className="flex w-100vw h-24 mt-16 justify-center text-white text-5xl">
+    <div className="homepage_container overflow-y-auto">
+      <div className="flex w-100vw h-24 text-white text-5xl">
         Welcome to Customer Register
       </div>
+      <div className="flex flex-1 justify-evenly items-center">
+        <div className="w-1/2">
       <form
-        className="max-w-3xl mx-auto bg-slate-900 rounded-lg p-12"
+        className="bg-slate-900 w-auto rounded-lg p-12 ml-10"
         onSubmit={handleSubmit}
       >
-        <div className="mb-5 flex flex-1 justify-evenly itmes-center">
+        <div className="mb-5 flex flex-1 justify-evenly items-center">
           <div className="">
             <label
-              htmlFor="username"
+              htmlFor="email"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Username
+              Email
             </label>
             <input
-              name="username"
+              name="email"
               type="text"
               id="text"
               value={username}
@@ -113,7 +115,7 @@ const RegisterCustomerNamePage = () => {
               htmlFor="password"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Password
+              Name
             </label>
             <input
               name="password"
@@ -130,7 +132,7 @@ const RegisterCustomerNamePage = () => {
               htmlFor="repassword"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Re-enter Password
+              Surname
             </label>
             <input
               name="repassword"
@@ -152,8 +154,14 @@ const RegisterCustomerNamePage = () => {
           </button>
         </div>
       </form>
+      </div>
+      <div className="w-1/2 flex justify-center items-center">
+        Testing
+        </div>
+      </div>
+     
     </div>
   );
 };
 
-export default RegisterCustomerNamePage;
+export default RegisterCustomerPage;

@@ -11,7 +11,7 @@ const WelcomePage = () => {
         <button type="button" className="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 focus:delay-300 transition delay-100 duration-300 ease-in-out font-medium rounded-lg text-sm px-12 py-4 text-center me-2 mb-2">
           <Link to="/login">Login</Link>
         </button>
-        <Link to="/register/checkid">
+        <Link to="/register">
           <div className="text-white text-lg m-12">
           don't have account? <span className="underline decoration-solid text-blue-900">Sign up</span>
           </div>
