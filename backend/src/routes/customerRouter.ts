@@ -13,24 +13,32 @@ export const customerRouter = Router();
 const secret = process.env.JWT_SECRET || 'mysecret';
 
 customerRouter.post('/register', async (req: Request, res: Response) => {
-  const { email, password } = req.body as CreateCustomerDto;
-  if (!email || !password) {
-    return res.status(400).json({ message: 'username, password are required' });
+  const { email, password, firstname, lastname, dob, national_card_id, phone_number, address } = req.body as CreateCustomerDto;
+  if (!email || !password || !firstname || !lastname || !dob || !national_card_id || !phone_number || !address) {
+    return res.status(400).json({ message: 'field are not fulfilled' });
   }
 
-  const username_check_query = `SELECT * FROM customer WHERE customer_username = '${username}'`;
+  const username_check_query = `SELECT * FROM customer WHERE email = '${email}'`;
+  const username_staff_check_query = `SELECT * FROM staff WHERE email = '${email}'`;
   try {
     const [rows] = await connection.query(username_check_query);
     // Convert rows to array
     const usernameCheck = Array.from(Object.values(rows));
     if (usernameCheck.length > 0) {
-      return res.status(400).json({ message: 'Username already exists' });
+      return res.status(400).json({ message: 'Email already exists' });
+    }
+
+    const [rows2] = await connection.query(username_staff_check_query);
+    // Convert rows to array
+    const usernameStaffCheck = Array.from(Object.values(rows2));
+    if (usernameStaffCheck.length > 0) {
+      return res.status(400).json({ message: 'Email already exists' });
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
-    const customerData = [username, passwordHash, salary, national_card_id];
+    const customerData = [email, passwordHash, firstname, lastname, dob, national_card_id, phone_number, address];
 
-    const sql_query = `INSERT INTO customer (customer_username, password, salary, national_card_id) VALUES (?, ?, ?, ?)`;
+    const sql_query = `INSERT INTO customer (email, password, first_name, last_name, birth_date, national_card_id, phone_number, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
     const results = await connection.query(sql_query, customerData);
     return res.status(201).json({ message: 'Customer created successfully', results });
   } catch (err) {

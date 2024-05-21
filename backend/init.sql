@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS staff (
 CREATE TABLE IF NOT EXISTS customer (
     email varchar(100) PRIMARY KEY UNIQUE NOT NULL,
     password varchar(255) NOT NULL,
-    customer_salary int NOT NULL,
+    customer_salary int,
     national_card_id varchar(13) NOT NULL,
     black_listed boolean DEFAULT false NOT NULL,
     entry_date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS customer (
     phone_number varchar(10) NOT NULL,
     birth_date date NOT NULL,
     address varchar(255) NOT NULL,
-    staff_email varchar(100) NOT NULL,
+    staff_email varchar(100),
     FOREIGN KEY (staff_email) REFERENCES staff(email) ON DELETE CASCADE ON UPDATE CASCADE
 );
 

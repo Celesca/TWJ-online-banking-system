@@ -46,6 +46,12 @@ const RegisterCustomerPage = () => {
       const userData = {
         email: email,
         password: password,
+        firstname: firstname,
+        lastname: lastname,
+        dob: dob,
+        nationalCardId: nationalCardId,
+        phoneNumber: phoneNumber,
+        address: address,
       };
 
       console.log(userData);
@@ -73,7 +79,7 @@ const RegisterCustomerPage = () => {
         );
       }
     } catch (error) {
-      console.log("error");
+      console.log(error);
     }
   };
   return (
