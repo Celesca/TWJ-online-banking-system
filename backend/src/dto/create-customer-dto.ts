@@ -1,6 +1,4 @@
 export interface CreateCustomerDto {
-  username: string;
+  email: string;
   password: string;
-  salary?: number;
-  national_card_id: string;
 }

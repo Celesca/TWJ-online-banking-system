@@ -65,12 +65,28 @@ const RegisterCustomerPage = () => {
         <div className="w-1/2">
             <section className="">
             <div className="flex flex-col items-center justify-center px-6 py-16 mx-auto">
-                <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 register-container">
+                <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-xl xl:p-0 register-container">
                     <div className="p-4 space-y-4 md:space-y-6 sm:p-8">
                         <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                             Create an account
                         </h1>
                         <form className="space-y-4 md:space-y-6 register-form" onSubmit={handleSubmit}>
+                        <div className="flex flex-1">
+                              <div className="firstname-container">
+                                  <label htmlFor="firstname" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Firstname</label>
+                                  <input type="text"
+                                  value={repassword}
+                                  onChange={(e) => setRepassword(e.target.value)}
+                                  name="confirm-password" id="firstname" placeholder="ex.Sawit" className="px-4 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required/>
+                              </div>
+                              <div className="ml-8 lastname-container">
+                                  <label htmlFor="lastname" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Lastname</label>
+                                  <input type="text"
+                                  value={repassword}
+                                  onChange={(e) => setRepassword(e.target.value)}
+                                  name="lastname" id="lastname" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required/>
+                              </div>
+                            </div>
                             <div>
                                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
                                 <input type="email" 
@@ -93,6 +109,7 @@ const RegisterCustomerPage = () => {
                                 onChange={(e) => setRepassword(e.target.value)}
                                 name="confirm-password" id="confirm-password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required/>
                             </div>
+
                             <div className="flex items-start">
                                 <div className="flex items-center h-5">
                                   <input id="terms" aria-describedby="terms" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required/>

@@ -13,9 +13,9 @@ export const customerRouter = Router();
 const secret = process.env.JWT_SECRET || 'mysecret';
 
 customerRouter.post('/register', async (req: Request, res: Response) => {
-  const { username, password, salary, national_card_id } = req.body as CreateCustomerDto;
-  if (!username || !password || !salary || !national_card_id) {
-    return res.status(400).json({ message: 'username, password and national_card_id are required' });
+  const { email, password } = req.body as CreateCustomerDto;
+  if (!email || !password) {
+    return res.status(400).json({ message: 'username, password are required' });
   }
 
   const username_check_query = `SELECT * FROM customer WHERE customer_username = '${username}'`;

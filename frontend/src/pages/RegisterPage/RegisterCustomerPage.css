@@ -7,6 +7,15 @@
 
 .register-container {
     background-color: #4048FF;
+    width: 100%;
+}
+
+.firstname-container, .lastname-container {
+    width: 50%;
+}
+
+.firstname-container input {
+    width: 100%;
 }
 
 .promo-container h1 {
