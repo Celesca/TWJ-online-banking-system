@@ -30,10 +30,8 @@ const RegisterCustomerPage = () => {
       }
 
       const userData = {
-        username: username,
+        email: email,
         password: password,
-        salary: salary,
-        national_card_id: localStorage.getItem("national_card_id"),
       };
 
       console.log(userData);
@@ -47,7 +45,6 @@ const RegisterCustomerPage = () => {
           setEmail("");
           setPassword("");
           setRepassword("");
-          localStorage.removeItem("national_card_id");
           window.location.href = "/login";
         })
 
@@ -73,7 +70,7 @@ const RegisterCustomerPage = () => {
                         <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                             Create an account
                         </h1>
-                        <form className="space-y-4 md:space-y-6 register-form" action="#">
+                        <form className="space-y-4 md:space-y-6 register-form" onSubmit={handleSubmit}>
                             <div>
                                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
                                 <input type="email" 
