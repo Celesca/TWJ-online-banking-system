@@ -18,7 +18,8 @@ CREATE TABLE IF NOT EXISTS transaction_type (
     destination_type varchar(45) NOT NULL,
     max_limit DOUBLE(10,2),
     min_limit DOUBLE(10,2),
-    update_bank_balance ENUM('-1', '0', '1') NOT NULL
+    update_bank_balance int NOT NULL,
+    CONSTRAINT check_transaction_type CHECK (update_bank_balance IN (-1, 0, 1))
 );
 
 CREATE TABLE IF NOT EXISTS account_type (
@@ -27,6 +28,20 @@ CREATE TABLE IF NOT EXISTS account_type (
     account_type_name varchar(45) NOT NULL,
     interest_rate DOUBLE(10,2) NOT NULL,
     value_of_package DOUBLE(10,2)
+);
+
+CREATE TABLE IF NOT EXISTS staff (
+    email varchar(100) PRIMARY KEY UNIQUE NOT NULL,
+    password varchar(255) NOT NULL,
+    position varchar(45) NOT NULL,
+    staff_salary int NOT NULL,
+    entry_date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    national_card_id varchar(15) NOT NULL,
+    first_name varchar(45) NOT NULL,
+    last_name varchar(45) NOT NULL,
+    phone_number varchar(10) NOT NULL,
+    birth_date date NOT NULL,
+    address varchar(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS customer (
@@ -40,23 +55,9 @@ CREATE TABLE IF NOT EXISTS customer (
     last_name varchar(45) NOT NULL,
     phone_number varchar(10) NOT NULL,
     birth_date date NOT NULL,
-    address varchar(255) NOT NULL
-    staff_email varchar(30) NOT NULL,
-    FOREIGN KEY staff_email REFERENCES staff(email) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS staff (
-    email varchar(30) PRIMARY KEY UNIQUE NOT NULL,
-    password varchar(255) NOT NULL,
-    position varchar(45) NOT NULL,
-    staff_salary int NOT NULL,
-    entry_date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    national_card_id varchar(15) NOT NULL,
-    first_name varchar(45) NOT NULL,
-    last_name varchar(45) NOT NULL,
-    phone_number varchar(10) NOT NULL,
-    birth_date date NOT NULL,
-    address varchar(255) NOT NULL
+    address varchar(255) NOT NULL,
+    staff_email varchar(100) NOT NULL,
+    FOREIGN KEY (staff_email) REFERENCES staff(email) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS account (
@@ -93,5 +94,5 @@ CREATE TABLE IF NOT EXISTS loan (
     npl boolean DEFAULT false NOT NULL,
     customer_email varchar(30) NOT NULL,
     interest_rate_change DOUBLE(10,2) NOT NULL,
-    FOREIGN KEY (customer_email) REFERENCES customer(email) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (customer_email) REFERENCES customer(email) ON DELETE CASCADE ON UPDATE CASCADE
 );
