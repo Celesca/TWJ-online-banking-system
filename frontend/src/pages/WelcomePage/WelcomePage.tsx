@@ -15,13 +15,14 @@ const WelcomePage = () => {
         <div className="login-container py-16 pl-0 mt-8">
           <h1 className="login-text">Welcome to new Era of Banking</h1>
           <p className="login-sub-text text-2xl pt-4">Experience seamless banking with our modern online platform.</p>
-
+          <Link to="/login">
           <button type="button" className="text-white font-medium login-button text-sm px-12 py-4 mt-8 text-center me-2 mb-2">
-            <Link to="/login">Login</Link>
+            Login
           </button>
+          </Link>
           <Link to="/register">
-            <div className="text-white text-lg m-12">
-            don't have account? <span className="underline decoration-solid text-blue-900">Sign up</span>
+            <div className="text-dark text-lg mt-6">
+            don't have account? &nbsp;<span className="underline decoration-solid text-blue-900">Join us</span>
             </div>
             </Link>
         </div>
