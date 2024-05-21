@@ -1,17 +1,6 @@
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 
-CREATE TABLE IF NOT EXISTS person (
-    national_card_id varchar(15) PRIMARY KEY UNIQUE NOT NULL,
-    first_name varchar(45) NOT NULL,
-    last_name varchar(45) NOT NULL,
-    birth_date date NOT NULL,
-    phone_number varchar(10) NOT NULL UNIQUE,
-    email varchar(255) NOT NULL UNIQUE,
-    address varchar(255) NOT NULL,
-    created_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL
-);
-
 CREATE TABLE IF NOT EXISTS loan_type (
     loan_type_id int PRIMARY KEY UNIQUE NOT NULL,
     loan_type_name varchar(45) NOT NULL,
@@ -41,33 +30,44 @@ CREATE TABLE IF NOT EXISTS account_type (
 );
 
 CREATE TABLE IF NOT EXISTS customer (
-    customer_username varchar(30) PRIMARY KEY UNIQUE NOT NULL,
+    email varchar(100) PRIMARY KEY UNIQUE NOT NULL,
     password varchar(255) NOT NULL,
-    salary int,
+    customer_salary int NOT NULL,
     national_card_id varchar(13) NOT NULL,
-    blacklist boolean DEFAULT false NOT NULL,
-    created_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    FOREIGN KEY (national_card_id) REFERENCES person(national_card_id) ON DELETE CASCADE ON UPDATE CASCADE
+    black_listed boolean DEFAULT false NOT NULL,
+    entry_date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    first_name varchar(45) NOT NULL,
+    last_name varchar(45) NOT NULL,
+    phone_number varchar(10) NOT NULL,
+    birth_date date NOT NULL,
+    address varchar(255) NOT NULL
+    staff_email varchar(30) NOT NULL,
+    FOREIGN KEY staff_email REFERENCES staff(email) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS staff (
-    username varchar(30) PRIMARY KEY UNIQUE NOT NULL,
+    email varchar(30) PRIMARY KEY UNIQUE NOT NULL,
     password varchar(255) NOT NULL,
-    salary int NOT NULL,
+    position varchar(45) NOT NULL,
+    staff_salary int NOT NULL,
+    entry_date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
     national_card_id varchar(15) NOT NULL,
-    created_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    FOREIGN KEY (national_card_id) REFERENCES person(national_card_id) ON DELETE CASCADE ON UPDATE CASCADE
+    first_name varchar(45) NOT NULL,
+    last_name varchar(45) NOT NULL,
+    phone_number varchar(10) NOT NULL,
+    birth_date date NOT NULL,
+    address varchar(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS account (
     account_id VARCHAR(10) PRIMARY KEY UNIQUE NOT NULL,
     account_type_id int NOT NULL,
     balance DOUBLE(10,2) DEFAULT 0 NOT NULL,
-    customer_username varchar(30) NOT NULL,
-    created_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    customer_email varchar(30) NOT NULL,
+    opened_date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
     closed_date timestamp NULL,
     status varchar(10) DEFAULT 'active' NOT NULL,
-    FOREIGN KEY (customer_username) REFERENCES customer(customer_username) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (customer_email) REFERENCES customer(email) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (account_type_id) REFERENCES account_type(account_type_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS loan (
     created_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
     closed_date timestamp NULL,
     npl boolean DEFAULT false NOT NULL,
-    customer_username varchar(30) NOT NULL,
-    FOREIGN KEY (customer_username) REFERENCES customer(customer_username) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (loan_type) REFERENCES loan_type(loan_type_id) ON DELETE CASCADE ON UPDATE CASCADE
+    customer_email varchar(30) NOT NULL,
+    interest_rate_change DOUBLE(10,2) NOT NULL,
+    FOREIGN KEY (customer_email) REFERENCES customer(email) ON DELETE CASCADE ON UPDATE CASCADE,
 );
