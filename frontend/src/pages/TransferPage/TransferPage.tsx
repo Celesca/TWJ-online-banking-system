@@ -10,6 +10,7 @@ const TransferPage = () => {
   const [selectedWallet, setSelectedWallet] = useState<number>(0);
   const [amount, setAmount] = useState<number>(1);
   const [targetWallet, setTargetWallet] = useState<string>("");
+  const [selectedOption, setSelectedOption] = useState<number>(0);
 
   const responseSwal = (title: string, text: string, icon: SweetAlertIcon) => {
     return Swal.fire({
@@ -36,6 +37,17 @@ const TransferPage = () => {
     setSelectedWallet(parseInt(event.target.value));
   }
 
+  const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const optionValue = event.target.value;
+    if (optionValue === "inside") {
+      setSelectedOption(3);
+    } else if (optionValue === "outside") {
+      setSelectedOption(2);
+    } else if (optionValue === "promptpay") {
+      setSelectedOption(2);
+    }
+  };
+
   useEffect(() => {
     const role = localStorage.getItem("role");
     if (role !== "customer") {
@@ -46,22 +58,28 @@ const TransferPage = () => {
     queryWallet(localStorage.getItem("username") || "");
   }, []);
 
+  // Transfer amount to another account
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await axios.post(import.meta.env.VITE_SERVER_URI + "/api/transactions/deposit", {
+    handleTransfer();
+  };
+
+  const handleTransfer = async() => {
+    const response = await axios.post(import.meta.env.VITE_SERVER_URI + "/api/transfer", {
       amount: amount,
       customer_username: walletData[selectedWallet].customer_email,
-      account_id: walletData[selectedWallet].account_id
+      from_accout_id: walletData[selectedWallet].account_id,
+      to_account_id: targetWallet,
+      transtion_type_id: selectedOption
     });
     if (response.status === 201) {
-      responseSwal("Deposit successfully", "", "success").then(() => {
+      responseSwal("Transfer successfully", "", "success").then(() => {
         window.location.href = "/home";
       });
     } else {
       responseSwal("Deposit failed", "", "error");
     }
-
-  };
+  }
 
   return (
     <div className="homepage_container">
@@ -72,8 +90,8 @@ const TransferPage = () => {
           <h3 className="my-4 text-xl font-medium text-gray-900">Choose your destination</h3>
     <ul className="grid gap-6 grid-cols-3">
         <li>
-            <input type="radio" id="hosting-small" name="hosting" value="hosting-small" className="hidden peer" required />
-            <label htmlFor="hosting-small" className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
+            <input type="radio" id="inside" name="destination" value="inside" className="hidden peer" onChange={handleOptionChange} required />
+            <label htmlFor="inside" className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
                 <div className="block">
                     <div className="w-full text-lg font-semibold">to TWJ Bank</div>
                     <div className="w-full">โอนเงินภายในธนาคาร</div>
@@ -84,7 +102,7 @@ const TransferPage = () => {
             </label>
         </li>
         <li>
-            <input type="radio" id="hosting-big" name="hosting" value="hosting-big" className="hidden peer"/>
+            <input type="radio" id="outside" name="destination" value="outside" className="hidden peer" onChange={handleOptionChange}/>
             <label htmlFor="hosting-big" className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
                 <div className="block">
                     <div className="w-full text-lg font-semibold">Outside TWJ Bank</div>
@@ -96,8 +114,8 @@ const TransferPage = () => {
             </label>
         </li>
         <li>
-            <input type="radio" id="hosting-large" name="hosting" value="hosting-large" className="hidden peer"  />
-            <label htmlFor="hosting-large" className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
+            <input type="radio" id="promptpay" name="destination" value="promptpay" className="hidden peer" onChange={handleOptionChange}  />
+            <label htmlFor="promptpay" className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
                 <div className="block">
                     <div className="w-full text-lg font-semibold">PromptPay</div>
                     <div className="w-full">โอนเงินผ่าน PromptPay</div>
