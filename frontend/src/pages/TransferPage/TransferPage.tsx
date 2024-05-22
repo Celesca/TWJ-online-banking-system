@@ -44,9 +44,7 @@ const TransferPage = () => {
     const optionValue = event.target.value;
     if (optionValue === "inside") {
       setSelectedOption(3);
-    } else if (optionValue === "outside") {
-      setSelectedOption(2);
-    } else if (optionValue === "promptpay") {
+    } else if (optionValue === "outside" || optionValue === "promptpay") {
       setSelectedOption(2);
     }
   };
@@ -65,10 +63,23 @@ const TransferPage = () => {
   // Transfer amount to another account
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (walletData[selectedWallet]?.balance < amount) {
+      responseSwal("This account don't have enough money", "", "error");
+      return;
+    }
+
+    if (selectedOption === 0) {
+      responseSwal("Please select destination", "", "error");
+      return;
+    }
+
+    if (targetWallet === walletData[selectedWallet]?.account_id) {
+      responseSwal("You can't transfer to the same account", "", "error");
+      return;
+    }
+
     setIsModalVisible(true)
   };
-
-
 
   return (
     <div className="homepage_container">
@@ -80,7 +91,8 @@ const TransferPage = () => {
           <h3 className="my-4 text-xl font-medium text-gray-900">Choose your destination</h3>
     <ul className="grid gap-6 grid-cols-3">
         <li>
-            <input type="radio" id="inside" name="destination" value="inside" className="hidden peer" onChange={handleOptionChange} required />
+            <input type="radio" id="inside" name="destination" value="inside" className="hidden peer" 
+            onChange={handleOptionChange} required defaultChecked/>
             <label htmlFor="inside" className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
                 <div className="block">
                     <div className="w-full text-lg font-semibold">to TWJ Bank</div>
