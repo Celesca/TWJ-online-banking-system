@@ -65,38 +65,107 @@ const TransferPage = () => {
 
   return (
     <div className="homepage_container">
-      <div className="flex w-100vw h-24 p-16 text-dark text-3xl">
-        Transfer
+      <div className="flex w-100vw header-container">
+        <h1 className="text-white text-3xl pt-8 pb-8 px-16">Transfer</h1>
       </div>
-      <img src="money.png" alt="money" className="w-24 mx-auto mb-4 " />
+      <div className="px-16 w-3/4">
+          <h3 className="my-4 text-xl font-medium text-gray-900">Choose your destination</h3>
+    <ul className="grid gap-6 grid-cols-3">
+        <li>
+            <input type="radio" id="hosting-small" name="hosting" value="hosting-small" className="hidden peer" required />
+            <label htmlFor="hosting-small" className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
+                <div className="block">
+                    <div className="w-full text-lg font-semibold">to TWJ Bank</div>
+                    <div className="w-full">โอนเงินภายในธนาคาร</div>
+                </div>
+                <svg className="w-5 h-5 ms-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                </svg>
+            </label>
+        </li>
+        <li>
+            <input type="radio" id="hosting-big" name="hosting" value="hosting-big" className="hidden peer"/>
+            <label htmlFor="hosting-big" className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+                <div className="block">
+                    <div className="w-full text-lg font-semibold">Outside TWJ Bank</div>
+                    <div className="w-full">โอนเงินธนาคารอื่น</div>
+                </div>
+                <svg className="w-5 h-5 ms-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                </svg>
+            </label>
+        </li>
+        <li>
+            <input type="radio" id="hosting-large" name="hosting" value="hosting-large" className="hidden peer"  />
+            <label htmlFor="hosting-large" className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
+                <div className="block">
+                    <div className="w-full text-lg font-semibold">PromptPay</div>
+                    <div className="w-full">โอนเงินผ่าน PromptPay</div>
+                </div>
+                <svg className="w-5 h-5 ms-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                </svg>
+            </label>
+        </li>
+    </ul>
+</div>
+      <h3 className="mt-4 ml-16 text-xl font-medium text-gray-900">Transfer Information</h3>
+      <div className="flex flex-1">
       <form
-        className="max-w-sm mx-auto bg-slate-900 rounded-lg mt-4 p-12"
+        className="ml-16 w-3/5 bg-slate-900 rounded-lg my-4 p-12"
         onSubmit={(e) => handleSubmit(e)}
       >
-        <div className="mb-5">
-          <form className="max-w-sm mx-auto">
-            <label
-              htmlFor="wallets"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              เลือกบัญชีที่จะฝาก
-            </label>
-            <select
-              onChange={handleChange}
-              id="wallets"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-              {walletData.map((wallet, index) => {
-                return (
-                  <option key={index} value={index}>
-                    {wallet.first_name} - {wallet.account_type_name}
-                  </option>
-                );
-              })}
-            </select>
-          </form>
+        <div className="flex flex-1 justify-between items-center">
+          {/* Select Your Wallet */}
+            <form className="max-w-sm w-1/2">
+              <label
+                htmlFor="wallets"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Your account
+              </label>
+              <select
+                onChange={handleChange}
+                id="wallets"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              >
+                {walletData.map((wallet, index) => {
+                  return (
+                    <option key={index} value={index}>
+                      {wallet.account_id} | {wallet.first_name} - {wallet.account_type_name}
+                    </option>
+                  );
+                })}
+              </select>
+            </form>
+
+            <div>
+              
+              <svg className="w-10 h-5 mx-6 mt-6 rtl:rotate-180 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+              </svg>
+            </div>
+
+            <div className="max-w-sm w-1/2">
+                      <label
+                        htmlFor="national_card_id"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Target Account ID
+                      </label>
+                      <input
+                        type="text"
+                        name="national_card_id"
+                        id="national_card_id"
+                        value={targetWallet}
+                        onChange={(e) => setTargetWallet(e.target.value)}
+                        className="outline-none border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="ex. 1100800000000"
+                        required
+                      />
+                    </div>
         </div>
-        <div className="mb-5">
+        <div className="my-5">
           <label
             htmlFor="amount"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -115,14 +184,17 @@ const TransferPage = () => {
           />
         </div>
         <div className="flex justify-center pt-4">
-        <button
-          type="submit"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        >
-          Submit
-        </button>
+          <button
+            type="submit"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Submit
+          </button>
         </div>
       </form>
+
+      <img src="pocket.svg" className="p-1 ml-36" width={300}></img>
+      </div>
     </div>
   );
 };
