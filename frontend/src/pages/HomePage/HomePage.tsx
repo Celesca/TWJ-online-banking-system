@@ -77,8 +77,8 @@ const HomePage = () => {
   const cards = Cards;
 
   return (
-    <div className="bg-indigo-500 homepage_container p-16">
-      <header className="text-greetings text-4xl p-2">
+    <div className="bg-indigo-500 homepage_container pt-12 px-16">
+      <header className="text-greetings text-4xl p-4">
         Hello,{" "}
         {walletData[selectedWallet]
           ? walletData[selectedWallet].first_name
@@ -86,7 +86,7 @@ const HomePage = () => {
         . <span>what to do today? </span>
       </header>
       <div className="flex">
-        <div className="w-1/2 p-4 mt-4 balance-container">
+        <div className="w-1/2 p-4 mt-12 balance-container">
           <div className="bg-white rounded-lg shadow-lg p-12">
             {hasWallet && (
               <>
@@ -111,12 +111,12 @@ const HomePage = () => {
               </div>
             )}
             <div className="flex justify-center">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white mt-4 py-2 px-4 rounded-full"
-              onClick={() => setIsModalVisible(true)}
-            >
-              สร้าง Wallet ใหม่
-            </button>
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white mt-4 py-2 px-4 rounded-full"
+                onClick={() => setIsModalVisible(true)}
+              >
+                สร้าง Wallet ใหม่
+              </button>
             </div>
             <CreateWalletModal
               isVisible={isModalVisible}
@@ -125,31 +125,29 @@ const HomePage = () => {
             />
           </div>
         </div>
-        <div className="w-1/2 p-4">
-          <div className="flex flex-wrap justify-center">
+        <div className="w-1/2">
+          <div className="flex flex-col flex-1 flex-wrap">
             {cards.map((card, index) => (
-              <div
-                key={index}
-                className="w-1/2 min-w-0 sm:min-w-1/2 p-4 card-content"
-              >
+              <div key={index} className="p-4 ml-12 card-container rounded-lg shadow-lg m-2">
                 <Link to={card.link}>
-                  <div className="bg-white rounded-lg shadow-lg pl-4 py-4 pr-0 flex">
-                    <div className="flex">
-                      <img
-                        src={card.image}
-                        alt={card.title}
-                        className="w-32 h-32"
-                      />
-                    </div>
-                    <div className="py-4">
-                      <h3 className="text-lg text-center font-semibold">
+                  <a
+                    href="#"
+                    className="flex flex-col items-center rounded-lg md:flex-row"
+                  >
+                    <img
+                      className="object-cover w-full rounded-t-lg h-46 md:h-auto md:w-24 md:rounded-none md:rounded-s-lg"
+                      src={card.image}
+                      alt=""
+                    />
+                    <div className="flex flex-col justify-between p-4 leading-normal">
+                      <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
                         {card.title}
-                      </h3>
-                      <p className="text-gray-500 text-center pt-2">
+                      </h5>
+                      <p className="mb-3 font-normal text-gray-200">
                         {card.description}
                       </p>
                     </div>
-                  </div>
+                  </a>
                 </Link>
               </div>
             ))}

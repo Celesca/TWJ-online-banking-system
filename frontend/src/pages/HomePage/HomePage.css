@@ -12,3 +12,27 @@
 .text-greetings span {
     color: #11252e;
 }
+
+.card-container {
+    width: 75%;
+    box-shadow: 5px 5px 0px 2px;
+}
+
+.card-container:hover {
+    cursor: pointer;
+    filter: brightness(1.1);
+    transform: scale(1.01);
+    transition: 0.15s ease-in;
+}
+
+.card-container:nth-child(1) {
+    background-color: blueviolet;
+}
+
+.card-container:nth-child(2) {
+    background-color: #4048FF;
+}
+
+.card-container:nth-child(3) {
+    background-color: #1bc4b6
+}
