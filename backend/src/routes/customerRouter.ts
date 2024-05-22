@@ -48,12 +48,12 @@ customerRouter.post('/register', async (req: Request, res: Response) => {
 });
 
 customerRouter.post('/login', async (req: Request, res: Response) => {
-  const { username, password } = req.body;
-  if (!username || !password) {
-    return res.status(400).json({ message: 'username and password are required' });
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({ message: 'email and password are required' });
   }
   try {
-    const [result] = await connection.query(`SELECT * FROM customer WHERE customer_username = ?`, [username]);
+    const [result] = await connection.query(`SELECT * FROM customer WHERE email = ?`, [email]);
     const customer = Array.from(Object.values(result))[0];
     console.log(customer);
     if (!customer) {
@@ -67,6 +67,7 @@ customerRouter.post('/login', async (req: Request, res: Response) => {
     const token = jwt.sign({ username: customer.customer_username }, secret, { expiresIn: '1h' });
     return res.json({
       message: 'Login successful',
+      firstname: customer.first_name,
       token,
     });
   } catch (err) {

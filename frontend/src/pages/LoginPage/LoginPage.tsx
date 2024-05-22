@@ -39,6 +39,7 @@ const LoginPage = () => {
     try {
       const response = await axios.post("http://localhost:3000/api/customers/login", userData);
       if (response.status === 200) {
+        localStorage.setItem("firstname", response.data.first_name);
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("username", userData.email);
         localStorage.setItem("role", "customer");

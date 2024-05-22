@@ -23,9 +23,9 @@ const HomePage = () => {
     });
   };
 
-  const queryWallet = async (username: string) => {
+  const queryWallet = async (email: string) => {
     const response = await axios.get(
-      import.meta.env.VITE_SERVER_URI + "/api/accounts/" + username
+      import.meta.env.VITE_SERVER_URI + "/api/accounts/" + email
     );
     if (response.data.length > 0) {
       setWalletData(response.data);
@@ -38,17 +38,17 @@ const HomePage = () => {
     }
   };
 
-  const createWallet = async (account_type_id: string, username: string) => {
+  const createWallet = async (account_type_id: string, email: string) => {
     try {
       const response = await axios.post(
         import.meta.env.VITE_SERVER_URI + "/api/accounts/create-account",
         {
           account_type_id: account_type_id,
-          username: username,
+          email: email,
         }
       );
       if (response.status === 201) {
-        queryWallet(username);
+        queryWallet(email);
         responseSwal("Wallet created successfully", "success");
       }
     } catch (error) {
@@ -68,9 +68,9 @@ const HomePage = () => {
     if (username) {
       queryWallet(username);
     } else {
-      // responseSwal("Please login first", "error").then(
-      //   () => (window.location.href = "/login")
-      // );
+      responseSwal("Please login first", "error").then(
+        () => (window.location.href = "/login")
+      );
     }
   }, []);
 

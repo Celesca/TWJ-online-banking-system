@@ -13,7 +13,6 @@ const Navbar = () => {
 
   const handleLogin = () => {
     window.location.href = '/login'
-
   }
 
   useEffect(() => {
