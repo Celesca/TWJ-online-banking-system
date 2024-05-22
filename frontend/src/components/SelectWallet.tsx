@@ -29,7 +29,7 @@ const SelectWallet: React.FC<SelectProps> = ({ setSelectedWallet, walletData}) =
     {
       walletData.map((wallet, index) => {
         return (
-          <option key={index} value={index}>{wallet.customer_username} - {wallet.account_type_name}</option>
+          <option key={index} value={index}>{wallet.account_id} | {wallet.first_name} - {wallet.account_type_name}</option>
         )
       
       })
