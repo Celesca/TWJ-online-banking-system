@@ -68,9 +68,9 @@ const HomePage = () => {
     if (username) {
       queryWallet(username);
     } else {
-      responseSwal("Please login first", "error").then(
-        () => (window.location.href = "/login")
-      );
+      // responseSwal("Please login first", "error").then(
+      //   () => (window.location.href = "/login")
+      // );
     }
   }, []);
 
