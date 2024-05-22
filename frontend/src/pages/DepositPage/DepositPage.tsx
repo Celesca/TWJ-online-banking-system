@@ -50,7 +50,7 @@ const DepositPage = () => {
     e.preventDefault();
     const response = await axios.post(import.meta.env.VITE_SERVER_URI + "/api/transactions/deposit", {
       amount: amount,
-      customer_username: walletData[selectedWallet].customer_username,
+      customer_username: walletData[selectedWallet].customer_email,
       account_id: walletData[selectedWallet].account_id
     });
     if (response.status === 201) {
@@ -89,7 +89,7 @@ const DepositPage = () => {
               {walletData.map((wallet, index) => {
                 return (
                   <option key={index} value={index}>
-                    {wallet.customer_username} - {wallet.account_type_name}
+                    {wallet.first_name} - {wallet.account_type_name}
                   </option>
                 );
               })}

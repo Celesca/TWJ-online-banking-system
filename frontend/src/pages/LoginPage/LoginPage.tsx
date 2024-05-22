@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import React from "react"
 import axios from "axios"
 import Swal, { SweetAlertIcon } from "sweetalert2"
@@ -6,6 +6,19 @@ import './LoginPage.css'
 import { Link } from "react-router-dom"
 
 const LoginPage = () => {
+
+  useEffect(() => {
+    document.title = "TWJ Login"
+    if (localStorage.getItem("username")) {
+      Swal.fire({
+        title: "You are already logged in",
+        icon: "info",
+        showConfirmButton: false,
+        timer: 1500
+      })
+      setTimeout(() => window.location.href = "/home", 1500)
+    }
+  }, [])
 
   const responseSwal = (title: string, icon: SweetAlertIcon) => {
     return Swal.fire({
@@ -88,7 +101,7 @@ const LoginPage = () => {
                       </div>
                       <a href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</a>
                   </div>
-                  <button type="submit" className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
+                  <button type="submit" className="w-full sign-in-btn text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
                   <p className="text-sm font-light text-white">
                       Don’t have an account yet? <Link to="/register" ><a href="#" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</a></Link>
                   </p>

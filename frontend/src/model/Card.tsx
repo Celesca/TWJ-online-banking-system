@@ -23,11 +23,5 @@ export const Cards: Card[] = [
       description: "ทำการกู้สินเชื่อกับธนาคาร",
       image: "loan.jpg",
       link: "/loan",
-    },
-    {
-      title: "Transaction",
-      description: "ดูประวัติธุรกรรมทางการเงิน",
-      image: "loan.jpg",
-      link: "/transaction",
-    },
+    }
   ];

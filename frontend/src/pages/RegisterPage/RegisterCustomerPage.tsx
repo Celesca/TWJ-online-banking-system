@@ -14,6 +14,7 @@ const RegisterCustomerPage = () => {
   const [nationalCardId, setNationalCardId] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [address, setAddress] = useState<string>("");
+  const [salary, setSalary] = useState<number>(0);
 
   const responseSwal = async (
     title: string,
@@ -52,6 +53,7 @@ const RegisterCustomerPage = () => {
         national_card_id: nationalCardId,
         phone_number: phoneNumber,
         address: address,
+        salary: salary,
       };
 
       console.log(userData);
@@ -135,6 +137,7 @@ const RegisterCustomerPage = () => {
                         />
                       </div>
                     </div>
+                    
                     <div>
                       <label
                         htmlFor="date-of-birth"
@@ -185,7 +188,8 @@ const RegisterCustomerPage = () => {
                         required
                       />
                     </div>
-                    <div>
+                    <div className="flex flex-1">
+                    <div className="firstname-container">
                       <label
                         htmlFor="phone_number"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -203,6 +207,26 @@ const RegisterCustomerPage = () => {
                         required
                       />
                     </div>
+                      <div className="ml-8 lastname-container">
+                        <label
+                          htmlFor="lastname"
+                          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        >
+                          Salary
+                        </label>
+                        <input
+                          type="number"
+                          value={salary}
+                          onChange={(e) => setSalary(parseInt(e.target.value))}
+                          placeholder="ex. 15000"
+                          name="salary"
+                          id="salary"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          required
+                        />
+                      </div>
+                    </div>
+                    
 
                     <div>
                       <label
