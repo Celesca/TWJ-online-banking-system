@@ -4,6 +4,7 @@ import React from "react";
 import axios from "axios";
 import { WalletData } from "../../model/Wallet";
 import "./TransferPage.css";
+import ConfirmTransfer from "../../components/ConfirmTransfer";
 
 const TransferPage = () => {
   const [walletData, setWalletData] = useState<WalletData[]>([]);
@@ -11,6 +12,8 @@ const TransferPage = () => {
   const [amount, setAmount] = useState<number>(1);
   const [targetWallet, setTargetWallet] = useState<string>("");
   const [selectedOption, setSelectedOption] = useState<number>(0);
+
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
   const responseSwal = (title: string, text: string, icon: SweetAlertIcon) => {
     return Swal.fire({
@@ -62,31 +65,17 @@ const TransferPage = () => {
   // Transfer amount to another account
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    handleTransfer();
+    setIsModalVisible(true)
   };
 
-  const handleTransfer = async() => {
-    const response = await axios.post(import.meta.env.VITE_SERVER_URI + "/api/transfer", {
-      amount: amount,
-      customer_username: walletData[selectedWallet].customer_email,
-      from_accout_id: walletData[selectedWallet].account_id,
-      to_account_id: targetWallet,
-      transtion_type_id: selectedOption
-    });
-    if (response.status === 201) {
-      responseSwal("Transfer successfully", "", "success").then(() => {
-        window.location.href = "/home";
-      });
-    } else {
-      responseSwal("Deposit failed", "", "error");
-    }
-  }
+
 
   return (
     <div className="homepage_container">
       <div className="flex w-100vw header-container">
         <h1 className="text-white text-3xl pt-8 pb-8 px-16">Transfer</h1>
       </div>
+      
       <div className="px-16 w-3/4">
           <h3 className="my-4 text-xl font-medium text-gray-900">Choose your destination</h3>
     <ul className="grid gap-6 grid-cols-3">
@@ -151,7 +140,7 @@ const TransferPage = () => {
                 {walletData.map((wallet, index) => {
                   return (
                     <option key={index} value={index}>
-                      {wallet.account_id} | {wallet.first_name} - {wallet.account_type_name}
+                      {wallet?.account_id} | {wallet.first_name} - {wallet.account_type_name}
                     </option>
                   );
                 })}
@@ -215,6 +204,17 @@ const TransferPage = () => {
       <div className="flex flex-col flex-1 justify-center items-center">
         <h1 className="text-3xl">Your balance : ฿ {walletData[selectedWallet]?.balance}</h1>
         <img src="pocket.svg" className="p-1" width={300}></img>
+        <ConfirmTransfer 
+                      isVisible={isModalVisible}
+                      setIsVisible={setIsModalVisible}
+                      transactionData={{
+                        amount: amount,
+                        from_account_id: walletData[selectedWallet]?.account_id,
+                        to_account_id: targetWallet,
+                        transtion_type_id: selectedOption
+                      }
+                    }
+                  />
       </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 export interface WalletData {
-    account_id: number;
+    account_id: string;
     account_type_name: string;
     customer_email: string;
     balance: number;
