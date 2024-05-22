@@ -9,6 +9,7 @@ const TransferPage = () => {
   const [walletData, setWalletData] = useState<WalletData[]>([]);
   const [selectedWallet, setSelectedWallet] = useState<number>(0);
   const [amount, setAmount] = useState<number>(1);
+  const [targetWallet, setTargetWallet] = useState<string>("");
 
   const responseSwal = (title: string, text: string, icon: SweetAlertIcon) => {
     return Swal.fire({
@@ -49,7 +50,7 @@ const TransferPage = () => {
     e.preventDefault();
     const response = await axios.post(import.meta.env.VITE_SERVER_URI + "/api/transactions/deposit", {
       amount: amount,
-      customer_username: walletData[selectedWallet].customer_username,
+      customer_username: walletData[selectedWallet].customer_email,
       account_id: walletData[selectedWallet].account_id
     });
     if (response.status === 201) {
@@ -63,9 +64,9 @@ const TransferPage = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-indigo-500 homepage_container">
-      <div className="flex w-100vw h-24 mt-16 justify-center text-white text-5xl">
-        Deposit (ฝากเงิน)
+    <div className="homepage_container">
+      <div className="flex w-100vw h-24 p-16 text-dark text-3xl">
+        Transfer
       </div>
       <img src="money.png" alt="money" className="w-24 mx-auto mb-4 " />
       <form
@@ -88,7 +89,7 @@ const TransferPage = () => {
               {walletData.map((wallet, index) => {
                 return (
                   <option key={index} value={index}>
-                    {wallet.customer_username} - {wallet.account_type_name}
+                    {wallet.first_name} - {wallet.account_type_name}
                   </option>
                 );
               })}
