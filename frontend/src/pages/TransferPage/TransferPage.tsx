@@ -211,7 +211,7 @@ const TransferPage = () => {
                         amount: amount,
                         from_account_id: walletData[selectedWallet]?.account_id,
                         to_account_id: targetWallet,
-                        transtion_type_id: selectedOption
+                        transaction_type_id: selectedOption
                       }
                     }
                   />

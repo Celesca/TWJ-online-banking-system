@@ -33,7 +33,8 @@ const ConfirmTransfer: React.FC<ModalProps> = ({
     }, [isVisible]);
 
     const transferMoney = async() => {
-        const response = await axios.post(import.meta.env.VITE_SERVER_URI + "/api/transfer", transactionData
+        console.log(transactionData)
+        const response = await axios.post(import.meta.env.VITE_SERVER_URI + "/api/transfers", transactionData
 );
         if (response.status === 201) {
           responseSwal("Transfer successfully", "", "success");
