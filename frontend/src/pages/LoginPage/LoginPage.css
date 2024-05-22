@@ -19,3 +19,7 @@
 .login-form input {
     outline: none;
 }
+
+.sign-in-btn {
+    background-color: #5ccfc6;
+}

@@ -49,6 +49,7 @@ const TransferPage = () => {
   };
 
   useEffect(() => {
+    console.log("Hello World");
     const role = localStorage.getItem("role");
     if (role !== "customer") {
       responseSwal("You are not authorized to access this page", "We are redirecting you to the homepage", "error").then(() => {
@@ -103,7 +104,7 @@ const TransferPage = () => {
         </li>
         <li>
             <input type="radio" id="outside" name="destination" value="outside" className="hidden peer" onChange={handleOptionChange}/>
-            <label htmlFor="hosting-big" className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
+            <label htmlFor="outside" className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
                 <div className="block">
                     <div className="w-full text-lg font-semibold">Outside TWJ Bank</div>
                     <div className="w-full">โอนเงินธนาคารอื่น</div>
@@ -145,7 +146,7 @@ const TransferPage = () => {
               <select
                 onChange={handleChange}
                 id="wallets"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border outline-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
                 {walletData.map((wallet, index) => {
                   return (
@@ -178,7 +179,7 @@ const TransferPage = () => {
                         value={targetWallet}
                         onChange={(e) => setTargetWallet(e.target.value)}
                         className="outline-none border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="ex. 1100800000000"
+                        placeholder="ex. 827631016"
                         required
                       />
                     </div>
@@ -188,7 +189,7 @@ const TransferPage = () => {
             htmlFor="amount"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
-            Amount
+            Amount (Baht)
           </label>
           <input
             name="amount"
@@ -212,7 +213,7 @@ const TransferPage = () => {
       </form>
 
       <div className="flex flex-col flex-1 justify-center items-center">
-        <h1 className="text-3xl">Your balance : ฿ {walletData[selectedWallet].balance}</h1>
+        <h1 className="text-3xl">Your balance : ฿ {walletData[selectedWallet]?.balance}</h1>
         <img src="pocket.svg" className="p-1" width={300}></img>
       </div>
       </div>
