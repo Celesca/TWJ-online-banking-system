@@ -3,6 +3,7 @@ import React from "react"
 import axios from "axios"
 import Swal, { SweetAlertIcon } from "sweetalert2"
 import './LoginPage.css'
+import { Link } from "react-router-dom"
 
 const LoginPage = () => {
 
@@ -16,7 +17,7 @@ const LoginPage = () => {
   }
 
   const [data, setData] = useState({
-    username: "",
+    email: "",
     password: ""
   })
 
@@ -31,15 +32,16 @@ const LoginPage = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const userData = {
-      username: data.username,
+      email: data.email,
       password: data.password
     };
 
     try {
       const response = await axios.post("http://localhost:3000/api/customers/login", userData);
       if (response.status === 200) {
+        localStorage.setItem("firstname", response.data.first_name);
         localStorage.setItem("token", response.data.token);
-        localStorage.setItem("username", userData.username);
+        localStorage.setItem("username", userData.email);
         localStorage.setItem("role", "customer");
         responseSwal("Login Success", "success").then(() => window.location.href = "/home");
       } else {
@@ -52,27 +54,71 @@ const LoginPage = () => {
 
   }
   return (
-    <div className="bg-gradient-to-r from-indigo-500 homepage_container">
-    <div className="flex w-100vw h-24 mt-16 justify-center text-white text-5xl">Welcome to User Login</div>
-      <form className="max-w-sm mx-auto bg-slate-900 rounded-lg mt-4 p-12" onSubmit={(e) => handleSubmit(e)}>
-      <div className="mb-5">
-        <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Username</label>
-        <input name="username" 
-        value={data.username} 
-        onChange={handleChange}
-        type="text" id="email" 
-        className="outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="guy.rachanon" required />
+    <div className="homepage_container">
+    <div className="flex flex-1 justify-evenly">
+      <div className="w-1/2">
+
+      <section className="">
+  <div className="flex flex-col items-center justify-center px-6 py-8 mt-12">
+      <div className="w-full bg-white rounded-lg shadow dark:border login-form-container md:mt-0 sm:max-w-md xl:p-0">
+          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+              <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                  Sign in to your account
+              </h1>
+              <form className="space-y-4 md:space-y-6 login-form" onSubmit={handleSubmit}>
+                  <div>
+                      <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
+                      <input type="email" name="email" id="email" value={data.email} onChange={handleChange}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required/>
+                  </div>
+                  <div>
+                      <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                      <input type="password" value={data.password} onChange={handleChange}
+                      name="password" id="password" 
+                      placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required/>
+                  </div>
+                  <div className="flex items-center justify-between">
+                      <div className="flex items-start">
+                          <div className="flex items-center h-5">
+                            <input id="remember" aria-describedby="remember" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"/>
+                          </div>
+                          <div className="ml-3 text-sm">
+                            <label htmlFor="remember" className="text-gray-500 dark:text-gray-300">Remember me</label>
+                          </div>
+                      </div>
+                      <a href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</a>
+                  </div>
+                  <button type="submit" className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
+                  <p className="text-sm font-light text-white">
+                      Don’t have an account yet? <Link to="/register" ><a href="#" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</a></Link>
+                  </p>
+              </form>
+          </div>
       </div>
-      <div className="mb-5">
-        <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-        <input name="password"
-        value={data.password}
-        onChange={handleChange}
-        type="password" id="password" className="outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-      </div>
-      <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-      </form>
   </div>
+</section>
+
+      </div>
+      <div className="w-1/2 pt-12 mt-6">
+          <div className="promo-container flex flex-col flex-1 w-1/2">
+          <h1 className="text-xl text-center">Login to TWJ</h1>
+            <div className="image-container">
+              <img
+                src="login.svg"
+                width={600}
+                className="border-x-emerald-200"
+              ></img>
+            </div>
+            <h2 className="text-3xl pt-12">We are ready to drive you to new world</h2>
+            <h2 className="text-3xl pt-2 pb-4">
+              <span className="brand-text">TWJ Online Banking</span>
+            </h2>
+          </div>
+        </div>
+
+      </div>
+  </div>
+  
   )
 }
 
