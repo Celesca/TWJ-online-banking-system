@@ -168,15 +168,15 @@ const TransferPage = () => {
 
             <div className="max-w-sm w-1/2">
                       <label
-                        htmlFor="national_card_id"
+                        htmlFor="to_account_id"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
                         Target Account ID
                       </label>
                       <input
                         type="text"
-                        name="national_card_id"
-                        id="national_card_id"
+                        name="to_account_id"
+                        id="to_account_id"
                         value={targetWallet}
                         onChange={(e) => setTargetWallet(e.target.value)}
                         className="outline-none border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
