@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import React from "react"
 import axios from "axios"
 import Swal, { SweetAlertIcon } from "sweetalert2"
@@ -6,6 +6,19 @@ import './LoginPage.css'
 import { Link } from "react-router-dom"
 
 const LoginPage = () => {
+
+  useEffect(() => {
+    document.title = "TWJ Login"
+    if (localStorage.getItem("username")) {
+      Swal.fire({
+        title: "You are already logged in",
+        icon: "info",
+        showConfirmButton: false,
+        timer: 1500
+      })
+      setTimeout(() => window.location.href = "/home", 1500)
+    }
+  }, [])
 
   const responseSwal = (title: string, icon: SweetAlertIcon) => {
     return Swal.fire({
