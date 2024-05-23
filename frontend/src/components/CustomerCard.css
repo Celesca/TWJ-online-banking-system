@@ -1,0 +1,6 @@
+.customer-card:hover {
+    cursor: pointer;
+    background-color: #4080FF;
+    transform: scale(1.01);
+    transition: all 0.3s ease;
+}

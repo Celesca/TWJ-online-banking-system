@@ -78,7 +78,6 @@ customerRouter.post('/login', async (req: Request, res: Response) => {
   }
 });
 
-
 // GET ALL customers
 customerRouter.get('/', async (req: Request, res: Response) => {
   try {
@@ -112,7 +111,10 @@ customerRouter.get('/', async (req: Request, res: Response) => {
 customerRouter.get('/staff/:email', async (req: Request, res: Response) => {
   const { email } = req.params;
   try {
-    const [results] = await connection.query(`SELECT email, first_name, last_name, phone_number, national_card_id FROM customer WHERE staff_email = ?`, [email]);
+    const [results] = await connection.query(
+      `SELECT email, first_name, last_name, phone_number, national_card_id FROM customer WHERE staff_email = ?`,
+      [email],
+    );
     res.json({
       users: results,
     });
