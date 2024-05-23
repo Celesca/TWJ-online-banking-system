@@ -9,7 +9,8 @@ const LoginPage = () => {
 
   useEffect(() => {
     document.title = "TWJ Login"
-    if (localStorage.getItem("username")) {
+    const role = localStorage.getItem("role")
+    if (role === "customer") {
       Swal.fire({
         title: "You are already logged in",
         icon: "info",
@@ -17,6 +18,14 @@ const LoginPage = () => {
         timer: 1500
       })
       setTimeout(() => window.location.href = "/home", 1500)
+    } else if (role === "staff") {
+      Swal.fire({
+        title: "You are already logged in",
+        icon: "info",
+        showConfirmButton: false,
+        timer: 1500
+      })
+      setTimeout(() => window.location.href = "/staff/customers", 1500)
     }
   }, [])
 
@@ -71,10 +80,6 @@ const LoginPage = () => {
         responseSwal("Invalid email or password", "error");
       }
     }
-
-
-  
-
   }
   return (
     <div className="homepage_container">

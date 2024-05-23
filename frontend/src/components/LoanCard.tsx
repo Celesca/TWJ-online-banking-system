@@ -73,7 +73,7 @@ const LoanCard: React.FC<LoanCardProps> = ({ loan, onUpdate }) => {
         />
       </div>
       <div className="mb-2">
-        <span className="font-semibold">Current Loan :</span> ฿{loan.current_loan}
+        <span className="font-semibold">Current Loan :</span> ฿{loan.current_loan.toFixed(2)}
       </div>
       <div className="flex justify-end pr-8">
       <button 
