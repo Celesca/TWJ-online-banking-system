@@ -11,6 +11,7 @@ import { accountRouter } from './routes/accountRouter';
 import { transactionRouter } from './routes/transactionRouter';
 import { transferRouter } from './routes/transferRouter';
 import { depositRouter } from './routes/depositRouter';
+import { staffRouter } from './routes/staffRouter';
 // import bcrypt from 'bcrypt';
 // import jwt from 'jsonwebtoken';
 
@@ -45,6 +46,7 @@ app.use('/api/accounts', accountRouter);
 app.use('/api/transactions', transactionRouter);
 app.use('/api/transfers', transferRouter);
 app.use('/api/deposits', depositRouter);
+app.use('/api/staffs', staffRouter);
 
 // Health Check
 app.get('/api/health', (req: Request, res: Response) => {

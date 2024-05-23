@@ -55,14 +55,24 @@ const LoginPage = () => {
         localStorage.setItem("firstname", response.data.first_name);
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("username", userData.email);
-        localStorage.setItem("role", "customer");
+        localStorage.setItem("role", response.data.role);
         responseSwal("Login Success", "success").then(() => window.location.href = "/home");
-      } else {
-        throw new Error("Login Failed");
-      }
+      } 
     } catch (error) {
-      responseSwal("Login Failed", "error");
+      const staffResponse = await axios.post("http://localhost:3000/api/staffs/login", userData);
+      if (staffResponse.status === 200) {
+        localStorage.setItem("firstname", staffResponse.data.first_name);
+        localStorage.setItem("token", staffResponse.data.token);
+        localStorage.setItem("username", userData.email);
+        localStorage.setItem("role", staffResponse.data.role);
+        responseSwal("Login Success", "success").then(() => window.location.href = "/staff_customers");
+      }
+      else {
+        responseSwal("Invalid email or password", "error");
+      }
     }
+
+
   
 
   }

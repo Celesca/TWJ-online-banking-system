@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import Swal from 'sweetalert2'
 
 const Navbar = () => {
   const [isLogin, setIsLogin] = useState<boolean>(false)
@@ -9,7 +10,15 @@ const Navbar = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     setIsLogin(false)
+    Swal.fire({
+      title: 'Logout success',
+      icon: 'success',
+      showConfirmButton: false,
+      timer: 1500
+    
+    }).then(() => {
     window.location.href = '/'
+    })
   }
 
   const handleLogin = () => {
