@@ -60,8 +60,6 @@ const ConfirmTransfer: React.FC<ModalProps> = ({
         }
       }
 
-    
-
     const handleConfirm = () => {
         Swal.fire({
             title: 'Are you sure?',

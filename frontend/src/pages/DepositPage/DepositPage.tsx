@@ -5,13 +5,16 @@ import React from "react";
 import "./DepositPage.css";
 import axios from "axios";
 import { WalletData } from "../../model/Wallet";
+import ConfirmDeposit from "../../components/ConfirmDeposit";
 
 const DepositPage = () => {
 
   const [walletData, setWalletData] = useState<WalletData[]>([]);
   const [selectedWallet, setSelectedWallet] = useState<number>(0);
   const [amount, setAmount] = useState<number>(1);
-  const [selectedOption, setSelectedOption] = useState<number>(0);
+  const [selectedOption, setSelectedOption] = useState<number>(1);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+
 
   const responseSwal = (title: string, text: string, icon: SweetAlertIcon) => {
     return Swal.fire({
@@ -40,10 +43,8 @@ const DepositPage = () => {
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const optionValue = event.target.value;
-    if (optionValue === "inside") {
-      setSelectedOption(3);
-    } else if (optionValue === "outside" || optionValue === "promptpay") {
-      setSelectedOption(2);
+    if (optionValue === "promptpay" || optionValue === "truewallet" || optionValue === "otherbank") {
+      setSelectedOption(1);
     }
   };
 
@@ -57,7 +58,7 @@ const DepositPage = () => {
     queryWallet(localStorage.getItem("username") || "");
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleDeposit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const response = await axios.post(import.meta.env.VITE_SERVER_URI + "/api/transactions/deposit", {
       amount: amount,
@@ -73,6 +74,13 @@ const DepositPage = () => {
     }
 
   };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (selectedOption === 1) {
+      setIsModalVisible(true);
+    }
+  }
 
   return (
     <div className="homepage_container">
@@ -102,7 +110,7 @@ const DepositPage = () => {
             <label htmlFor="outside" className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">
               <div className="flex justify-center items-center">
                   <div className="flex justify-center">
-                    <img src="truemoney.png" width={100} height={100} className="truewallet" alt="truewallet"></img>
+                    <img src="truemoney.png" width={80} height={100} className="truewallet" alt="truewallet"></img>
                   </div>
                   <div>
                     <div className="w-full text-lg font-semibold">TrueMoney Wallet</div>
@@ -116,7 +124,7 @@ const DepositPage = () => {
             <label htmlFor="promptpay" className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700">                           
               <div className="flex justify-center items-center">
                   <div className="flex justify-center">
-                  <CiBank size={100} className="mr-4" />
+                  <CiBank size={80} className="mr-4" />
                   </div>
                   <div>
                     <div className="w-full text-lg font-semibold">Other bank</div>
@@ -127,10 +135,10 @@ const DepositPage = () => {
         </li>
     </ul>
 </div>
-      <h3 className="mt-4 ml-16 text-xl font-medium text-gray-900">Transfer Information</h3>
+      <h3 className="mt-4 ml-16 text-xl font-medium text-gray-900">Deposit Information</h3>
       <div className="flex flex-1">
       <form
-        className="w-3/5 mx-16 bg-slate-900 rounded-lg mt-4 p-12"
+        className="w-2/5 mx-16 bg-slate-900 flex flex-col items-center rounded-lg p-8"
         onSubmit={(e) => handleSubmit(e)}
       >
         <div className="mb-5">
@@ -144,7 +152,7 @@ const DepositPage = () => {
             <select
               onChange={handleChange}
               id="wallets"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border outline-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
               {walletData.map((wallet, index) => {
                 return (
@@ -170,7 +178,7 @@ const DepositPage = () => {
             onChange={(e) => setAmount(parseInt(e.target.value))}
             min={1}
             id="amount"
-            className="outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             required
           />
         </div>
@@ -187,6 +195,7 @@ const DepositPage = () => {
         <h1 className="text-3xl">Your balance : ฿ {walletData[selectedWallet]?.balance}</h1>
         <img src="pocket.svg" className="p-1" width={300}></img>
       </div>
+      <ConfirmDeposit isVisible={isModalVisible} setIsVisible={setIsModalVisible} handleDeposit={handleDeposit}/>
     </div>
     </div>
   );

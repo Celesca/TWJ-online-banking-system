@@ -11,7 +11,7 @@ const TransferPage = () => {
   const [selectedWallet, setSelectedWallet] = useState<number>(0);
   const [amount, setAmount] = useState<number>(1);
   const [targetWallet, setTargetWallet] = useState<string>("");
-  const [selectedOption, setSelectedOption] = useState<number>(0);
+  const [selectedOption, setSelectedOption] = useState<number>(3);
 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
