@@ -57,3 +57,20 @@ accountRouter.post('/create-account', async (req: Request, res: Response) => {
     return res.status(500).json(err);
   }
 });
+
+// Update account
+accountRouter.put('/:account_id', async (req: Request, res: Response) => {
+  const { account_id } = req.params;
+  const { interest_rate_change, status} = req.body;
+  if (!status) {
+    return res.status(400).json({ message: 'invalid request body' });
+  }
+
+  const sql_query = `UPDATE account SET interest_rate_change = ?, status = ? WHERE account_id = ?`;
+  try {
+    const results = await connection.query(sql_query, [interest_rate_change, status, account_id]);
+    return res.status(200).json({ message: 'Account updated successfully', results });
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});

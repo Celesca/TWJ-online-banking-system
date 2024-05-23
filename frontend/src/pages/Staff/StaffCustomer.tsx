@@ -126,7 +126,7 @@ const StaffCustomer = () => {
         </div>
       </form>
       <div className="flex justify-center">
-        <div className="w-2/5 p-6">
+        <div className="w-2/5 p-4">
           {filteredCustomers.map((customer, index) => (
             <CustomerCard key={index} customer={customer} onClickCard={handleClickCard} />
           ))}

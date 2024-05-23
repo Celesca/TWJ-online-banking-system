@@ -20,25 +20,41 @@ const LoanCard: React.FC<LoanCardProps> = ({ loan, onUpdate }) => {
   };
 
   return (
-    <div className="loan-card">
-      <h2>Loan ID: {loan.loan_id}</h2>
-      <div>
-        <label>Interest Rate Change:</label>
+    <div className="bg-gray-200 p-4 mb-4 rounded shadow-lg">
+      <h2 className="font-bold mb-2">Loan ID: {loan.loan_id}</h2>
+      <div className="mb-2">
+        <span className="font-semibold">Type:</span> {loan.loan_type_name}
+      </div>
+      <div className="mb-2">
+        <span className="font-semibold">Interest:</span> {loan.interest_rate}
+      </div>
+      <div className="mb-2">
+        <label className="font-semibold">Change:</label>
         <input
+          className="ml-2 p-1 border rounded"
           type="number"
           value={interestRateChange}
           onChange={(e) => setInterestRateChange(parseFloat(e.target.value))}
         />
       </div>
-      <div>
-        <label>Status (NPL):</label>
+      <div className="mb-2">
+        <label className="font-semibold">Status (NPL):</label>
         <input
+          className="ml-2 p-1 border rounded"
           type="text"
           value={status}
           onChange={(e) => setStatus(e.target.value)}
         />
       </div>
-      <button onClick={handleUpdate}>Save Changes</button>
+      <div className="mb-2">
+        <span className="font-semibold">Current Loan:</span> {loan.current_loan}
+      </div>
+      <button 
+        onClick={handleUpdate} 
+        className="text-white bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded absolute bottom-4 right-4"
+      >
+        Fix
+      </button>
     </div>
   );
 };

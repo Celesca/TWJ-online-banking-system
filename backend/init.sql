@@ -72,7 +72,8 @@ CREATE TABLE IF NOT EXISTS account (
     staff_email varchar(100),
     FOREIGN KEY (staff_email) REFERENCES staff(email) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (customer_email) REFERENCES customer(email) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (account_type_id) REFERENCES account_type(account_type_id) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (account_type_id) REFERENCES account_type(account_type_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT check_status CHECK (status IN ('active', 'closed'))
 );
 
 CREATE TABLE IF NOT EXISTS transaction_tb (

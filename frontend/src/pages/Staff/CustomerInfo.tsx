@@ -64,13 +64,13 @@ const CustomerInfo = () => {
               Total Balance : ฿ {totalBalance.toFixed(2)}
             </h1>
           </div>
-          <div className="bg-[#7b68ca]">
+          <div className="mt-4">
             {accountData.length > 0 ? (
             accountData.map((account) => (
               <AccountCard key={account.account_id} account={account} onUpdate={handleAccountUpdate} />
             ))
             ) : (
-              <div className="bg-[#5CCFC6]">
+              <div className="bg-[#7b68ca]">
                 <h1 className="text-white text-center p-8 text-2xl">No account data</h1>
               </div>
             )}
