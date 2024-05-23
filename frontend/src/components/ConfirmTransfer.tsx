@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Swal, { SweetAlertIcon } from "sweetalert2";
 import { TransactionData } from "../model/TransactionData";
 
@@ -16,6 +16,8 @@ const ConfirmTransfer: React.FC<ModalProps> = ({
     transactionData,
 }) => {
 
+    const [showData, setShowData] = useState<TransactionData>([]);
+
     const responseSwal = (title: string, text: string, icon: SweetAlertIcon) => {
         return Swal.fire({
           title: title,
@@ -25,6 +27,16 @@ const ConfirmTransfer: React.FC<ModalProps> = ({
           showConfirmButton: false,
         });
       };
+
+    const handleShowData = async (informationData : TransactionData) => {
+        console.log(informationData);
+        const response = await axios.get(import.meta.env.VITE_SERVER_URI + "/api/transfers/info" + informationData);
+        if (response.data.length > 0) {
+            setShowData(response.data);
+        } else {
+            responseSwal("No data found", "", "error");
+        }
+    }
 
     useEffect(() => {
         if (isVisible) {
