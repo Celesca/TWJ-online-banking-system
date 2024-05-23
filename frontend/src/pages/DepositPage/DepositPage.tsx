@@ -58,9 +58,10 @@ const DepositPage = () => {
     queryWallet(localStorage.getItem("username") || "");
   }, []);
 
-  const handleDeposit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const response = await axios.post(import.meta.env.VITE_SERVER_URI + "/api/transactions/deposit", {
+  const handleDeposit = async (e?: React.MouseEvent<HTMLButtonElement>) => {
+    e?.preventDefault();
+    const response = await axios.post(import.meta.env.VITE_SERVER_URI + "/api/deposits", {
+      transaction_type_id: selectedOption,
       amount: amount,
       customer_username: walletData[selectedWallet].customer_email,
       account_id: walletData[selectedWallet].account_id

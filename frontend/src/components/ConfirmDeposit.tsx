@@ -1,7 +1,7 @@
 interface ModalProps {
   isVisible: boolean;
-  setIsVisible: (isVisible: boolean) => void;
-  handleDeposit: () => void;
+  setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  handleDeposit: (e: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
 }
 
 const ConfirmDeposit: React.FC<ModalProps> = ({
