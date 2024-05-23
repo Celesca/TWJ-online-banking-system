@@ -61,7 +61,7 @@ accountRouter.post('/create-account', async (req: Request, res: Response) => {
 // Update account
 accountRouter.put('/:account_id', async (req: Request, res: Response) => {
   const { account_id } = req.params;
-  const { interest_rate_change, status} = req.body;
+  const { interest_rate_change, status } = req.body;
   if (!status) {
     return res.status(400).json({ message: 'invalid request body' });
   }
