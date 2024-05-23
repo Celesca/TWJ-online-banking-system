@@ -11,7 +11,7 @@ const CustomerInfo = () => {
     const [accountData, setAccountData] = useState<WalletData[]>([]);
 
     async function getCustomerInfo(theCustomerEmail: string) {
-        const response = await axios.get(import.meta.env.VITE_SERVER_URI + "/api/customers/" + theCustomerEmail);
+        const response = await axios.get(import.meta.env.VITE_SERVER_URI + "/api/staffs/customers/insight" + theCustomerEmail);
         setCustomerInfoData(response.data);
         console.log(customerInfoData);
     }

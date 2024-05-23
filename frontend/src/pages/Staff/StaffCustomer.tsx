@@ -22,7 +22,7 @@ const StaffCustomer = () => {
 
   const queryCustomer = async (staff_email: string) => {
     const uri =
-      import.meta.env.VITE_SERVER_URI + "/api/customers/staff/" + staff_email;
+      import.meta.env.VITE_SERVER_URI + "/api/staffs/customers/" + staff_email;
     const response = await axios.get(uri);
     console.log(response.data.users);
     setCustomerData(response.data.users);
