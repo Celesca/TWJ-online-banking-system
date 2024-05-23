@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Swal, { SweetAlertIcon } from "sweetalert2";
 import { TransactionData } from "../model/TransactionData";
+import { ConfirmTransactionData } from "../model/ConfirmTransactionData";
 
 
 interface ModalProps {
@@ -16,7 +17,7 @@ const ConfirmTransfer: React.FC<ModalProps> = ({
     transactionData,
 }) => {
 
-    const [showData, setShowData] = useState<TransactionData>([]);
+    const [showData, setShowData] = useState<ConfirmTransactionData>();
 
     const responseSwal = (title: string, text: string, icon: SweetAlertIcon) => {
         return Swal.fire({
@@ -39,13 +40,13 @@ const ConfirmTransfer: React.FC<ModalProps> = ({
     }
 
     useEffect(() => {
+        handleShowData(transactionData);
         if (isVisible) {
             document.getElementById("default-modal")?.focus();
         }
     }, [isVisible]);
 
     const transferMoney = async() => {
-        console.log(transactionData)
         const response = await axios.post(import.meta.env.VITE_SERVER_URI + "/api/transfers", transactionData
 );
         if (response.status === 201) {
@@ -97,7 +98,7 @@ const ConfirmTransfer: React.FC<ModalProps> = ({
         <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                    Terms of Service
+                    Transaction Information
                 </h3>
                 <button type="button" 
                 onClick={() => setIsVisible(false)}
@@ -110,7 +111,7 @@ const ConfirmTransfer: React.FC<ModalProps> = ({
             </div>
             <div className="p-4 md:p-5 space-y-4">
                 <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                    With less than a month to go before the European Union enacts new consumer privacy laws for its citizens, companies around the world are updating their terms of service agreements to comply.
+                    {showData?.amount}
                 </p>
                 <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
                     The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant to ensure a common set of data rights in the European Union. It requires organizations to notify users as soon as possible of high-risk data breaches that could personally affect them.

@@ -1,4 +1,4 @@
-export interface TransactionData {
+export interface ConfirmTransactionData {
     amount: number,
     from_account_id: string,
     to_account_id: string,
