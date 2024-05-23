@@ -54,6 +54,7 @@ const RegisterCustomerPage = () => {
         phone_number: phoneNumber,
         address: address,
         salary: salary,
+        staff_email: "1",
       };
 
       console.log(userData);

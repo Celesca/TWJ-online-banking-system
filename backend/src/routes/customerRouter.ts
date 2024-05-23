@@ -104,3 +104,17 @@ customerRouter.get('/', async (req: Request, res: Response) => {
     res.status(403).json({ message: 'authentication fail', error: err });
   }
 });
+
+// Get Customers by Staff Email
+customerRouter.get('/staff/:email', async (req: Request, res: Response) => {
+  const { email } = req.params;
+  try {
+    const [results] = await connection.query(`SELECT * FROM customer WHERE staff_email = ?`, [email]);
+    res.json({
+      users: results,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
