@@ -68,6 +68,8 @@ CREATE TABLE IF NOT EXISTS account (
     opened_date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
     closed_date timestamp NULL,
     status varchar(10) DEFAULT 'active' NOT NULL,
+    staff_email varchar(100),
+    FOREIGN KEY (staff_email) REFERENCES staff(email) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (customer_email) REFERENCES customer(email) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (account_type_id) REFERENCES account_type(account_type_id) ON DELETE CASCADE ON UPDATE CASCADE
 );

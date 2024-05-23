@@ -38,3 +38,9 @@ VALUES (9, 'Deposit', 'Deposit money to account', 0.00, 'Account', 'BankAccount'
 -- Loan Type
 INSERT INTO `loan_type` (`loan_type_id`, `loan_type_name`, `interest_rate`, `interest_period`, `value_of_package`)
 VALUES (1, 'Loan 24%', 24, 23, 50000);
+
+-- Staff ID
+INSERT INTO `staff` (`email`, `password`, `position`, `staff_salary`, `entry_date`, `national_card_id`, 
+`first_name`, `last_name`, `phone_number`, `birth_date`, `address`) VALUES 
+('staff.voo@gmail.com', '1234', 'staff', '25000', CURRENT_TIMESTAMP, '1234567890', 'Sung', 'Voo', '0987658970', '2024-05-08', 'Voo city');
+

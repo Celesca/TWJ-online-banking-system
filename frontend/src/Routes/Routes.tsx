@@ -21,7 +21,7 @@ export const router = createBrowserRouter([
             { path: "transfer", element: <TransferPage/>},
             { path: "home" , element: <HomePage/> },
             { path: "staff_customers", element: <StaffCustomer/>},
-            { path: "customer_info/:customer_email", element: <CustomerInfo/>}
+            { path: "staff_customers/:customer_email", element: <CustomerInfo/>}
         ]
     }
 ])
