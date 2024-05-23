@@ -43,6 +43,10 @@ const StaffCustomer = () => {
     });
   };
 
+  const handleClickCard = (customer_email: string) => {
+    window.location.href = "/staff/customers/" + customer_email;
+    }
+
   useEffect(() => {
     const role = localStorage.getItem("role");
     if (role !== "staff") {
@@ -124,7 +128,7 @@ const StaffCustomer = () => {
       <div className="flex justify-center">
         <div className="w-2/5 p-6">
           {filteredCustomers.map((customer, index) => (
-            <CustomerCard key={index} customer={customer} />
+            <CustomerCard key={index} customer={customer} onClickCard={handleClickCard} />
           ))}
         </div>
       </div>
