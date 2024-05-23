@@ -86,7 +86,7 @@ const DepositPage = () => {
   return (
     <div className="homepage_container">
       <div className="flex w-100vw header-container">
-        <h1 className="text-white text-3xl pt-8 pb-8 px-16">Deposit</h1>
+        <h1 className="text-white text-3xl py-6 px-16">Deposit</h1>
       </div>
       <div className="px-16 w-3/4">
           <h3 className="my-4 text-xl font-medium text-gray-900">Choose your method</h3>

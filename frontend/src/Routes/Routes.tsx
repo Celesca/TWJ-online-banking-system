@@ -6,6 +6,7 @@ import RegisterCustomerPage from "../pages/RegisterPage/RegisterCustomerPage";
 import DepositPage from "../pages/DepositPage/DepositPage";
 import TransactionPage from "../pages/TransactionPage/TransactionPage";
 import TransferPage from "../pages/TransferPage/TransferPage";
+import StaffCustomer from "../pages/Staff/StaffCustomer";
 
 export const router = createBrowserRouter([
     {
@@ -18,6 +19,7 @@ export const router = createBrowserRouter([
             { path: "transaction" , element: <TransactionPage/>},
             { path: "transfer", element: <TransferPage/>},
             { path: "home" , element: <HomePage/> },
+            { path: "staff_customers", element: <StaffCustomer/>},
         ]
     }
 ])
