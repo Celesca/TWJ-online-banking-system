@@ -59,11 +59,11 @@ staffRouter.get('/customers/insight/:email', async (req: Request, res: Response)
   const { email } = req.params;
   try {
     const [results] = await connection.query(
-      `SELECT a.account_id, at.account_type_name, a.balance, a.status, at.interest_rate, a.interest_rate_change
-        FROM account a 
-        JOIN account_type at 
-        ON at.account_type_id = a.account_type_id
-        WHERE a.customer_email = ?`,
+      `SELECT a.account_id, a_t.account_type_name, a.balance, a.status, a_t.interest_rate, a.interest_rate_change
+      FROM account a 
+      JOIN account_type a_t 
+      ON a_t.account_type_id = a.account_type_id
+      WHERE a.customer_email = ?`,
       [email],
     );
     const [sumResults] = await connection.query(
@@ -74,14 +74,14 @@ staffRouter.get('/customers/insight/:email', async (req: Request, res: Response)
     );
     const totalBalance = Array.from(Object.values(sumResults))[0].total_balance;
     const [loanResults] = await connection.query(
-      `SELECT l.loan_id, lt.loan_type_name, l.amount, l.npl, lt.interest_rate, l.interest_rate_change, l.current_loan 
+      `SELECT l.loan_id, lt.loan_type_name, l.npl, lt.interest_rate, l.interest_rate_change, l.current_loan 
             FROM loan l
             JOIN loan_type lt
             ON l.loan_type_id = lt.loan_type_id
             WHERE customer_email = ?`,
       [email],
     );
-    res.json({
+    res.status(200).json({
       accounts: results,
       total_balance: totalBalance,
       loans: loanResults,

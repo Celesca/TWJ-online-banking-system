@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS transaction_tb (
 
 CREATE TABLE IF NOT EXISTS loan (
     loan_id int PRIMARY KEY UNIQUE AUTO_INCREMENT NOT NULL,
-    loan_type int NOT NULL,
+    loan_type_id int NOT NULL,
     loan_amount DOUBLE(10,2) NOT NULL,
     current_loan DOUBLE(10,2) NOT NULL,
     created_at timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -98,4 +98,5 @@ CREATE TABLE IF NOT EXISTS loan (
     customer_email varchar(30) NOT NULL,
     interest_rate_change DOUBLE(10,2) NOT NULL,
     FOREIGN KEY (customer_email) REFERENCES customer(email) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (loan_type_id) REFERENCES loan_type(loan_type_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
