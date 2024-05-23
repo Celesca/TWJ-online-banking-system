@@ -47,6 +47,7 @@ customerRouter.post('/register', async (req: Request, res: Response) => {
   }
 });
 
+// Customer Login
 customerRouter.post('/login', async (req: Request, res: Response) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -68,6 +69,7 @@ customerRouter.post('/login', async (req: Request, res: Response) => {
     return res.json({
       message: 'Login successful',
       firstname: customer.first_name,
+      role: 'customer',
       token,
     });
   } catch (err) {
@@ -102,5 +104,19 @@ customerRouter.get('/', async (req: Request, res: Response) => {
   } catch (err) {
     console.log('error', err);
     res.status(403).json({ message: 'authentication fail', error: err });
+  }
+});
+
+// GET customer by email
+customerRouter.get('/:email', async (req: Request, res: Response) => {
+  const { email } = req.params;
+  try {
+    const [results] = await connection.query(`SELECT * FROM customer WHERE email = ?`, [email]);
+    res.json({
+      users: results,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
   }
 });

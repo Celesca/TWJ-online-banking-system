@@ -11,7 +11,7 @@ const TransferPage = () => {
   const [selectedWallet, setSelectedWallet] = useState<number>(0);
   const [amount, setAmount] = useState<number>(1);
   const [targetWallet, setTargetWallet] = useState<string>("");
-  const [selectedOption, setSelectedOption] = useState<number>(0);
+  const [selectedOption, setSelectedOption] = useState<number>(3);
 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
@@ -84,7 +84,7 @@ const TransferPage = () => {
   return (
     <div className="homepage_container">
       <div className="flex w-100vw header-container">
-        <h1 className="text-white text-3xl pt-8 pb-8 px-16">Transfer</h1>
+        <h1 className="text-white text-3xl py-6 px-16">Transfer</h1>
       </div>
       
       <div className="px-16 w-3/4">
@@ -168,15 +168,15 @@ const TransferPage = () => {
 
             <div className="max-w-sm w-1/2">
                       <label
-                        htmlFor="national_card_id"
+                        htmlFor="to_account_id"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
                         Target Account ID
                       </label>
                       <input
                         type="text"
-                        name="national_card_id"
-                        id="national_card_id"
+                        name="to_account_id"
+                        id="to_account_id"
                         value={targetWallet}
                         onChange={(e) => setTargetWallet(e.target.value)}
                         className="outline-none border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
