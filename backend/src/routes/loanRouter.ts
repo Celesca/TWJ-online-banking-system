@@ -79,3 +79,24 @@ loanRouter.post('/apply', async (req: Request, res: Response) => {
     return res.status(500).json(err);
   }
 });
+
+loanRouter.put('/pay/:loan_id', async (req: Request, res: Response) => {
+  const { loan_id } = req.params;
+  const { amount, from_account_id } = req.body;
+  const sql_query = `UPDATE loan SET current_loan = current_loan - ? WHERE loan_id = ?`;
+  try {
+    connection.beginTransaction;
+    const [rows] = await connection.query(sql_query, [amount, loan_id]);
+    const update_balance_query = `UPDATE account SET balance = balance - ? WHERE account_id = ?`;
+    await connection.query(update_balance_query, [amount, from_account_id]);
+    const update_bank_balance = `UPDATE account SET balance = balance + ? WHERE account_id = "0000000001"`;
+    await connection.query(update_bank_balance, [amount]);
+    const transaction_query = `INSERT INTO transaction_tb (transaction_type_id, amount, from_account_id, to_account_id) VALUES (4, ?, ?, ?)`;
+    await connection.query(transaction_query, [amount, from_account_id, '0000000001']);
+    connection.commit;
+    return res.status(200).json(rows);
+  } catch (err) {
+    connection.rollback;
+    return res.status(500).json(err);
+  }
+});

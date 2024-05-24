@@ -89,7 +89,7 @@ accountRouter.put('/:account_id', async (req: Request, res: Response) => {
 // Get account info by account_id
 accountRouter.get('/info/:account_id', async (req: Request, res: Response) => {
   const { account_id } = req.params;
-  const sql_query = `SELECT customer.first_name, customer.last_name FROM account JOIN customer 
+  const sql_query = `SELECT customer.first_name, customer.last_name, account.balance FROM account JOIN customer 
   ON account.customer_email = customer.email WHERE account_id = ?`;
   try {
     const [rows] = await connection.query(sql_query, [account_id]);
