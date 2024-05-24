@@ -62,12 +62,30 @@ const LoanPage = () => {
         }
     };
 
+    const autoDeleteLoan = async (loan_id: number) => {
+        try {
+            const response = await axios.delete(import.meta.env.VITE_SERVER_URI + `/api/loans/${loan_id}`);
+            console.log(response.data);
+        } catch (error) {
+            console.error("Error auto deleting loan:", error);
+            responseSwal("Error", "Could not delete loan", "error");
+        }
+    }
+
     const queryLoan = async (email: string) => {
         try {
             const res = await axios.get(import.meta.env.VITE_SERVER_URI + `/api/loans/${email}`);
             console.log("userLoan" ,res.data.loanData);
             if (res.data.loanData.length > 0) {
+                console.log("curr_loan : ", res.data.loanData[0].current_loan)
+                if (res.data.loanData[0].current_loan <= 0) {
+                    autoDeleteLoan(res.data.loanData[0].loan_id);
+                    setHasLoan(false);
+                    return;
+                }
+
                 setUserLoan(res.data.loanData[0]);
+
                 setHasLoan(true);
             }else {
                 setHasLoan(false);
