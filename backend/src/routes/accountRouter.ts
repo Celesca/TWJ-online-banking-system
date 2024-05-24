@@ -74,3 +74,16 @@ accountRouter.put('/:account_id', async (req: Request, res: Response) => {
     return res.status(500).json(err);
   }
 });
+
+// Get account info by account_id
+accountRouter.get('/info/:account_id', async (req: Request, res: Response) => {
+  const { account_id } = req.params;
+  const sql_query = `SELECT customer.first_name, customer.last_name FROM account JOIN customer 
+  ON account.customer_email = customer.email WHERE account_id = ?`;
+  try {
+    const [rows] = await connection.query(sql_query, [account_id]);
+    return res.status(200).json(rows);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});

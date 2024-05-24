@@ -32,7 +32,7 @@ const ConfirmDeposit: React.FC<ModalProps> = ({
           </div>
           <div className="p-4 md:p-5 space-y-4">
             <div className="flex justify-center">
-              <img src="digital_banking.svg" width={300}></img>
+              <img src="qrcode.png" width={300}></img>
             </div>
               <p className="text-base leading-relaxed text-white">
                   Please scan QR code with your payment method and click continue
