@@ -6,4 +6,6 @@ export interface MyLoan {
     interest_period: number;
     created_at: Date;
     customer_email: string;
+    npl: number;
+    interest_rate_change: number;
 }

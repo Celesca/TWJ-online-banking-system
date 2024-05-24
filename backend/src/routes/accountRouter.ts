@@ -21,7 +21,7 @@ accountRouter.get('/:email', async (req: Request, res: Response) => {
   FROM account
   JOIN account_type ON account.account_type_id = account_type.account_type_id
   JOIN customer ON customer.email = account.customer_email
-   WHERE account.customer_email = ?`;
+   WHERE account.customer_email = ? AND account.status = 'active'`;
   try {
     const [rows] = await connection.query(sql_query, [email]);
     return res.status(200).json(rows);

@@ -6,6 +6,7 @@ import SelectWallet from "../../components/SelectWallet";
 import { WalletData } from "../../model/Wallet";
 import { Link } from "react-router-dom";
 import { LoanDetail } from "../../model/LoanDetail";
+import "./LoanPage.css";
 
 const LoanPage = () => {
     const [userLoan, setUserLoan] = useState<MyLoan>();
@@ -64,6 +65,7 @@ const LoanPage = () => {
             console.log("userLoan" ,res.data.loanData);
             if (res.data.loanData.length > 0) {
                 setUserLoan(res.data.loanData[0]);
+                setHasLoan(true);
             }else {
                 setHasLoan(false);
             }
@@ -71,6 +73,20 @@ const LoanPage = () => {
         } catch (error) {
             console.error("Error querying loan:", error);
             responseSwal("Error", "Could not retrieve loan data", "error");
+        }
+    };
+
+    const payLoan = async (loan_id: number, interest_rate_change: number, npl: number) => {
+        try {
+            const response = await axios.put(import.meta.env.VITE_SERVER_URI + `/api/loans/pay/${loan_id}`, {
+                interest_rate_change: interest_rate_change,
+                npl: npl
+            });
+            console.log(response.data);
+            responseSwal("Success", "Loan payment successful", "success");
+        } catch (error) {
+            console.error("Error paying loan:", error);
+            responseSwal("Error", "Could not pay the loan", "error");
         }
     };
 
@@ -99,27 +115,37 @@ const LoanPage = () => {
 
             <div className="flex">
                 <div className="w-1/2 p-4 balance-container">
-                    <div className="bg-white rounded-lg shadow-lg p-12">
+                    <div className="bg-white ml-8 rounded-lg shadow-lg p-12">
                         {hasLoan && (
                             <>
-                                <h2 className="text-lg text-center font-semibold">Current Loan Amount</h2>
+                                <h2 className="text-2xl text-center font-semibold">Current Loan Amount</h2>
                                 <div className="flex flex-col justify-center">
-                                    <div className="text-4xl font-semibold text-center pt-8">
-                                        ฿ {walletData[selectedWallet]?.balance.toFixed(2)}
+                                    <div className="text-4xl font-semibold text-red-500 text-center pt-8">
+                                        ฿ {userLoan?.current_loan.toFixed(2)}
+                                    </div>
+                                    <div className="p-4 flex flex-1 justify-evenly">
+                                        <p>Interest Rate: {(userLoan?.interest_rate ?? 0) + (userLoan?.interest_rate_change ?? 0)}%</p>
+                                        <p>Interest Period: Day {userLoan?.interest_period} every month</p>
+                                        
                                     </div>
                                 </div>
                                 
                                 {hasWallet && (
                                     <div>
+                                        <h2 className="text-lg text-center font-semibold">Your wallet : </h2>
                                         <SelectWallet
                                             setSelectedWallet={setSelectedWallet}
                                             walletData={walletData}
                                         />
-                                        <h2 className="text-lg text-center font-semibold">Wallet balance</h2>
-                                        <div className="flex flex-col justify-center">
-                                            <div className="text-4xl font-semibold text-center pt-8">
-                                                ฿ {walletData[selectedWallet]?.balance.toFixed(2)}
+                                        
+                                        <div className="flex justify-center items-center mt-4">
+                                        <h2 className="text-lg text-center font-semibold">Wallet balance : </h2>
+                                            <div className="text-lg text-center">
+                                                &nbsp; ฿ {walletData[selectedWallet]?.balance.toFixed(2)}
                                             </div>
+                                        </div>
+                                        <div className="flex justify-center">
+                                        <button className="rounded-lg px-8 py-2 mt-4 text-center pay-button">Pay the loan with this wallet</button>
                                         </div>
                                     </div>
                                 )}
@@ -145,7 +171,7 @@ const LoanPage = () => {
                 </div>
 
                 <div className="w-1/2">
-                    <h1 className="text-2xl p-4 ml-8">Available Loans</h1>
+                    <h1 className="text-2xl p-4 ml-8 font-bold">Available Loans</h1>
                     <div className="flex flex-col flex-1 flex-wrap">
                         {loanList.map((loan, index) => (
                             <div key={index} className="p-4 ml-12 card-container rounded-lg shadow-lg m-2">
@@ -155,8 +181,13 @@ const LoanPage = () => {
                                             <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
                                                 {loan.loan_type_name}
                                             </h5>
-                                            <p className="mb-3 font-normal text-gray-200">
+                                            <p className="mb-3 mt-2 font-normal text-gray-200">
                                                 Interest Rate : {loan.interest_rate.toFixed(2)}
+                                                
+                                            </p>
+                                            <p className="font-normal text-gray-200">
+                                                Interest Period : Day {loan.interest_period} every month
+                                                
                                             </p>
                                         </div>
                                     </div>
