@@ -33,6 +33,19 @@ loanRouter.get('/:email', async (req: Request, res: Response) => {
   }
 });
 
+// Get info of a specific loan
+loanRouter.get('/info/:loan_id', async (req: Request, res: Response) => {
+  const { loan_id } = req.params;
+  const sql_query = `SELECT * FROM loan_type
+  WHERE loan_type_id = ?`;
+  try {
+    const [rows] = await connection.query(sql_query, [loan_id]);
+    return res.status(200).json(rows);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});
+
 loanRouter.get('/', async (req: Request, res: Response) => {
   const sql_query = `SELECT * FROM loan_type`;
   try {
