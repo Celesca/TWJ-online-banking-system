@@ -58,7 +58,7 @@ customerRouter.post('/login', async (req: Request, res: Response) => {
     if (!customer) {
       return res.status(400).send({ message: 'Invalid email or password' });
     }
-    
+
     if (password !== customer.password) {
       return res.status(400).send({ message: 'Password does not match' });
     }

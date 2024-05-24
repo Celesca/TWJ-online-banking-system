@@ -8,6 +8,8 @@ import TransactionPage from "../pages/TransactionPage/TransactionPage";
 import TransferPage from "../pages/TransferPage/TransferPage";
 import StaffCustomer from "../pages/Staff/StaffCustomer";
 import CustomerInfo from "../pages/Staff/CustomerInfo";
+import LoanPage from "../pages/LoanPage.tsx/LoanPage";
+import LoanInfo from "../pages/LoanPage.tsx/LoanInfo";
 
 export const router = createBrowserRouter([
     {
@@ -20,6 +22,9 @@ export const router = createBrowserRouter([
             { path: "transaction" , element: <TransactionPage/>},
             { path: "transfer", element: <TransferPage/>},
             { path: "home" , element: <HomePage/> },
+            { path: "loan" , element: <LoanPage/> },
+            { path: "loan/:loan_id", element: <LoanInfo/>},
+            // Staff routes
             { path: "staff/customers", element: <StaffCustomer/>},
             { path: "staff/customers/:customer_email", element: <CustomerInfo/>}
         ]
