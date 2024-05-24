@@ -57,3 +57,9 @@ loanRouter.get('/', async (req: Request, res: Response) => {
     return res.status(500).json(err);
   }
 });
+
+loanRouter.post('/apply/', async (req: Request, res: Response) => {
+  const { loan_id, customer_email, staff_email, account_id, loan_amount } = req.body;
+  const sql_query = `INSERT INTO loan (loan_type_id, loan_amount, current_loan, customer_email, interest_rate_change) VALUES (?, ?, ?, ?, ?)`;
+
+});

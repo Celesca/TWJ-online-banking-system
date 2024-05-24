@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS loan (
     closed_date timestamp NULL,
     npl boolean DEFAULT false NOT NULL,
     customer_email varchar(30) NOT NULL,
-    interest_rate_change DOUBLE(10,2) NOT NULL,
+    interest_rate_change DOUBLE(10,2) DEFAULT 0 NOT NULL,
     FOREIGN KEY (customer_email) REFERENCES customer(email) ON DELETE CASCADE ON UPDATE CASCADE
     FOREIGN KEY (loan_type_id) REFERENCES loan_type(loan_type_id) ON DELETE CASCADE ON UPDATE CASCADE
 );

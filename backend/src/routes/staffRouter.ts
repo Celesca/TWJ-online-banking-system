@@ -96,7 +96,7 @@ staffRouter.get('/customers/insight/:email', async (req: Request, res: Response)
 staffRouter.get('/:customer_email', async (req: Request, res: Response) => {
   const { customer_email } = req.params;
   const sql_query = `SELECT s.email, s.first_name, s.last_name, s.phone_number 
-  FROM staff s JOIN customer c ON s.email = c.staff_email WHERE c.email = ?`
+  FROM staff s JOIN customer c ON s.email = c.staff_email WHERE c.email = ?`;
   try {
     const [rows] = await connection.query(sql_query, [customer_email]);
     return res.status(200).json({
