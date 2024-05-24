@@ -11,6 +11,8 @@ import CustomerInfo from "../pages/Staff/CustomerInfo";
 import LoanPage from "../pages/LoanPage.tsx/LoanPage";
 import LoanInfo from "../pages/LoanPage.tsx/LoanInfo";
 import TransferSummary from "../pages/TransferPage/TransferSummary";
+import ManagerCustomer from "../pages/ManagerPage/ManagerCustomer";
+import ManagerHome from "../pages/ManagerPage/ManagerHome";
 
 export const router = createBrowserRouter([
     {
@@ -28,7 +30,10 @@ export const router = createBrowserRouter([
             { path: "loan/:loan_id/:customer_email", element: <LoanInfo/>},
             // Staff routes
             { path: "staff/customers", element: <StaffCustomer/>},
-            { path: "staff/customers/:customer_email", element: <CustomerInfo/>}
+            { path: "staff/customers/:customer_email", element: <CustomerInfo/>},
+            // Manager routes
+            { path: "manager/home", element: <ManagerHome/>},
+            { path: "manager/customers", element: <ManagerCustomer/>},
         ]
     }
 ])

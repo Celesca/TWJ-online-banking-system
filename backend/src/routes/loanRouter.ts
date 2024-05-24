@@ -4,12 +4,25 @@ import connection from '../db/dbconnection';
 
 export const loanRouter = Router();
 
+// Pay Loan
 loanRouter.put('/:loan_id', async (req: Request, res: Response) => {
   const { loan_id } = req.params;
   const { interest_rate_change, npl } = req.body;
   const sql_query = `UPDATE loan SET interest_rate_change = ?, npl = ? WHERE loan_id = ?`;
   try {
     const [rows] = await connection.query(sql_query, [interest_rate_change, npl, loan_id]);
+    return res.status(200).json(rows);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});
+
+// Delete Loan
+loanRouter.delete('/:loan_id', async (req: Request, res: Response) => {
+  const { loan_id } = req.params;
+  const sql_query = `DELETE FROM loan WHERE loan_id = ?`;
+  try {
+    const [rows] = await connection.query(sql_query, [loan_id]);
     return res.status(200).json(rows);
   } catch (err) {
     return res.status(500).json(err);
@@ -62,8 +75,8 @@ loanRouter.post('/apply', async (req: Request, res: Response) => {
   const { loan_type_id, customer_email, loan_amount, account_id } = req.body;
   const check_sql_query = `SELECT * FROM loan WHERE customer_email = ?`;
   const check_row = await connection.query(check_sql_query, [customer_email]);
-  const check_rows = Array.from(Object.values(check_row));
-  if (check_rows.length > 0) {
+  const check_rows = Array.from(Object.values(check_row))[0];
+  if (Array.isArray(check_rows) && check_rows.length > 0) {
     return res.status(400).json({ message: 'You have already applied for a loan' });
   }
   const sql_query = `INSERT INTO loan (loan_type_id, loan_amount, current_loan, customer_email, interest_rate_change) VALUES (?, ?, ?, ?, ?)`;
@@ -72,6 +85,27 @@ loanRouter.post('/apply', async (req: Request, res: Response) => {
     const [rows] = await connection.query(sql_query, [loan_type_id, loan_amount, loan_amount, customer_email, 0]);
     const update_balance_query = `UPDATE account SET balance = balance + ? WHERE account_id = ?`;
     await connection.query(update_balance_query, [loan_amount, account_id]);
+    connection.commit;
+    return res.status(200).json(rows);
+  } catch (err) {
+    connection.rollback;
+    return res.status(500).json(err);
+  }
+});
+
+loanRouter.put('/pay/:loan_id', async (req: Request, res: Response) => {
+  const { loan_id } = req.params;
+  const { amount, from_account_id } = req.body;
+  const sql_query = `UPDATE loan SET current_loan = current_loan - ? WHERE loan_id = ?`;
+  try {
+    connection.beginTransaction;
+    const [rows] = await connection.query(sql_query, [amount, loan_id]);
+    const update_balance_query = `UPDATE account SET balance = balance - ? WHERE account_id = ?`;
+    await connection.query(update_balance_query, [amount, from_account_id]);
+    const update_bank_balance = `UPDATE account SET balance = balance + ? WHERE account_id = "0000000001"`;
+    await connection.query(update_bank_balance, [amount]);
+    const transaction_query = `INSERT INTO transaction_tb (transaction_type_id, amount, from_account_id, to_account_id) VALUES (4, ?, ?, ?)`;
+    await connection.query(transaction_query, [amount, from_account_id, '0000000001']);
     connection.commit;
     return res.status(200).json(rows);
   } catch (err) {

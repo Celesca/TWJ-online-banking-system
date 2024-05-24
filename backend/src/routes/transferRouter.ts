@@ -45,6 +45,14 @@ transferRouter.post('/', async (req: Request, res: Response) => {
     return res.status(400).json({ message: 'Invalid request body' });
   }
 
+  // Check whether the account id destination status is active
+  const checkAccountQuery = 'SELECT status FROM account WHERE account_id = ? AND status = "active"';
+  const [check] = await connection.execute(checkAccountQuery, [to_account_id]);
+  const checkAccount = Array.from(Object.values(check));
+  if (checkAccount.length === 0) {
+    return res.status(400).json({ message: 'Account not found' });
+  }
+
   const query =
     'INSERT INTO transaction_tb (amount, from_account_id, to_account_id, transaction_type_id) VALUES (?, ?, ?, ?)';
   try {

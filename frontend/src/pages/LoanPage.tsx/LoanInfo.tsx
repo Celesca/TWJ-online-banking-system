@@ -50,7 +50,7 @@ const LoanInfo = () => {
       });
       if (response.status === 200) {
         responseSwal("Loan request submitted", "", "success").then(() => {
-          window.location.href = "/staff/loan";
+          window.location.href = "/home";
         });
       }
     } catch (error: AxiosError) {
@@ -173,7 +173,7 @@ const LoanInfo = () => {
                     Address: {customerInfo?.address}
                   </p>
                   <p className="mb-3 font-normal text-sm text-white">
-                    Salary : {customerInfo?.customer_salary}
+                    Salary : {customerInfo?.customer_salary || '-'}
                   </p>
                 </div>
               </div>

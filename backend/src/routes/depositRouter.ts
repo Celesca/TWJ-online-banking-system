@@ -16,6 +16,8 @@ depositRouter.post('/', async (req: Request, res: Response) => {
     const accountData = [amount, account_id];
     const sql_query = `UPDATE account SET balance = balance + ? WHERE account_id = ?`;
     const results = await connection.query(sql_query, accountData);
+    const update_bank_balance_query = `UPDATE account SET balance = balance + ? WHERE account_id = "0000000001"`;
+    await connection.query(update_bank_balance_query, [amount]);
     const transaction_query = `INSERT INTO transaction_tb (transaction_type_id, amount, from_account_id, to_account_id) VALUES (?, ?, ?, ?)`;
     const transactionData = [transaction_type_id, amount, account_id, account_id];
     await connection.query(transaction_query, transactionData);

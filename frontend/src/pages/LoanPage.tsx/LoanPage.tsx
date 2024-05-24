@@ -7,6 +7,7 @@ import { WalletData } from "../../model/Wallet";
 import { Link } from "react-router-dom";
 import { LoanDetail } from "../../model/LoanDetail";
 import "./LoanPage.css";
+import ConfirmPayLoan from "../../components/ConfirmPayLoan";
 
 const LoanPage = () => {
     const [userLoan, setUserLoan] = useState<MyLoan>();
@@ -15,6 +16,8 @@ const LoanPage = () => {
     const [selectedWallet, setSelectedWallet] = useState<number>(0);
     const [loanList, setLoanList] = useState<LoanDetail[]>([]);
     const [hasLoan, setHasLoan] = useState<boolean>(false);
+
+    const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
     const responseSwal = (title: string, description: string, icon: SweetAlertIcon) => {
         return Swal.fire({
@@ -59,12 +62,30 @@ const LoanPage = () => {
         }
     };
 
+    const autoDeleteLoan = async (loan_id: number) => {
+        try {
+            const response = await axios.delete(import.meta.env.VITE_SERVER_URI + `/api/loans/${loan_id}`);
+            console.log(response.data);
+        } catch (error) {
+            console.error("Error auto deleting loan:", error);
+            responseSwal("Error", "Could not delete loan", "error");
+        }
+    }
+
     const queryLoan = async (email: string) => {
         try {
             const res = await axios.get(import.meta.env.VITE_SERVER_URI + `/api/loans/${email}`);
             console.log("userLoan" ,res.data.loanData);
             if (res.data.loanData.length > 0) {
+                console.log("curr_loan : ", res.data.loanData[0].current_loan)
+                if (res.data.loanData[0].current_loan <= 0) {
+                    autoDeleteLoan(res.data.loanData[0].loan_id);
+                    setHasLoan(false);
+                    return;
+                }
+
                 setUserLoan(res.data.loanData[0]);
+
                 setHasLoan(true);
             }else {
                 setHasLoan(false);
@@ -76,19 +97,9 @@ const LoanPage = () => {
         }
     };
 
-    const payLoan = async (loan_id: number, interest_rate_change: number, npl: number) => {
-        try {
-            const response = await axios.put(import.meta.env.VITE_SERVER_URI + `/api/loans/pay/${loan_id}`, {
-                interest_rate_change: interest_rate_change,
-                npl: npl
-            });
-            console.log(response.data);
-            responseSwal("Success", "Loan payment successful", "success");
-        } catch (error) {
-            console.error("Error paying loan:", error);
-            responseSwal("Error", "Could not pay the loan", "error");
-        }
-    };
+    const handlePayLoan = () => {
+        setIsModalVisible(true);
+    }
 
     useEffect(() => {
         console.log("useEffect called");
@@ -112,6 +123,18 @@ const LoanPage = () => {
             <div className="flex w-100vw header-container">
                 <h1 className="text-white text-3xl py-6 px-16">Loan</h1>
             </div>
+
+            <ConfirmPayLoan 
+                isVisible={isModalVisible}
+                setIsVisible={setIsModalVisible}
+                transactionData={{                        
+                    amount: userLoan?.current_loan ?? 0,
+                    from_account_id: walletData[selectedWallet]?.account_id,
+                    to_loan_id: userLoan?.loan_id ?? 0,
+                    to_loan_type_name: userLoan?.loan_type_name ?? "",
+                    transaction_type_id: 4
+
+                }}/>
 
             <div className="flex">
                 <div className="w-1/2 p-4 balance-container">
@@ -145,7 +168,9 @@ const LoanPage = () => {
                                             </div>
                                         </div>
                                         <div className="flex justify-center">
-                                        <button className="rounded-lg px-8 py-2 mt-4 text-center pay-button">Pay the loan with this wallet</button>
+                                        <button className="rounded-lg px-8 py-2 mt-4 text-center pay-button"
+                                        onClick={() => handlePayLoan()}
+                                        >Pay the loan with this wallet</button>
                                         </div>
                                     </div>
                                 )}

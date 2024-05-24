@@ -73,8 +73,14 @@ const LoginPage = () => {
         localStorage.setItem("firstname", staffResponse.data.first_name);
         localStorage.setItem("token", staffResponse.data.token);
         localStorage.setItem("username", userData.email);
+        console.log(staffResponse);
+        console.log(staffResponse.data.role);
         localStorage.setItem("role", staffResponse.data.role);
-        responseSwal("Login Success", "success").then(() => window.location.href = "/staff_customers");
+        if (staffResponse.data.role === "Manager") {
+          responseSwal("Login Success", "success").then(() => window.location.href = "/manager/home");
+        } else {
+          responseSwal("Login Success", "success").then(() => window.location.href = "/staff/customers");
+        }
       }
       else {
         responseSwal("Invalid email or password", "error");

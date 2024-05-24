@@ -1,23 +1,30 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Swal, { SweetAlertIcon } from "sweetalert2";
-import { TransactionData } from "../model/TransactionData";
-import { ConfirmTransactionData } from "../model/ConfirmTransactionData";
+import { ConfirmPayLoanData } from "../model/ConfirmPayLoanData";
 
+export interface LoanTransactionData {
+    amount: number,
+    from_account_id: string,
+    to_loan_id: number,
+    to_loan_type_name: string,
+    transaction_type_id: number,
+}
 
 interface ModalProps {
     isVisible: boolean;
     setIsVisible: (isVisible: boolean) => void;
-    transactionData: TransactionData;
+    transactionData: LoanTransactionData;
   }
 
-const ConfirmTransfer: React.FC<ModalProps> = ({
+const ConfirmPayLoan: React.FC<ModalProps> = ({
     isVisible,
     setIsVisible,
     transactionData,
 }) => {
 
-    const [showData, setShowData] = useState<ConfirmTransactionData>();
+    const [showData, setShowData] = useState<ConfirmPayLoanData>();
+    const [payAmount, setPayAmount] = useState<number>(0);
 
     const responseSwal = (title: string, text: string, icon: SweetAlertIcon) => {
         return Swal.fire({
@@ -29,20 +36,17 @@ const ConfirmTransfer: React.FC<ModalProps> = ({
         });
       };
 
-    const handleShowData = async (informationData : TransactionData) => {
+    const handleShowData = async (informationData : LoanTransactionData) => {
         
         const origin_response = await axios.get(import.meta.env.VITE_SERVER_URI + "/api/accounts/info/" + informationData.from_account_id);
-        const destination_response = await axios.get(import.meta.env.VITE_SERVER_URI + "/api/accounts/info/" + informationData.to_account_id);
-        if (origin_response.data.length > 0 && destination_response.data.length > 0) {
-            const preshowData: ConfirmTransactionData = {
+        if (origin_response.data.length > 0) {
+            const preshowData: ConfirmPayLoanData = {
                 from_account_id: informationData.from_account_id,
                 from_account_firstname: origin_response.data[0].first_name,
                 from_account_lastname: origin_response.data[0].last_name,
-                to_account_id: informationData.to_account_id,
-                to_account_firstname: destination_response.data[0].first_name,
-                to_account_lastname: destination_response.data[0].last_name,
-                amount: informationData.amount,
-        
+                to_loan_id: informationData.to_loan_id,
+                to_loan_type_name: informationData.to_loan_type_name,
+                amount: origin_response.data[0].balance,
             }
             setShowData(preshowData);
         }
@@ -56,28 +60,28 @@ const ConfirmTransfer: React.FC<ModalProps> = ({
         }
     }, [isVisible]);
 
-    const transferMoney = async() => {
-        try {
-        if (!showData?.to_account_id) {
-            responseSwal("Transfer failed", "", "error");
+    
+    const payLoan = async (loan_id: number) => {
+        if (payAmount <= 0 || payAmount > (showData?.amount ?? 0)) {
+            responseSwal("Error", "Invalid payment amount", "error");
             return;
         }
-
-        const response = await axios.post(import.meta.env.VITE_SERVER_URI + "/api/transfers", transactionData
-);
-        if (response.status === 201) {
-          responseSwal("Transfer successfully", "", "success");
-          setIsVisible(false);
-          setTimeout(() => {
-              window.location.href = '/transfer/review/' + response.data.insertId;
-            }, 1000);
-        } else {
-          responseSwal("Deposit failed", "", "error");
+        try {
+            const response = await axios.put(import.meta.env.VITE_SERVER_URI + `/api/loans/pay/${loan_id}`, {
+                amount: payAmount,
+                from_account_id: showData?.from_account_id,
+            });
+            console.log(response.data);
+            responseSwal("Success", "Loan payment successful", "success");
+            setIsVisible(false);
+            setTimeout(() => {
+                window.location.reload();
+            })
+        } catch (error) {
+            console.error("Error paying loan:", error);
+            responseSwal("Error", "Could not pay the loan", "error");
         }
-    } catch (error) {
-        responseSwal("Transfer failed", "Destination account doesn't active", "error");
-    }
-      }
+    };
 
     const handleConfirm = () => {
         Swal.fire({
@@ -90,13 +94,12 @@ const ConfirmTransfer: React.FC<ModalProps> = ({
             confirmButtonText: 'Yes, transfer it!'
           }).then((result) => {
             if (result.isConfirmed) {
-                transferMoney();
+                payLoan(transactionData.to_loan_id);
 
             }
             else {
                 setIsVisible(false);
             }
-
     });
     }
 
@@ -131,12 +134,14 @@ const ConfirmTransfer: React.FC<ModalProps> = ({
                 </p>
                 <h1 className="text-lg text-white">To : </h1>
                 <p className="text-base leading-relaxed text-white">
-                    Account ID - {showData?.to_account_id}
+                    Loan ID - {showData?.to_loan_id}
                 </p>
-                <p className="text-base leading-relaxed text-white">
-                    Name - {showData?.to_account_firstname} {showData?.to_account_lastname}
-                </p>
-                <h1 className="text-base text-yellow-400">Amount : {showData?.amount}</h1>
+                <h1 className="text-base text-yellow-400">Amount : 
+                <input type="number" 
+                value={payAmount}
+                onChange={(e) => setPayAmount(Number(e.target.value))}
+                className="text-dark ml-4" required></input>
+                </h1>
             </div>
             <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
                 <button onClick={() => handleConfirm()}
@@ -152,4 +157,4 @@ const ConfirmTransfer: React.FC<ModalProps> = ({
   )
 }
 
-export default ConfirmTransfer
+export default ConfirmPayLoan
