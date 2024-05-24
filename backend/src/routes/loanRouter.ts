@@ -40,7 +40,9 @@ loanRouter.get('/info/:loan_id', async (req: Request, res: Response) => {
   WHERE loan_type_id = ?`;
   try {
     const [rows] = await connection.query(sql_query, [loan_id]);
-    return res.status(200).json(rows);
+    return res.status(200).json({
+      loanData: rows,
+    });
   } catch (err) {
     return res.status(500).json(err);
   }

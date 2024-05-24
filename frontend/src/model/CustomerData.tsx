@@ -4,4 +4,6 @@ export interface CustomerData {
     last_name: string;
     phone_number: string;
     national_card_id: string;
+    customer_salary: number;
+    address: string;
 }
