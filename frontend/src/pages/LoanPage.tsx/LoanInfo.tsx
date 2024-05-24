@@ -52,14 +52,22 @@ const LoanInfo = () => {
                   {loanDetail?.loan_type_name}
                 </h5>
               </a>
-              <p className="mb-3 mt-3 font-normal text-gray-700 dark:text-gray-400">
+              <p className="mb-3 mt-3 font-normal text-white">
                 Interest Rate: {loanDetail?.interest_rate}%
               </p>
-              <p className="font-normal text-gray-700 dark:text-gray-400">
+              <p className="mb-3 font-normal text-white">
                 Interest Period: {loanDetail?.interest_period} months
+              </p>
+              <p className="font-light text-sm text-gray-700 dark:text-gray-400">
+              Note: Requesting an amount not more than 2 times your salary.
+Note: Interest rates are between 24% per year, calculated every month.
               </p>
             </div>
           </div>
+        </div>
+        <div className="w-1/2">
+          
+
         </div>
       </div>
     </div>
