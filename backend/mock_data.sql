@@ -52,7 +52,7 @@ VALUES  ('RishW@twj.com', 'A0a1568Xr', 'Manager', 200000, '2024-01-01 10:00:02',
 
 -- Customer
 INSERT INTO customer
-VALUES  ("RishW@mail.com","Xx02zQ007",200000,"3000000000001",0,'2024-01-01 10:29:02',"Rishy","WangJeng","0999999999","2000-01-01 00:00:00","101 ThungKru Bankok Thailand","RishW@twj.com"),
+VALUES  ("RishW@mail.com","admin",200000,"3000000000001",0,'2024-01-01 10:29:02',"Rishy","WangJeng","0999999999","2000-01-01 00:00:00","101 ThungKru Bankok Thailand","RishW@twj.com"),
         ("Samartsmart@mail.com","12345",50000,"2000000000003",0,"2024-01-03 15:18:48","Samart","Ngandee","0123456789","2000-02-29 00:00:00","999 Trang Thailand","Bank-one@twj.com"),
         ("Somstop@mail.com","54321",30000,"1000000000004",0,"2024-01-03 14:48:52","Somsri","Deedee","0991231234","1980-12-12 00:00:00","100 Lamphun Thailand","Bank-one@twj.com"),
         ("Kondeeja@mil.com","789",60000,"1000000000006",0,"2024-02-15 09:59:06","Kondee","Naenon","0893214321","2001-06-21 00:00:00","500 ThungKru Bankok Thailand","Bank-two@twj.com"),

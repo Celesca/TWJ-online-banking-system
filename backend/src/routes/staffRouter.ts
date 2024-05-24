@@ -16,7 +16,7 @@ staffRouter.post('/login', async (req: Request, res: Response) => {
   try {
     const [result] = await connection.query(`SELECT * FROM staff WHERE email = ?`, [email]);
     const staff = Array.from(Object.values(result))[0];
-    console.log(staff);
+    console.log(staff.position);
     if (!staff) {
       return res.status(400).send({ message: 'Invalid email or password' });
     }
@@ -28,7 +28,7 @@ staffRouter.post('/login', async (req: Request, res: Response) => {
     return res.json({
       message: 'Login successful',
       firstname: staff.first_name,
-      role: 'staff',
+      role: staff.position,
       token,
     });
   } catch (err) {

@@ -4,7 +4,7 @@ import { SweetAlertIcon } from "sweetalert2";
 import { CustomerData } from "../../model/CustomerData";
 import CustomerCard from "../../components/CustomerCard";
 
-const StaffCustomer = () => {
+const ManagerCustomer = () => {
   const [customerData, setCustomerData] = useState<CustomerData[]>([]);
   const [staffEmail, setStaffEmail] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -22,7 +22,7 @@ const StaffCustomer = () => {
 
   const queryCustomer = async (staff_email: string) => {
     const uri =
-      import.meta.env.VITE_SERVER_URI + "/api/staffs/customers/" + staff_email;
+      import.meta.env.VITE_SERVER_URI + "/api/staffs/customers" + staff_email;
     const response = await axios.get(uri);
     console.log(response.data.users);
     setCustomerData(response.data.users);
@@ -49,14 +49,14 @@ const StaffCustomer = () => {
 
   useEffect(() => {
     const role = localStorage.getItem("role");
-    if (role !== "staff") {
+    if (role !== "Manager") {
       responseSwal(
         "You are not authorized to access this page",
         "We are redirecting you to the homepage",
         "error"
       ).then(() => {
         setTimeout(() => {
-          // window.location.href = "/";
+          window.location.href = "/";
         }, 1500);
       });
     }
@@ -136,4 +136,4 @@ const StaffCustomer = () => {
   );
 };
 
-export default StaffCustomer;
+export default ManagerCustomer;
