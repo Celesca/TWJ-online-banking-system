@@ -49,7 +49,7 @@ accountRouter.post('/create-account', async (req: Request, res: Response) => {
   }
 
   try {
-    const checkAccountQuery = `SELECT * FROM account WHERE customer_email = ? AND account_type_id = ?`;
+    const checkAccountQuery = `SELECT * FROM account WHERE customer_email = ? AND account_type_id = ? AND status = 'active'`;
     const [check] = await connection.query(checkAccountQuery, [email, account_type_id]);
 
     const checkAccount = Array.from(Object.values(check));

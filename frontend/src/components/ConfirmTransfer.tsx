@@ -57,6 +57,12 @@ const ConfirmTransfer: React.FC<ModalProps> = ({
     }, [isVisible]);
 
     const transferMoney = async() => {
+        try {
+        if (!showData?.to_account_id) {
+            responseSwal("Transfer failed", "", "error");
+            return;
+        }
+
         const response = await axios.post(import.meta.env.VITE_SERVER_URI + "/api/transfers", transactionData
 );
         if (response.status === 201) {
@@ -68,6 +74,9 @@ const ConfirmTransfer: React.FC<ModalProps> = ({
         } else {
           responseSwal("Deposit failed", "", "error");
         }
+    } catch (error) {
+        responseSwal("Transfer failed", "Destination account doesn't active", "error");
+    }
       }
 
     const handleConfirm = () => {

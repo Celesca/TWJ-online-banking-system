@@ -62,8 +62,8 @@ loanRouter.post('/apply', async (req: Request, res: Response) => {
   const { loan_type_id, customer_email, loan_amount, account_id } = req.body;
   const check_sql_query = `SELECT * FROM loan WHERE customer_email = ?`;
   const check_row = await connection.query(check_sql_query, [customer_email]);
-  const check_rows = Array.from(Object.values(check_row));
-  if (check_rows.length > 0) {
+  const check_rows = Array.from(Object.values(check_row))[0];
+  if (Array.isArray(check_rows) && check_rows.length > 0) {
     return res.status(400).json({ message: 'You have already applied for a loan' });
   }
   const sql_query = `INSERT INTO loan (loan_type_id, loan_amount, current_loan, customer_email, interest_rate_change) VALUES (?, ?, ?, ?, ?)`;
