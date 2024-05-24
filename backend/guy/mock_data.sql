@@ -39,11 +39,6 @@ VALUES (9, 'Deposit', 'Deposit money to account', 0.00, 'Account', 'BankAccount'
 INSERT INTO `loan_type` (`loan_type_id`, `loan_type_name`, `interest_rate`, `interest_period`, `value_of_package`)
 VALUES (1, 'Loan 24%', 24, 23, 50000);
 
--- Staff ID
-INSERT INTO `staff` (`email`, `password`, `position`, `staff_salary`, `entry_date`, `national_card_id`, 
-`first_name`, `last_name`, `phone_number`, `birth_date`, `address`) VALUES 
-('staff.voo@gmail.com', '1234', 'staff', '25000', CURRENT_TIMESTAMP, '1234567890', 'Sung', 'Voo', '0987658970', '2024-05-08', 'Voo city');
-
 -- Staff
 INSERT INTO staff (`email`,`password`,`position`,`staff_salary`,`entry_date`,`national_card_id`,`first_name`,`last_name`,`phone_number`,`birth_date`,`address`)
 VALUES  ('RishW@twj.com', 'A0a1568Xr', 'Manager', 200000, '2024-01-01 10:00:02', '3000000000001', 'Rishy', 'WangJeng', '0999999999', '2000-01-01 00:00:00', '101 ThungKru Bankok Thailand'),
@@ -70,10 +65,8 @@ VALUES  ('0000000001',0,10000000.00,"RishW@mail.com",'2024-01-01 12:18:59',NULL,
         ('0000000007',2,150000.00,"Joneja@mail.com",'2024-04-10 14:02:54',NULL,'closed',-1.000);
 
 -- Loan
-INSERT INTO loan 
-(loan_type_id, loan_amount, current_loan, created_at, closed_date, npl, customer_email, interest_rate_change)
-VALUES 
-(1, 30000.00, 0.00, "2024-02-15 10:13:47", "2024-04-15 12:59:35", 0, "Kondeeja@mil.com", 0.000),
-(1, 20000.00, 21728.33, "2024-02-16 16:26:24", NULL, 1, "Joneja@mail.com", 1.750),
-(1, 20000.00, 20825.00, "2024-04-20 11:10:59", NULL, 0, "TangMaimee@mail.com", 1.000),
-(1, 10000.00, 3400.00, "2024-04-24 15:07:54", NULL, 0, "Samartsmart@mail.com", -1.000);
+INSERT INTO loan
+VALUES  ("L1",1,30000.00,0.00,"2024-02-15 10:13:47","2024-04-15 12:59:35",0,"Kondeeja@mil.com",0.000),
+        ("L2",1,20000.00,21728.33,"2024-02-16 16:26:24",NULL,1,"Joneja@mail.com",1.750),
+        ("L3",1,20000.00,20825.00,"2024-04-20 11:10:59",NULL,0,"TangMaimee@mail.com",1.000),
+        ("L4",1,10000.00,3400.00,"2024-04-24 15:07:54",NULL,0,"Samartsmart@mail.com",-1.000);

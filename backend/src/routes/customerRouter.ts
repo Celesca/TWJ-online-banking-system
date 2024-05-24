@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import { Request, Response } from 'express';
 import connection from '../db/dbconnection';
-import bcrypt from 'bcrypt';
 import { CreateCustomerDto } from 'dto/create-customer-dto';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -36,8 +35,7 @@ customerRouter.post('/register', async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'Email already exists' });
     }
 
-    const passwordHash = await bcrypt.hash(password, 10);
-    const customerData = [email, passwordHash, firstname, lastname, dob, national_card_id, phone_number, address];
+    const customerData = [email, password, firstname, lastname, dob, national_card_id, phone_number, address];
 
     const sql_query = `INSERT INTO customer (email, password, first_name, last_name, birth_date, national_card_id, phone_number, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
     const results = await connection.query(sql_query, customerData);
@@ -60,8 +58,8 @@ customerRouter.post('/login', async (req: Request, res: Response) => {
     if (!customer) {
       return res.status(400).send({ message: 'Invalid email or password' });
     }
-    const match: boolean = await bcrypt.compare(password, customer.password);
-    if (!match) {
+
+    if (password !== customer.password) {
       return res.status(400).send({ message: 'Password does not match' });
     }
     // create token jwt token
