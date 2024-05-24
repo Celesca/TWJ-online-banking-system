@@ -14,6 +14,17 @@ accountRouter.get('/', async (req: Request, res: Response) => {
   }
 });
 
+accountRouter.get('/balance/:account_id', async (req: Request, res: Response) => {
+  const { account_id } = req.params;
+  const sql_query = `SELECT balance FROM account WHERE account_id = ?`
+  try {
+    const [rows] = await connection.query(sql_query, account_id)
+    return res.json(rows);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+})
+
 // GET account by username
 accountRouter.get('/:email', async (req: Request, res: Response) => {
   const { email } = req.params;

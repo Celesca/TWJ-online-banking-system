@@ -63,7 +63,7 @@ const ConfirmTransfer: React.FC<ModalProps> = ({
           responseSwal("Transfer successfully", "", "success");
           setIsVisible(false);
           setTimeout(() => {
-              window.location.href = '/home';
+              window.location.href = '/transfer/review/' + response.data.insertId;
             }, 1000);
         } else {
           responseSwal("Deposit failed", "", "error");
