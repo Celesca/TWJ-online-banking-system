@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import Swal, { SweetAlertIcon } from "sweetalert2";
@@ -37,26 +37,31 @@ const LoanInfo = () => {
   };
 
   const handleSubmitLoan = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const uri = import.meta.env.VITE_SERVER_URI + "/api/loans";
-    const username = localStorage.getItem("username");
-    if (username) {
+  e.preventDefault();
+  const uri = import.meta.env.VITE_SERVER_URI + "/api/loans/apply";
+  const username = localStorage.getItem("username");
+  if (username) {
+    try {
       const response = await axios.post(uri, {
-        loan_id: loan_id,
+        loan_type_id: loan_id,
         customer_email: customer_email,
-        staff_email: staffInfo?.email,
+        loan_amount: loanAmount,
         account_id: walletData[selectedWallet].account_id,
-        amount: loanAmount,
       });
       if (response.status === 200) {
         responseSwal("Loan request submitted", "", "success").then(() => {
-          window.location.href = "/loans";
+          window.location.href = "/staff/loan";
         });
+      }
+    } catch (error: AxiosError) {
+      if (error.response && error.response.status === 400) {
+        responseSwal("Loan request failed", "You cannot request loan if you already have loan", "error");
       } else {
-        responseSwal("Loan request failed", "", "error");
+        responseSwal("Loan request failed", "Please try again later", "error");
       }
     }
-  };
+  }
+};
 
   const queryCustomerInfo = async (email: string) => {
     const customer = await axios.get(
