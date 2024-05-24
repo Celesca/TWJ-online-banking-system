@@ -56,7 +56,7 @@ const StaffCustomer = () => {
         "error"
       ).then(() => {
         setTimeout(() => {
-          // window.location.href = "/";
+          window.location.href = "/";
         }, 1500);
       });
     }

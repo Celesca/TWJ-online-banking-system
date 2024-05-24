@@ -3,14 +3,31 @@ import { useEffect, useState } from "react";
 import { SweetAlertIcon } from "sweetalert2";
 import { CustomerData } from "../../model/CustomerData";
 import CustomerCard from "../../components/CustomerCard";
+import "./Manager.css"
 
 const ManagerCustomer = () => {
   const [customerData, setCustomerData] = useState<CustomerData[]>([]);
-  const [staffEmail, setStaffEmail] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
+  };
+
+const handleDelete = async (accountId: string) => {
+    // Call your backend API to delete the customer using accountId
+    try {
+      // Example of delete request
+      const uri = `${import.meta.env.VITE_SERVER_URI}/api/customers/${accountId}`;
+      await axios.delete(uri);
+
+      // Update the customerData state after deletion
+      setCustomerData(prevData => prevData.filter(customer => customer.account_id !== accountId));
+
+      responseSwal("Success", "Customer deleted successfully", "success");
+    } catch (error) {
+
+      responseSwal("Error", "Failed to delete customer", "error");
+    }
   };
 
   const filteredCustomers = customerData.filter((customer) =>
@@ -20,12 +37,12 @@ const ManagerCustomer = () => {
   customer.national_card_id.includes(searchTerm)
   );
 
-  const queryCustomer = async (staff_email: string) => {
+  const queryCustomer = async () => {
     const uri =
-      import.meta.env.VITE_SERVER_URI + "/api/staffs/customers" + staff_email;
+      import.meta.env.VITE_SERVER_URI + "/api/manager/customers";
     const response = await axios.get(uri);
-    console.log(response.data.users);
-    setCustomerData(response.data.users);
+    console.log(response.data);
+    setCustomerData(response.data);
   };
 
   const responseSwal = async (
@@ -45,7 +62,7 @@ const ManagerCustomer = () => {
 
   const handleClickCard = (customer_email: string) => {
     window.location.href = "/staff/customers/" + customer_email;
-    }
+}
 
   useEffect(() => {
     const role = localStorage.getItem("role");
@@ -60,27 +77,10 @@ const ManagerCustomer = () => {
         }, 1500);
       });
     }
-    const email = localStorage.getItem("username");
-    if (email) {
-      setStaffEmail(email);
-    } else {
-      responseSwal(
-        "You are not logged in",
-        "We are redirecting you to the homepage",
-        "error"
-      ).then(() => {
-        setTimeout(() => {
-          window.location.href = "/";
-        }, 1500);
-      });
-    }
+    queryCustomer();
+    
   }, []);
 
-  useEffect(() => {
-    if (staffEmail) {
-      queryCustomer(staffEmail);
-    }
-  }, [staffEmail]);
 
   return (
     <div className="homepage_container">
@@ -128,7 +128,12 @@ const ManagerCustomer = () => {
       <div className="flex justify-center">
         <div className="w-2/5 p-4">
           {filteredCustomers.map((customer, index) => (
-            <CustomerCard key={index} customer={customer} onClickCard={handleClickCard} />
+            <CustomerCard
+              key={index}
+              customer={customer}
+              onClickCard={handleClickCard}
+              onDelete={handleDelete} // Pass handleDelete as prop
+            />
           ))}
         </div>
       </div>

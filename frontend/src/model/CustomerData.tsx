@@ -6,4 +6,5 @@ export interface CustomerData {
     national_card_id: string;
     customer_salary: number;
     address: string;
+    account_id: string;
 }
