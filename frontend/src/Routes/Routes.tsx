@@ -23,7 +23,7 @@ export const router = createBrowserRouter([
             { path: "transfer", element: <TransferPage/>},
             { path: "home" , element: <HomePage/> },
             { path: "loan" , element: <LoanPage/> },
-            { path: "loan/:loan_id", element: <LoanInfo/>},
+            { path: "loan/:loan_id/:customer_email", element: <LoanInfo/>},
             // Staff routes
             { path: "staff/customers", element: <StaffCustomer/>},
             { path: "staff/customers/:customer_email", element: <CustomerInfo/>}

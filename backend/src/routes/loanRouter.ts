@@ -18,7 +18,7 @@ loanRouter.put('/:loan_id', async (req: Request, res: Response) => {
 
 loanRouter.get('/:email', async (req: Request, res: Response) => {
   const { email } = req.params;
-  const sql_query = `SELECT l.loan_id, lt.loan_type_name, l.current_loan, l.interest_rate, lt.interest_period,
+  const sql_query = `SELECT l.loan_id, lt.loan_type_name, l.current_loan, lt.interest_rate, lt.interest_period,
   l.created_at, l.customer_email, l.npl, l.interest_rate_change
   FROM loan l
   JOIN loan_type lt ON l.loan_type_id = lt.loan_type_id
@@ -34,7 +34,7 @@ loanRouter.get('/:email', async (req: Request, res: Response) => {
 });
 
 loanRouter.get('/', async (req: Request, res: Response) => {
-  const sql_query = `SELECT * FROM loan`;
+  const sql_query = `SELECT * FROM loan_type`;
   try {
     const [rows] = await connection.query(sql_query);
     return res.json(rows);
