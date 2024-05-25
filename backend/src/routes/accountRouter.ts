@@ -98,3 +98,15 @@ accountRouter.get('/info/:account_id', async (req: Request, res: Response) => {
     return res.status(500).json(err);
   }
 });
+
+// Delete account by account_Id
+accountRouter.delete('/:account_id', async (req: Request, res: Response) => {
+  const { account_id } = req.params;
+  const sql_query = `DELETE FROM account WHERE account_id = ?`;
+  try {
+    const results = await connection.query(sql_query, account_id);
+    return res.status(200).json({ message: 'Account deleted successfully', results });
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});

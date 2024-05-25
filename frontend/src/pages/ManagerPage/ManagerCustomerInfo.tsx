@@ -4,16 +4,16 @@ import { useParams } from 'react-router';
 import { CustomerData } from '../../model/CustomerData';
 import { InsightAccount } from '../../model/InsightAccount';
 import { InsightLoan } from '../../model/InsightLoan';
-import AccountCard from '../../components/AccountCard';
-import LoanCard from '../../components/LoanCard';
 import CustomerSensitiveInfo from '../../components/CustomerSensitiveInfo';
+import ManagerAccountCard from '../../components/ManagerComponent/ManagerAccountCard';
+import ManagerLoanCard from '../../components/ManagerComponent/ManagerLoanCard';
 
 const ManagerCustomerInfo = () => {
   const { customer_email } = useParams();
 
   const [totalBalance, setTotalBalance] = useState<number>(0);
   const [accountData, setAccountData] = useState<InsightAccount[]>([]);
-  const [customerData, setCustomerData] = useState<CustomerData>();
+  const [customerData, setCustomerData] = useState<CustomerData | undefined>();
   const [loanData, setLoanData] = useState<InsightLoan[]>([]);
 
   async function getCustomerInfo(theCustomerEmail: string) {
@@ -59,7 +59,9 @@ const ManagerCustomerInfo = () => {
         </h1>
       </div>
       <div className="w-1/2 mx-auto">
-        <CustomerSensitiveInfo customer={customerData} onUpdate={setCustomerData} />
+        {customerData && (
+          <CustomerSensitiveInfo customer={customerData} onUpdate={setCustomerData as (updatedCustomer: CustomerData) => void} />
+        )}
       </div>
       <div className="flex flex-1 justify-evenly mx-12 my-8">
         <div className="account-container w-2/5">
@@ -71,7 +73,7 @@ const ManagerCustomerInfo = () => {
           <div className="mt-4">
             {accountData.length > 0 ? (
             accountData.map((account) => (
-              <AccountCard key={account.account_id} account={account} onUpdate={handleAccountUpdate} />
+              <ManagerAccountCard key={account.account_id} account={account} onUpdate={handleAccountUpdate} />
             ))
             ) : (
               <div className="bg-[#7b68ca]">
@@ -85,7 +87,7 @@ const ManagerCustomerInfo = () => {
             <h1 className="text-white text-center text-3xl py-6 px-16">Loan</h1>
             {loanData.length > 0 ? (
               loanData.map((loan) => (
-                <LoanCard key={loan.loan_id} loan={loan} onUpdate={handleLoanUpdate} />
+                <ManagerLoanCard key={loan.loan_id} loan={loan} onUpdate={handleLoanUpdate} />
               ))
             ) : (
               <div className="bg-[#5CCFC6]">

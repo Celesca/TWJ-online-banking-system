@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { SweetAlertIcon } from "sweetalert2";
 import { CustomerData } from "../../model/CustomerData";
 import "./Manager.css"
-import ManagerCustomerCard from "../../components/ManagerCustomerCard";
+import ManagerCustomerCard from "../../components/ManagerComponent/ManagerCustomerCard";
 
 const ManagerCustomer = () => {
   const [customerData, setCustomerData] = useState<CustomerData[]>([]);

@@ -1,10 +1,10 @@
 // CustomerCard.tsx
 
 import React from "react";
-import { CustomerData } from "../model/CustomerData";
+import { CustomerData } from "../../model/CustomerData";
 import { RxCross1 } from "react-icons/rx";
 import { FaPencilAlt } from "react-icons/fa";
-import "./CustomerCard.css";
+import "../CustomerCard.css";
 
 interface CardProps {
   customer: CustomerData;

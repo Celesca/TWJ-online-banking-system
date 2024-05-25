@@ -139,7 +139,13 @@ customerRouter.put('/:email', async (req: Request, res: Response) => {
     }
 
     const updateQuery = `UPDATE customer SET address = ?, staff_email = ?, black_listed = ?, customer_salary = ? WHERE email = ?`;
-    const [updateResult] = await connection.query(updateQuery, [address, staff_email, black_listed, customer_salary, email]);
+    const [updateResult] = await connection.query(updateQuery, [
+      address,
+      staff_email,
+      black_listed,
+      customer_salary,
+      email,
+    ]);
     const updatedData = Array.from(Object.values(updateResult));
     console.log('Updated data:', updatedData);
 

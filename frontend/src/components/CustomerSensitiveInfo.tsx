@@ -18,17 +18,17 @@ interface CustomerSensitiveInfoProps {
 }
 
 const CustomerSensitiveInfo: React.FC<CustomerSensitiveInfoProps> = ({ customer, onUpdate }) => {
-    const [address, setAddress] = useState('');
-    const [staffEmail, setStaffEmail] = useState('');
-    const [customerSalary, setCustomerSalary] = useState(0);
-    const [blackListed, setBlackListed] = useState(false);
+  const [address, setAddress] = useState(customer.address);
+  const [staffEmail, setStaffEmail] = useState(customer.staff_email);
+  const [customerSalary, setCustomerSalary] = useState(customer.customer_salary);
+  const [blackListed, setBlackListed] = useState(customer.black_listed);
   const [staffOptions, setStaffOptions] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchStaffEmails = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_SERVER_URI}/api/staffs`);
-        setStaffOptions(response.data.staffs.map((staff: StaffData) => staff?.email));
+        setStaffOptions(response.data.staffs.map((staff: StaffData) => staff.email));
       } catch (error) {
         console.error("Error fetching staff emails:", error);
       }
@@ -38,12 +38,10 @@ const CustomerSensitiveInfo: React.FC<CustomerSensitiveInfoProps> = ({ customer,
   }, []);
 
   useEffect(() => {
-    if (customer) {
-      setAddress(customer.address);
-      setStaffEmail(customer.staff_email);
-      setCustomerSalary(customer.customer_salary);
-      setBlackListed(customer.black_listed);
-    }
+    setAddress(customer.address);
+    setStaffEmail(customer.staff_email);
+    setCustomerSalary(customer.customer_salary);
+    setBlackListed(customer.black_listed);
   }, [customer]);
 
   const responseSwal = async (title: string, text: string, icon: SweetAlertIcon) => {
@@ -58,14 +56,20 @@ const CustomerSensitiveInfo: React.FC<CustomerSensitiveInfoProps> = ({ customer,
   };
 
   const handleUpdate = async () => {
-    const updatedCustomer = { ...customer, address, staff_email: staffEmail, customer_salary: customerSalary, black_listed: blackListed };
+    const updatedCustomer = {
+      ...customer,
+      address,
+      staff_email: staffEmail,
+      customer_salary: customerSalary,
+      black_listed: blackListed
+    };
 
     // Update the state in the parent component
     onUpdate(updatedCustomer);
 
     // Send the update to the API
     try {
-      const response = await axios.put(`${import.meta.env.VITE_SERVER_URI}/api/customers/${customer?.email}`, updatedCustomer);
+      const response = await axios.put(`${import.meta.env.VITE_SERVER_URI}/api/customers/${customer.email}`, updatedCustomer);
       if (response.status === 200) {
         responseSwal('Success', 'Customer updated successfully', 'success');
       } else {
@@ -78,7 +82,7 @@ const CustomerSensitiveInfo: React.FC<CustomerSensitiveInfoProps> = ({ customer,
 
   return (
     <div className="bg-[#7b68ca] p-4 mb-4 rounded shadow-lg">
-      <h2 className="font-bold mb-2">Customer Email: {customer?.email}</h2>
+      <h2 className="font-bold mb-2">Customer Email: {customer.email}</h2>
       <div className="mb-2">
         <label className="font-semibold">Address:</label>
         <input
@@ -102,7 +106,7 @@ const CustomerSensitiveInfo: React.FC<CustomerSensitiveInfoProps> = ({ customer,
         </select>
       </div>
       <div className="mb-2">
-        <span className="font-semibold">Birth Date:</span> {customer?.birth_date}
+        <span className="font-semibold">Birth Date:</span> {customer.birth_date}
       </div>
       <div className="mb-2">
         <label className="font-semibold">Customer Salary:</label>
