@@ -14,8 +14,7 @@ interface CardProps {
 
 const ManagerStaffCard: React.FC<CardProps> = ({ staff, onClickCard, onDelete }) => {
   return (
-    <div className="rounded-lg bg-white my-8 customer-card"
-    onClick={() => onClickCard(staff.email)}>
+    <div className="rounded-lg bg-white my-8 customer-card">
       <div className="flex justify-between p-4">
         <div className="flex flex-col justify-between">
           <h1 className="text-lg font-semibold">{staff.first_name} {staff.last_name}</h1>

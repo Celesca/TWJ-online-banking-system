@@ -92,6 +92,17 @@ staffRouter.get('/customers/insight/:email', async (req: Request, res: Response)
   }
 });
 
+staffRouter.get('/info/:email', async (req: Request, res: Response) => {
+  const { email } = req.params;
+  try {
+    const [results] = await connection.query(`SELECT * FROM staff WHERE email = ?`, [email]);
+    res.json(results);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
 // Get staff Info with customer email
 staffRouter.get('/:customer_email', async (req: Request, res: Response) => {
   const { customer_email } = req.params;
@@ -123,8 +134,23 @@ staffRouter.get('/', async (req: Request, res: Response) => {
 staffRouter.delete('/:email', async (req: Request, res: Response) => {
   const { email } = req.params;
   try {
-    const [result] = await connection.query(`DELETE FROM staff WHERE email = ?`, [email]);
+    await connection.query(`DELETE FROM staff WHERE email = ?`, [email]);
     return res.status(200).json({ message: 'Staff deleted' });
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});
+
+// Update staff by email
+staffRouter.put('/:email', async (req: Request, res: Response) => {
+  const { email } = req.params;
+  const { staff_salary, address } = req.body;
+  try {
+    await connection.query(
+      `UPDATE staff SET staff_salary = ?, address = ? WHERE email = ?`,
+      [staff_salary, address, email],
+    );
+    return res.status(200).json({ message: 'Staff updated' });
   } catch (err) {
     return res.status(500).json(err);
   }
