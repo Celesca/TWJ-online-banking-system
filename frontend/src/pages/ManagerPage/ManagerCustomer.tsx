@@ -2,8 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { SweetAlertIcon } from "sweetalert2";
 import { CustomerData } from "../../model/CustomerData";
-import CustomerCard from "../../components/CustomerCard";
 import "./Manager.css"
+import ManagerCustomerCard from "../../components/ManagerCustomerCard";
 
 const ManagerCustomer = () => {
   const [customerData, setCustomerData] = useState<CustomerData[]>([]);
@@ -128,7 +128,7 @@ const handleDelete = async (accountId: string) => {
       <div className="flex justify-center">
         <div className="w-2/5 p-4">
           {filteredCustomers.map((customer, index) => (
-            <CustomerCard
+            <ManagerCustomerCard
               key={index}
               customer={customer}
               onClickCard={handleClickCard}

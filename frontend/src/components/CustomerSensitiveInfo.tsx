@@ -28,7 +28,7 @@ const CustomerSensitiveInfo: React.FC<CustomerSensitiveInfoProps> = ({ customer,
     const fetchStaffEmails = async () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_SERVER_URI}/api/staffs`);
-        setStaffOptions(response.data.map((staff: StaffData) => staff?.email));
+        setStaffOptions(response.data.staffs.map((staff: StaffData) => staff?.email));
       } catch (error) {
         console.error("Error fetching staff emails:", error);
       }

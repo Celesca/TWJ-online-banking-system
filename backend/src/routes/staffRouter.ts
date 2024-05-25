@@ -106,3 +106,15 @@ staffRouter.get('/:customer_email', async (req: Request, res: Response) => {
     return res.status(500).json(err);
   }
 });
+
+// Get all staffs
+staffRouter.get('/', async (req: Request, res: Response) => {
+  try {
+    const [rows] = await connection.query(`SELECT * FROM staff`);
+    return res.status(200).json({
+      staffs: rows,
+    });
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});

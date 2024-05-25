@@ -11,3 +11,10 @@
     transform: scale(1.01);
     transition: all 0.1s ease;
 }
+
+.customer-card:hover {
+    cursor: pointer;
+    transform: scale(1.01);
+    transition: all 0.1s ease;
+    background-color: #f0f0f0;
+}
