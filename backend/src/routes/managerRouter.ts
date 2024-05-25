@@ -25,3 +25,26 @@ managerRouter.get('/bank-account', async (req: Request, res: Response) => {
     res.status(500).json(err);
   }
 });
+
+
+managerRouter.get('/account_types', async (req: Request, res: Response) => {
+  const sql_query = `SELECT * FROM account_type`;
+  try {
+    const [results] = await connection.query(sql_query);
+    res.json(results);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+managerRouter.get('/loan_types', async (req: Request, res: Response) => {
+  const sql_query = `SELECT * FROM loan_type`;
+  try {
+    const [results] = await connection.query(sql_query);
+    res.json(results);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});

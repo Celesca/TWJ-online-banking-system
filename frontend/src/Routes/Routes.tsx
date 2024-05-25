@@ -19,6 +19,7 @@ import StaffHome from "../pages/Staff/StaffHome";
 import ManagerTransactionPage from "../pages/ManagerPage/ManagerTransactions";
 import ManagerStaff from "../pages/ManagerPage/ManagerStaff";
 import ManagerStaffInfo from "../pages/ManagerPage/ManagerStaffInfo";
+import ManagerInterest from "../pages/ManagerPage/ManagerInterest";
 
 export const router = createBrowserRouter([
     {
@@ -46,6 +47,7 @@ export const router = createBrowserRouter([
             { path: "manager/staffs/:staff_email", element: <ManagerStaffInfo/>},
             { path: "manager/customers/:customer_email", element: <ManagerCustomerInfo/>},
             { path: "manager/transactions", element: <ManagerTransactionPage/>},
+            { path: "manager/interests", element: <ManagerInterest/>}
         ]
     }
 ])
