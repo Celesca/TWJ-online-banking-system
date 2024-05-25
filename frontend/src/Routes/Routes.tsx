@@ -14,6 +14,7 @@ import TransferSummary from "../pages/TransferPage/TransferSummary";
 import ManagerCustomer from "../pages/ManagerPage/ManagerCustomer";
 import ManagerHome from "../pages/ManagerPage/ManagerHome";
 import ManagerCustomerInfo from "../pages/ManagerPage/ManagerCustomerInfo";
+import StaffTransactionPage from "../pages/Staff/StaffTransactionPage";
 
 export const router = createBrowserRouter([
     {
@@ -32,6 +33,7 @@ export const router = createBrowserRouter([
             // Staff routes
             { path: "staff/customers", element: <StaffCustomer/>},
             { path: "staff/customers/:customer_email", element: <CustomerInfo/>},
+            { path: "staff/transactions", element: <StaffTransactionPage/>},
             // Manager routes
             { path: "manager/home", element: <ManagerHome/>},
             { path: "manager/customers", element: <ManagerCustomer/>},
