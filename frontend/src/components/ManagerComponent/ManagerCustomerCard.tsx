@@ -24,11 +24,14 @@ const ManagerCustomerCard: React.FC<CardProps> = ({ customer, onClickCard, onDel
         </div>
        
         <div className="flex items-center">
-          <div className="bg-[#4048FF] p-3 rounded-lg mr-3 edit-button">
-                <FaPencilAlt onClick={() => onClickCard(customer.email)} />
+          <div onClick={() => onClickCard(customer.email)}
+          className="bg-[#4048FF] p-3 rounded-lg mr-3 edit-button">
+                <FaPencilAlt  />
             </div>
-            <div className="bg-red-500 p-3 rounded-lg delete-button">
-                <RxCross1 className="delete-button" onClick={() => onDelete(customer.account_id)}/>
+            <div 
+            onClick={() => onDelete(customer.email)}
+            className="bg-red-500 p-3 rounded-lg delete-button">
+                <RxCross1 className="delete-button" />
             </div>
         </div>
         

@@ -160,3 +160,32 @@ customerRouter.put('/:email', async (req: Request, res: Response) => {
     return res.status(500).json({ message: 'Failed to update customer', error: err });
   }
 });
+
+// Delete customer with email
+customerRouter.delete('/:email', async (req: Request, res: Response) => {
+  const { email } = req.params;
+  try {
+    const [currentDataResult] = await connection.query(`SELECT * FROM customer WHERE email = ?`, [email]);
+    const currentData = Array.from(Object.values(currentDataResult))[0];
+    console.log('Current data:', currentData);
+
+    if (!currentData) {
+      return res.status(404).json({ message: 'Customer not found' });
+    }
+
+    const deleteQuery = `DELETE FROM customer WHERE email = ?`;
+    const [deleteResult] = await connection.query(deleteQuery, [email]);
+    const deletedData = Array.from(Object.values(deleteResult));
+    console.log('Deleted data:', deletedData);
+    
+    // Check if the delete operation was successful based on the result
+    if (deletedData && deletedData[4] > 0) {
+      return res.status(200).json({ message: 'Customer deleted successfully' });
+    } else {
+      return res.status(404).json({ message: 'Customer not found or no changes detected' });
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: 'Failed to delete customer', error: err });
+  }
+});

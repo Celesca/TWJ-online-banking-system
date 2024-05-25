@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { SweetAlertIcon } from "sweetalert2";
+import Swal, { SweetAlertIcon } from "sweetalert2";
 import { CustomerData } from "../../model/CustomerData";
 import "./Manager.css"
 import ManagerCustomerCard from "../../components/ManagerComponent/ManagerCustomerCard";
@@ -13,22 +13,39 @@ const ManagerCustomer = () => {
     setSearchTerm(event.target.value);
   };
 
-const handleDelete = async (accountId: string) => {
+const handleDelete = async (email: string) => {
     // Call your backend API to delete the customer using accountId
-    try {
-      // Example of delete request
-      const uri = `${import.meta.env.VITE_SERVER_URI}/api/customers/${accountId}`;
-      await axios.delete(uri);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
 
-      // Update the customerData state after deletion
-      setCustomerData(prevData => prevData.filter(customer => customer.account_id !== accountId));
+        try {
+          // Example of delete request
+          const uri = `${import.meta.env.VITE_SERVER_URI}/api/customers/${email}`;
+          await axios.delete(uri);
+    
+          responseSwal("Success", "Customer deleted successfully", "success");
+    
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
+        } catch (error) {
+    
+          responseSwal("Error", "Failed to delete customer", "error");
+        }
+      }
+      }
+    )
 
-      responseSwal("Success", "Customer deleted successfully", "success");
-    } catch (error) {
-
-      responseSwal("Error", "Failed to delete customer", "error");
-    }
-  };
+  }
+    
 
   const filteredCustomers = customerData.filter((customer) =>
     customer.first_name.includes(searchTerm) ||
