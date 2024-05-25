@@ -7,7 +7,7 @@ import { InsightLoan } from '../../model/InsightLoan';
 import AccountCard from '../../components/AccountCard';
 import LoanCard from '../../components/LoanCard';
 
-const CustomerInfo = () => {
+const ManagerCustomerInfo = () => {
   const { customer_email } = useParams();
 
   const [totalBalance, setTotalBalance] = useState<number>(0);
@@ -95,4 +95,4 @@ const CustomerInfo = () => {
   );
 };
 
-export default CustomerInfo;
+export default ManagerCustomerInfo;

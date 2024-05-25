@@ -61,7 +61,7 @@ const handleDelete = async (accountId: string) => {
   };
 
   const handleClickCard = (customer_email: string) => {
-    window.location.href = "/staff/customers/" + customer_email;
+    window.location.href = "/manager/customers/" + customer_email;
 }
 
   useEffect(() => {
