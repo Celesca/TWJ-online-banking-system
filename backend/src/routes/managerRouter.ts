@@ -24,4 +24,4 @@ managerRouter.get('/bank-account', async (req: Request, res: Response) => {
     console.log(err);
     res.status(500).json(err);
   }
-  })
+});
