@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { WalletData } from "../../model/Wallet";
 import Swal, { SweetAlertIcon } from "sweetalert2";
 import axios from "axios";
+import TransactionCard from "../../components/TransactionCard";
 
 interface TransactionData {
   transaction_id: number;
@@ -16,7 +17,7 @@ interface TransactionData {
 
 const TransactionPage = () => {
     const [walletData, setWalletData] = useState<WalletData[]>([]);
-    const [selectedWallet, setSelectedWallet] = useState<number>(0);
+    const [, setSelectedWallet] = useState<number>(0);
     const [transactionData, setTransactionData] = useState<TransactionData[]>([]);
   
     const responseSwal = (title: string, text: string, icon: SweetAlertIcon) => {
@@ -30,32 +31,36 @@ const TransactionPage = () => {
     };
 
     const queryTransaction = async (account_id: string) => {
-        const response = await axios.get(
-            import.meta.env.VITE_SERVER_URI + "/api/transactions/" + account_id
-        );
-        if (response.data.length > 0) {
-            setTransactionData(response.data);
-        } else {
-            responseSwal("No transaction found", "", "error");
-        }
+      const response = await axios.get(
+        import.meta.env.VITE_SERVER_URI + "/api/transactions/" + account_id
+      );
+      console.log(response.data)
+      if (response.data.length > 0) {
+        setTransactionData(response.data);
+      } else {
+        setTransactionData([]);
+        responseSwal("No transaction found", "", "error");
+      }
     }
-  
+    
     const queryWallet = async (username: string) => {
       const response = await axios.get(
         import.meta.env.VITE_SERVER_URI + "/api/accounts/" + username
       );
       if (response.data.length > 0) {
-          setWalletData(response.data);
+        setWalletData(response.data);
+        // Call queryTransaction with the account_id of the first wallet
+        await queryTransaction(response.data[0].account_id.toString());
       } else {
         responseSwal("No wallet found", "", "error");
       }
     };
-  
-    const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    
+    const handleChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
       setSelectedWallet(parseInt(event.target.value));
-      queryTransaction(walletData[selectedWallet].account_id.toString());
+      await queryTransaction(walletData[parseInt(event.target.value)]?.account_id.toString());
     }
-  
+    
     useEffect(() => {
       const role = localStorage.getItem("role");
       if (role !== "customer") {
@@ -63,16 +68,16 @@ const TransactionPage = () => {
           window.location.href = "/";
         });
       }
+    
       queryWallet(localStorage.getItem("username") || "");
     }, []);
   
     return (
       <div className="bg-gradient-to-r from-indigo-500 homepage_container">
-        <div className="flex">
-            <div className="flex w-100vw h-24 p-4  text-white text-2xl">
-            Transaction ธุรกรรมการเงิน
-            </div>
-            <div className="mb-5 flex justify-center items-center">
+        <div className="flex w-100vw items-center justify-center header-container">
+        <h1 className="text-white text-3xl py-6 px-16">Transaction of account</h1>
+
+            <div className=" flex justify-center">
               <select
                 onChange={handleChange}
                 id="wallets"
@@ -81,7 +86,7 @@ const TransactionPage = () => {
                 {walletData.map((wallet, index) => {
                   return (
                     <option key={index} value={index}>
-                      {wallet.customer_username} - {wallet.account_type_name}
+                      {wallet.account_id} - {wallet.account_type_name}
                     </option>
                   );
                 })}
@@ -92,19 +97,18 @@ const TransactionPage = () => {
         {/* Display the Transactions */}
         <div className="flex flex-col">
             {transactionData.map((transaction, index) => {
+               if (transaction) {
                 return (
-                <div key={index} className="flex flex-row justify-between p-2">
-                    <div className="flex flex-col">
-                    <div className="text-sm">Transaction ID: {transaction.transaction_id}</div>
-                    <div className="text-sm">Amount: {transaction.amount}</div>
-                    <div className="text-sm">Transaction Date: {transaction.transaction_date}</div>
-                    <div className="text-sm">Transaction Type: {transaction.transaction_type_name}</div>
-                    <div className="text-sm">Payee: {transaction.Payee}</div>
-                    <div className="text-sm">From Account ID: {transaction.from_account_id}</div>
-                    <div className="text-sm">To Account ID: {transaction.to_account_id}</div>
-                    </div>
-                </div>
+                <TransactionCard key={index} transaction={transaction} />
                 );
+              }
+              else {
+                return (
+                  <div className="bg-[#7b68ca]">
+                    <h1 className="text-white text-center p-8 text-2xl">No transaction data</h1>
+                  </div>
+                )
+              }
             })}
         </div>
       </div>
