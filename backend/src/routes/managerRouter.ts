@@ -19,7 +19,16 @@ managerRouter.get('/bank-account', async (req: Request, res: Response) => {
   const sql_query = `SELECT * FROM account WHERE account_id = "0000000001"`; // Change account_id as needed
   try {
     const [results] = await connection.query(sql_query);
-    res.json(results);
+    const update_balance_query = `SELECT tt.update_bank_balance, SUM(tt.update_bank_balance * t.amount) AS update_balance
+    FROM transaction_tb t 
+    JOIN transaction_type tt 
+    ON t.transaction_type_id = tt.transaction_type_id
+    GROUP BY tt.update_bank_balance ORDER BY tt.update_bank_balance DESC`;
+    const [update_balance_results] = await connection.query(update_balance_query);
+    res.json({
+      balance: results,
+      update_balance: update_balance_results,
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);

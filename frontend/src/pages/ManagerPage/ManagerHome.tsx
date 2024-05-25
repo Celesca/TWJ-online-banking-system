@@ -15,6 +15,8 @@ export interface Card {
 const ManageHomePage = () => {
   const [walletData, setWalletData] = useState<WalletData | null>(null);
   const [hasWallet, setHasWallet] = useState<boolean>(false);
+  const [cashIn, setCashIn] = useState<number>(0);
+  const [cashOut, setCashOut] = useState<number>(0);
 
   const responseSwal = (title: string, icon: SweetAlertIcon) => {
     return Swal.fire({
@@ -29,8 +31,11 @@ const ManageHomePage = () => {
     try {
       const response = await axios.get(`${import.meta.env.VITE_SERVER_URI}/api/manager/bank-account`);
       console.log(response.data)
+      console.log(response.data.update_balance[0])
       if (response.data) {
-        setWalletData(response.data[0]);
+        setWalletData(response.data.balance[0]);
+        setCashIn(response.data.update_balance[0].update_balance);
+        setCashOut(response.data.update_balance[2].update_balance);
         setHasWallet(true);
       } else {
         responseSwal("No wallet found", "error");
@@ -78,6 +83,17 @@ const ManageHomePage = () => {
                 <div className="text-4xl font-semibold text-center pt-8">
                   ฿ {walletData?.balance ? walletData.balance.toFixed(2) : '0.00'}
                 </div>
+                <div className="mt-8 text-xl text-center">Cash in / Cash out for this month</div>
+                <div className="flex mt-6">
+                <div className="flex-1 flex-col text-center text-green-500">
+                    <h1>Cash In</h1>
+                    <p>฿ {cashIn.toFixed(2)}</p>
+                  </div>
+                  <div className="flex-1 flex-col text-center text-red-500">
+                    <h1>Cash Out</h1>
+                    <p>฿ {cashOut.toFixed(2)}</p>
+                  </div>
+                  </div>
               </div>
             ) : (
               <div className="text-center text-red-500">No wallet data available</div>
