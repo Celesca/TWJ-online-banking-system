@@ -146,10 +146,11 @@ staffRouter.put('/:email', async (req: Request, res: Response) => {
   const { email } = req.params;
   const { staff_salary, address } = req.body;
   try {
-    await connection.query(
-      `UPDATE staff SET staff_salary = ?, address = ? WHERE email = ?`,
-      [staff_salary, address, email],
-    );
+    await connection.query(`UPDATE staff SET staff_salary = ?, address = ? WHERE email = ?`, [
+      staff_salary,
+      address,
+      email,
+    ]);
     return res.status(200).json({ message: 'Staff updated' });
   } catch (err) {
     return res.status(500).json(err);
