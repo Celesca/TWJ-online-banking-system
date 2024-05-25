@@ -98,7 +98,7 @@ const TransferSummary = () => {
 
                 <div className="text-center mt-6">
                     <button
-                        onClick={() => window.location.href = '/'}
+                        onClick={() => window.location.href = '/home'}
                         className="bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded hover:bg-gray-400"
                     >
                         Return to Home
