@@ -50,11 +50,14 @@ managerRouter.get('/loan_types', async (req: Request, res: Response) => {
 
 managerRouter.put('/account_types/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { interest_rate } = req.body;
+  const { interest_rate, old_interest_rate, email } = req.body;
   const sql_query = `UPDATE account_type SET interest_rate = ? WHERE account_type_id = ?`;
   try {
     const [results] = await connection.query(sql_query, [interest_rate, id]);
-    res.json(results);
+    const history_query = `INSERT INTO interest_rate_change_history (entity_type, entity_id, old_interest_rate, new_interest_rate, staff_email) VALUES (?, ?, ?, ?, ?)`;
+    const [history_results] = await connection.query(history_query, ['account_type', id, old_interest_rate, interest_rate, email]);
+    console.log(history_results);
+    res.status(200).json(results);
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
@@ -63,11 +66,17 @@ managerRouter.put('/account_types/:id', async (req: Request, res: Response) => {
 
 managerRouter.put('/loan_types/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { interest_rate } = req.body;
+  const { old_interest_rate, interest_rate, email } = req.body;
+  console.log(req.body);
   const sql_query = `UPDATE loan_type SET interest_rate = ? WHERE loan_type_id = ?`;
   try {
-    const [results] = await connection.query(sql_query, [interest_rate, id]);
-    res.json(results);
+    await connection.query(sql_query, [interest_rate, id]);
+    const history_query = `INSERT INTO interest_rate_change_history (entity_type, entity_id, old_interest_rate, new_interest_rate, staff_email) VALUES (?, ?, ?, ?, ?)`;
+    const [history_results] = await connection.query(history_query, ['loan_type', id, old_interest_rate, interest_rate, email]);
+    console.log(history_results);
+    res.status(200).json({
+      history_results
+    });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);

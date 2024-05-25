@@ -58,13 +58,16 @@ const ManagerInterestInfo: React.FC = () => {
 
   const handleAccountTypeUpdate = async (id: number) => {
     try {
+      const email = localStorage.getItem('username');
+      const old_interest_rate = accountTypes.find(at => at.account_type_id === id)?.interest_rate;
       const interest_rate = updatedAccountRates[id];
-      const response = await axios.put(`${import.meta.env.VITE_SERVER_URI}/api/manager/account_types/${id}`, { interest_rate });
+      const response = await axios.put(`${import.meta.env.VITE_SERVER_URI}/api/manager/account_types/${id}`, { old_interest_rate, interest_rate, email });
       setAccountTypes(accountTypes.map(at => (at.account_type_id === id ? response.data : at)));
       responseSwal('Account interest rate updated', 'success');
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+      console.log(response.data);
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 1000);
     } catch (error) {
       console.error('Error updating account type interest rate:', error);
     }
@@ -72,8 +75,11 @@ const ManagerInterestInfo: React.FC = () => {
 
   const handleLoanTypeUpdate = async (id: number) => {
     try {
+      const email = localStorage.getItem('username');
+      const old_interest_rate = loanTypes.find(lt => lt.loan_type_id === id)?.interest_rate;
       const interest_rate = updatedLoanRates[id];
-      const response = await axios.put(`${import.meta.env.VITE_SERVER_URI}/api/manager/loan_types/${id}`, { interest_rate });
+      const response = await axios.put(`${import.meta.env.VITE_SERVER_URI}/api/manager/loan_types/${id}`, { old_interest_rate, interest_rate, email });
+      console.log(response.data);
       setLoanTypes(loanTypes.map(lt => (lt.loan_type_id === id ? response.data : lt)));
       responseSwal('Loan interest rate updated', 'success');
       setTimeout(() => {
