@@ -55,7 +55,13 @@ managerRouter.put('/account_types/:id', async (req: Request, res: Response) => {
   try {
     const [results] = await connection.query(sql_query, [interest_rate, id]);
     const history_query = `INSERT INTO interest_rate_change_history (entity_type, entity_id, old_interest_rate, new_interest_rate, staff_email) VALUES (?, ?, ?, ?, ?)`;
-    const [history_results] = await connection.query(history_query, ['account_type', id, old_interest_rate, interest_rate, email]);
+    const [history_results] = await connection.query(history_query, [
+      'account_type',
+      id,
+      old_interest_rate,
+      interest_rate,
+      email,
+    ]);
     console.log(history_results);
     res.status(200).json(results);
   } catch (err) {
@@ -72,10 +78,16 @@ managerRouter.put('/loan_types/:id', async (req: Request, res: Response) => {
   try {
     await connection.query(sql_query, [interest_rate, id]);
     const history_query = `INSERT INTO interest_rate_change_history (entity_type, entity_id, old_interest_rate, new_interest_rate, staff_email) VALUES (?, ?, ?, ?, ?)`;
-    const [history_results] = await connection.query(history_query, ['loan_type', id, old_interest_rate, interest_rate, email]);
+    const [history_results] = await connection.query(history_query, [
+      'loan_type',
+      id,
+      old_interest_rate,
+      interest_rate,
+      email,
+    ]);
     console.log(history_results);
     res.status(200).json({
-      history_results
+      history_results,
     });
   } catch (err) {
     console.log(err);
