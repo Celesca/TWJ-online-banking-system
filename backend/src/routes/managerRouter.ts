@@ -47,3 +47,29 @@ managerRouter.get('/loan_types', async (req: Request, res: Response) => {
     res.status(500).json(err);
   }
 });
+
+managerRouter.put('/account_types/:id', async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { interest_rate } = req.body;
+  const sql_query = `UPDATE account_type SET interest_rate = ? WHERE account_type_id = ?`;
+  try {
+    const [results] = await connection.query(sql_query, [interest_rate, id]);
+    res.json(results);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});
+
+managerRouter.put('/loan_types/:id', async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { interest_rate } = req.body;
+  const sql_query = `UPDATE loan_type SET interest_rate = ? WHERE loan_type_id = ?`;
+  try {
+    const [results] = await connection.query(sql_query, [interest_rate, id]);
+    res.json(results);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+});

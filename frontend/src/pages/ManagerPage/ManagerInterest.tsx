@@ -62,6 +62,9 @@ const ManagerInterestInfo: React.FC = () => {
       const response = await axios.put(`${import.meta.env.VITE_SERVER_URI}/api/manager/account_types/${id}`, { interest_rate });
       setAccountTypes(accountTypes.map(at => (at.account_type_id === id ? response.data : at)));
       responseSwal('Account interest rate updated', 'success');
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
       console.error('Error updating account type interest rate:', error);
     }
@@ -73,6 +76,9 @@ const ManagerInterestInfo: React.FC = () => {
       const response = await axios.put(`${import.meta.env.VITE_SERVER_URI}/api/manager/loan_types/${id}`, { interest_rate });
       setLoanTypes(loanTypes.map(lt => (lt.loan_type_id === id ? response.data : lt)));
       responseSwal('Loan interest rate updated', 'success');
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
       console.error('Error updating loan type interest rate:', error);
     }
