@@ -14,3 +14,14 @@ managerRouter.get('/customers', async (req: Request, res: Response) => {
     res.status(500).json(err);
   }
 });
+
+managerRouter.get('/bank-account', async (req: Request, res: Response) => {
+  const sql_query = `SELECT * FROM account WHERE account_id = "0000000001"`; // Change account_id as needed
+  try {
+    const [results] = await connection.query(sql_query);
+    res.json(results);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+  })
