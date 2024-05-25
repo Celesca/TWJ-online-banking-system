@@ -118,3 +118,14 @@ staffRouter.get('/', async (req: Request, res: Response) => {
     return res.status(500).json(err);
   }
 });
+
+// Delete staff by email
+staffRouter.delete('/:email', async (req: Request, res: Response) => {
+  const { email } = req.params;
+  try {
+    const [result] = await connection.query(`DELETE FROM staff WHERE email = ?`, [email]);
+    return res.status(200).json({ message: 'Staff deleted' });
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});
