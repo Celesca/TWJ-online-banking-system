@@ -36,3 +36,11 @@
 .card-container:nth-child(3) {
     background-color: #1bc4b6
 }
+
+.card-container:nth-child(4) {
+    background-color: rgb(2, 207, 2);
+}
+
+.card-container:nth-child(5) {
+    background-color: #FFD700;
+}

@@ -7,3 +7,7 @@
 .homepage_container {
     overflow-y: auto;
 }
+
+.card-container {
+    background-color: #f5f5f5;
+}

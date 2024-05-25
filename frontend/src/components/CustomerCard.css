@@ -1,6 +1,20 @@
+.edit-button:hover {
+    cursor: pointer;
+    background-color: #689bff;
+    transform: scale(1.01);
+    transition: all 0.1s ease;
+}
+
+.delete-button:hover {
+    cursor: pointer;
+    background-color: #ff6b6b;
+    transform: scale(1.01);
+    transition: all 0.1s ease;
+}
+
 .customer-card:hover {
     cursor: pointer;
-    background-color: #4080FF;
     transform: scale(1.01);
-    transition: all 0.3s ease;
+    transition: all 0.1s ease;
+    background-color: #f0f0f0;
 }

@@ -13,6 +13,13 @@ import LoanInfo from "../pages/LoanPage.tsx/LoanInfo";
 import TransferSummary from "../pages/TransferPage/TransferSummary";
 import ManagerCustomer from "../pages/ManagerPage/ManagerCustomer";
 import ManagerHome from "../pages/ManagerPage/ManagerHome";
+import ManagerCustomerInfo from "../pages/ManagerPage/ManagerCustomerInfo";
+import StaffTransactionPage from "../pages/Staff/StaffTransactionPage";
+import StaffHome from "../pages/Staff/StaffHome";
+import ManagerTransactionPage from "../pages/ManagerPage/ManagerTransactions";
+import ManagerStaff from "../pages/ManagerPage/ManagerStaff";
+import ManagerStaffInfo from "../pages/ManagerPage/ManagerStaffInfo";
+import ManagerInterest from "../pages/ManagerPage/ManagerInterest";
 
 export const router = createBrowserRouter([
     {
@@ -22,18 +29,25 @@ export const router = createBrowserRouter([
             { path: "login" , element: <LoginPage />},
             { path: "register" , element: <RegisterCustomerPage />},
             { path: "deposit" , element: <DepositPage/> },
-            { path: "transaction" , element: <TransactionPage/>},
+            { path: "transactions" , element: <TransactionPage/>},
             { path: "transfer", element: <TransferPage/>},
             { path: "transfer/review/:transactionId", element: <TransferSummary/>},
             { path: "home" , element: <HomePage/> },
             { path: "loan" , element: <LoanPage/> },
             { path: "loan/:loan_id/:customer_email", element: <LoanInfo/>},
             // Staff routes
+            { path: "staff/home", element: <StaffHome/>},
             { path: "staff/customers", element: <StaffCustomer/>},
             { path: "staff/customers/:customer_email", element: <CustomerInfo/>},
+            { path: "staff/transactions", element: <StaffTransactionPage/>},
             // Manager routes
             { path: "manager/home", element: <ManagerHome/>},
             { path: "manager/customers", element: <ManagerCustomer/>},
+            { path: "manager/staffs", element: <ManagerStaff/>},
+            { path: "manager/staffs/:staff_email", element: <ManagerStaffInfo/>},
+            { path: "manager/customers/:customer_email", element: <ManagerCustomerInfo/>},
+            { path: "manager/transactions", element: <ManagerTransactionPage/>},
+            { path: "manager/interests", element: <ManagerInterest/>}
         ]
     }
 ])

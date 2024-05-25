@@ -113,3 +113,15 @@ loanRouter.put('/pay/:loan_id', async (req: Request, res: Response) => {
     return res.status(500).json(err);
   }
 });
+
+// Delete the loan with the given loan_id
+loanRouter.delete('/:loan_id', async (req: Request, res: Response) => {
+  const { loan_id } = req.params;
+  const sql_query = `DELETE FROM loan WHERE loan_id = ?`;
+  try {
+    const [rows] = await connection.query(sql_query, [loan_id]);
+    return res.status(200).json(rows);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});

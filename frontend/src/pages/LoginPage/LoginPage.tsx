@@ -79,7 +79,7 @@ const LoginPage = () => {
         if (staffResponse.data.role === "Manager") {
           responseSwal("Login Success", "success").then(() => window.location.href = "/manager/home");
         } else {
-          responseSwal("Login Success", "success").then(() => window.location.href = "/staff/customers");
+          responseSwal("Login Success", "success").then(() => window.location.href = "/staff/home");
         }
       }
       else {

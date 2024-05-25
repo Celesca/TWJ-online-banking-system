@@ -118,3 +118,74 @@ customerRouter.get('/:email', async (req: Request, res: Response) => {
     res.status(500).json(err);
   }
 });
+
+// Update customer data
+customerRouter.put('/:email', async (req: Request, res: Response) => {
+  const { email } = req.params;
+  const { address, staff_email, black_listed, customer_salary } = req.body;
+  console.log('Request body:', req.body);
+
+  if (!address || !staff_email) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
+
+  try {
+    const [currentDataResult] = await connection.query(`SELECT * FROM customer WHERE email = ?`, [email]);
+    const currentData = Array.from(Object.values(currentDataResult))[0];
+    console.log('Current data:', currentData);
+
+    if (!currentData) {
+      return res.status(404).json({ message: 'Customer not found' });
+    }
+
+    const updateQuery = `UPDATE customer SET address = ?, staff_email = ?, black_listed = ?, customer_salary = ? WHERE email = ?`;
+    const [updateResult] = await connection.query(updateQuery, [
+      address,
+      staff_email,
+      black_listed,
+      customer_salary,
+      email,
+    ]);
+    const updatedData = Array.from(Object.values(updateResult));
+    console.log('Updated data:', updatedData);
+
+    const changed = updatedData[3]?.includes('Changed: 1');
+    if (changed) {
+      return res.status(200).json({ message: 'Customer updated successfully' });
+    } else {
+      return res.status(404).json({ message: 'Customer not found or no changes detected' });
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: 'Failed to update customer', error: err });
+  }
+});
+
+// Delete customer with email
+customerRouter.delete('/:email', async (req: Request, res: Response) => {
+  const { email } = req.params;
+  try {
+    const [currentDataResult] = await connection.query(`SELECT * FROM customer WHERE email = ?`, [email]);
+    const currentData = Array.from(Object.values(currentDataResult))[0];
+    console.log('Current data:', currentData);
+
+    if (!currentData) {
+      return res.status(404).json({ message: 'Customer not found' });
+    }
+
+    const deleteQuery = `DELETE FROM customer WHERE email = ?`;
+    const [deleteResult] = await connection.query(deleteQuery, [email]);
+    const deletedData = Array.from(Object.values(deleteResult));
+    console.log('Deleted data:', deletedData);
+
+    // Check if the delete operation was successful based on the result
+    if (deletedData && deletedData[4] > 0) {
+      return res.status(200).json({ message: 'Customer deleted successfully' });
+    } else {
+      return res.status(404).json({ message: 'Customer not found or no changes detected' });
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: 'Failed to delete customer', error: err });
+  }
+});

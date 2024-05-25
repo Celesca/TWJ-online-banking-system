@@ -99,3 +99,15 @@ CREATE TABLE IF NOT EXISTS loan (
     FOREIGN KEY (customer_email) REFERENCES customer(email) ON DELETE CASCADE ON UPDATE CASCADE
     FOREIGN KEY (loan_type_id) REFERENCES loan_type(loan_type_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS interest_rate_change_history (
+    change_id INT PRIMARY KEY AUTO_INCREMENT,
+    entity_type VARCHAR(30) NOT NULL,
+    entity_id VARCHAR(20) NOT NULL,
+    old_interest_rate DECIMAL(5,3),
+    new_interest_rate DECIMAL(5,3) NOT NULL,
+    change_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    staff_email VARCHAR(100) NOT NULL,
+    FOREIGN KEY (staff_email) REFERENCES staff(email),
+    CONSTRAINT check_entity_type CHECK (entity_type IN ('loan_type', 'account_type'))
+);

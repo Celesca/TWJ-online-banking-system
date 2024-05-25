@@ -1,12 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Swal, { SweetAlertIcon } from "sweetalert2";
-import { CustomerData } from "../../model/CustomerData";
-import "./Manager.css"
-import ManagerCustomerCard from "../../components/ManagerComponent/ManagerCustomerCard";
+import "./Manager.css";
+import ManagerStaffCard from "../../components/ManagerComponent/ManagerStaffCard";
+import { StaffInfoData } from "../../model/StaffInfoData";
 
-const ManagerCustomer = () => {
-  const [customerData, setCustomerData] = useState<CustomerData[]>([]);
+const ManagerStaff = () => {
+  const [staffData, setStaffData] = useState<StaffInfoData[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +28,7 @@ const handleDelete = async (email: string) => {
 
         try {
           // Example of delete request
-          const uri = `${import.meta.env.VITE_SERVER_URI}/api/customers/${email}`;
+          const uri = `${import.meta.env.VITE_SERVER_URI}/api/staffs/${email}`;
           await axios.delete(uri);
     
           responseSwal("Success", "Customer deleted successfully", "success");
@@ -43,23 +43,21 @@ const handleDelete = async (email: string) => {
       }
       }
     )
-
   }
-    
 
-  const filteredCustomers = customerData.filter((customer) =>
-    customer.first_name.includes(searchTerm) ||
-  customer.last_name.includes(searchTerm) ||
-  customer.email.includes(searchTerm) ||
-  customer.national_card_id.includes(searchTerm)
+  const filteredStaffs = staffData.filter((staff) =>
+    staff.first_name.includes(searchTerm) ||
+    staff.last_name.includes(searchTerm) ||
+    staff.email.includes(searchTerm) ||
+    staff.national_card_id.includes(searchTerm)
   );
 
-  const queryCustomer = async () => {
+  const queryStaff = async () => {
     const uri =
-      import.meta.env.VITE_SERVER_URI + "/api/manager/customers";
+      import.meta.env.VITE_SERVER_URI + "/api/staffs";
     const response = await axios.get(uri);
-    console.log(response.data);
-    setCustomerData(response.data);
+    console.log(response.data.staffs);
+    setStaffData(response.data.staffs);
   };
 
   const responseSwal = async (
@@ -77,8 +75,8 @@ const handleDelete = async (email: string) => {
     });
   };
 
-  const handleClickCard = (customer_email: string) => {
-    window.location.href = "/manager/customers/" + customer_email;
+  const handleClickCard = (staff_email: string) => {
+    window.location.href = "/manager/staffs/" + staff_email;
 }
 
   useEffect(() => {
@@ -94,7 +92,7 @@ const handleDelete = async (email: string) => {
         }, 1500);
       });
     }
-    queryCustomer();
+    queryStaff();
     
   }, []);
 
@@ -102,7 +100,7 @@ const handleDelete = async (email: string) => {
   return (
     <div className="homepage_container">
       <div className="flex w-100vw header-container">
-        <h1 className="text-white text-3xl py-6 px-16">Customers List</h1>
+        <h1 className="text-white text-3xl py-6 px-16">Staff List</h1>
       </div>
 
       <form className="max-w-md mx-auto mt-8">
@@ -134,7 +132,7 @@ const handleDelete = async (email: string) => {
             type="search"
             id="default-search"
             className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Search Customers ..."
+            placeholder="Search Staffs ..."
             required
             value={searchTerm}
             onChange={handleSearchChange}
@@ -144,12 +142,12 @@ const handleDelete = async (email: string) => {
       </form>
       <div className="flex justify-center">
         <div className="w-2/5 p-4">
-          {filteredCustomers.map((customer, index) => (
-            <ManagerCustomerCard
+          {filteredStaffs.map((staff, index) => (
+            <ManagerStaffCard
               key={index}
-              customer={customer}
+              staff={staff}
               onClickCard={handleClickCard}
-              onDelete={handleDelete} // Pass handleDelete as prop
+              onDelete={handleDelete}
             />
           ))}
         </div>
@@ -158,4 +156,4 @@ const handleDelete = async (email: string) => {
   );
 };
 
-export default ManagerCustomer;
+export default ManagerStaff;
