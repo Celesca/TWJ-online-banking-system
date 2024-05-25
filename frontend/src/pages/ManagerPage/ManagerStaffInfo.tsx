@@ -1,4 +1,3 @@
-// src/components/ManagerStaffInfo.tsx
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -54,7 +53,8 @@ const ManagerStaffInfo: React.FC = () => {
   }, [staff_email]);
 
   return (
-    <div className="p-8 bg-gray-100 rounded-lg homepage-container shadow-md">
+    <div>
+    <div className="p-8 bg-gray-100 rounded-lg shadow-md">
       <h1 className="text-3xl font-bold mb-4">
         {staffData?.first_name} {staffData?.last_name} | {staffData?.email}
       </h1>
@@ -106,6 +106,7 @@ const ManagerStaffInfo: React.FC = () => {
       >
         Update
       </button>
+    </div>
     </div>
   );
 };

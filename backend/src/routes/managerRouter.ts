@@ -26,9 +26,8 @@ managerRouter.get('/bank-account', async (req: Request, res: Response) => {
   }
 });
 
-
 managerRouter.get('/account_types', async (req: Request, res: Response) => {
-  const sql_query = `SELECT * FROM account_type`;
+  const sql_query = `SELECT * FROM account_type WHERE account_type_id != 0`;
   try {
     const [results] = await connection.query(sql_query);
     res.json(results);
