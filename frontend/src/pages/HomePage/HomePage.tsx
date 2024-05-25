@@ -90,7 +90,13 @@ const HomePage = () => {
           <div className="bg-white rounded-lg shadow-lg p-12">
             {hasWallet && (
               <>
+              <div className="text-end">
+                <Link to="/transactions">
+              <button className="p-2 rounded-lg bg-[#4048ff]">View Transaction</button>
+              </Link>
+              </div>
                 <h2 className="text-lg text-center font-semibold">Balance</h2>
+                
                 <div className="flex flex-col justify-center">
                   <div className="text-4xl font-semibold text-center pt-8">
                     ฿ {walletData[selectedWallet].balance.toFixed(2)}

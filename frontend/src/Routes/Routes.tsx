@@ -15,6 +15,7 @@ import ManagerCustomer from "../pages/ManagerPage/ManagerCustomer";
 import ManagerHome from "../pages/ManagerPage/ManagerHome";
 import ManagerCustomerInfo from "../pages/ManagerPage/ManagerCustomerInfo";
 import StaffTransactionPage from "../pages/Staff/StaffTransactionPage";
+import StaffHome from "../pages/Staff/StaffHome";
 
 export const router = createBrowserRouter([
     {
@@ -24,13 +25,14 @@ export const router = createBrowserRouter([
             { path: "login" , element: <LoginPage />},
             { path: "register" , element: <RegisterCustomerPage />},
             { path: "deposit" , element: <DepositPage/> },
-            { path: "transaction" , element: <TransactionPage/>},
+            { path: "transactions" , element: <TransactionPage/>},
             { path: "transfer", element: <TransferPage/>},
             { path: "transfer/review/:transactionId", element: <TransferSummary/>},
             { path: "home" , element: <HomePage/> },
             { path: "loan" , element: <LoanPage/> },
             { path: "loan/:loan_id/:customer_email", element: <LoanInfo/>},
             // Staff routes
+            { path: "staff/home", element: <StaffHome/>},
             { path: "staff/customers", element: <StaffCustomer/>},
             { path: "staff/customers/:customer_email", element: <CustomerInfo/>},
             { path: "staff/transactions", element: <StaffTransactionPage/>},
