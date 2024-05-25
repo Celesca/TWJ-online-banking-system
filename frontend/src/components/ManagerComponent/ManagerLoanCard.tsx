@@ -53,25 +53,37 @@ const ManagerLoanCard: React.FC<LoanCardProps> = ({ loan, onUpdate }) => {
   };
 
   const handleDelete = async () => {
-    try {
-      const response = await axios.delete(`${import.meta.env.VITE_SERVER_URI}/api/loans/${loan.loan_id}`);
-      if (response.status === 200) {
-        // Display a success message if the deletion was successful
-        responseSwal('Success', 'Loan deleted successfully', 'success');
-        setTimeout(() => {
-          // Reload the page after 1.5 seconds
-          window.location.reload();
-        }, 1500);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await axios.delete(`${import.meta.env.VITE_SERVER_URI}/api/loans/${loan.loan_id}`);
+          if (response.status === 200) {
+            // Display a success message if the deletion was successful
+            responseSwal('Success', 'Loan deleted successfully', 'success');
+            setTimeout(() => {
+              // Reload the page after 1.5 seconds
+              window.location.reload();
+            }, 1500);
 
-      } else {
-        // Display an error message if the deletion failed
-        responseSwal('Error', 'Failed to delete loan', 'error');
+          } else {
+            // Display an error message if the deletion failed
+            responseSwal('Error', 'Failed to delete loan', 'error');
+          }
+        } catch (error) {
+          console.error('Error deleting loan:', error);
+          // Display an error message if the deletion failed
+          responseSwal('Error', 'Failed to delete loan', 'error');
+        }
       }
-    } catch (error) {
-      console.error('Error deleting loan:', error);
-      // Display an error message if the deletion failed
-      responseSwal('Error', 'Failed to delete loan', 'error');
-    }
+    })
   };
 
   return (

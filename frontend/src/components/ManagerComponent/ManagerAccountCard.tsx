@@ -10,7 +10,7 @@ export interface InsightAccount {
 }
 
 import axios from 'axios';
-import { SweetAlertIcon } from 'sweetalert2';
+import Swal, { SweetAlertIcon } from 'sweetalert2';
 
 interface AccountCardProps {
   account: InsightAccount;
@@ -37,26 +37,39 @@ const ManagerAccountCard: React.FC<AccountCardProps> = ({ account, onUpdate }) =
   };
 
   const handleDelete = async () => {
-    // Send a DELETE request to the backend API
-    try {
-      const response = await axios.delete(`${import.meta.env.VITE_SERVER_URI}/api/accounts/${account.account_id}`);
-      if (response.status === 200) {
-        // Display a success message if the deletion was successful
-        responseSwal('Success', 'Account deleted successfully', 'success');
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will notbe able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await axios.delete(`${import.meta.env.VITE_SERVER_URI}/api/accounts/${account.account_id}`);
+          if (response.status === 200) {
+            // Display a success message if the deletion was successful
+            responseSwal('Success', 'Account deleted successfully', 'success');
 
-        setTimeout(() => {
-          window.location.reload();
-        }, 1500);
-        // onUpdate(deletedAccount);
-      } else {
-        // Display an error message if the deletion failed
-        responseSwal('Error', 'Failed to delete account', 'error');
+            setTimeout(() => {
+              window.location.reload();
+            }, 1500);
+            // onUpdate(deletedAccount);
+          } else {
+            // Display an error message if the deletion failed
+            responseSwal('Error', 'Failed to delete account', 'error');
+          }
+        } catch (error) {
+          console.error('Error deleting account:', error);
+          // Display an error message if the deletion failed
+          responseSwal('Error', 'Failed to delete account', 'error');
+        }
       }
-    } catch (error) {
-      console.error('Error deleting account:', error);
-      // Display an error message if the deletion failed
-      responseSwal('Error', 'Failed to delete account', 'error');
-    }
+    });
+
+   
   };
 
   const handleUpdate = async () => {
