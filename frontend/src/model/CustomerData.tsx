@@ -7,4 +7,8 @@ export interface CustomerData {
     customer_salary: number;
     address: string;
     account_id: string;
+    staff_email: string;
+    birth_date: string;
+    entry_date: string;
+    black_listed: boolean;
 }

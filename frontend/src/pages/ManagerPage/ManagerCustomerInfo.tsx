@@ -6,6 +6,7 @@ import { InsightAccount } from '../../model/InsightAccount';
 import { InsightLoan } from '../../model/InsightLoan';
 import AccountCard from '../../components/AccountCard';
 import LoanCard from '../../components/LoanCard';
+import CustomerSensitiveInfo from '../../components/CustomerSensitiveInfo';
 
 const ManagerCustomerInfo = () => {
   const { customer_email } = useParams();
@@ -56,6 +57,9 @@ const ManagerCustomerInfo = () => {
           {customerData?.first_name} {customerData?.last_name} |{' '}
           {customerData?.email}
         </h1>
+      </div>
+      <div className="w-1/2 mx-auto">
+        <CustomerSensitiveInfo customer={customerData} onUpdate={setCustomerData} />
       </div>
       <div className="flex flex-1 justify-evenly mx-12 my-8">
         <div className="account-container w-2/5">
