@@ -25,7 +25,6 @@ const ManagerLoanCard: React.FC<LoanCardProps> = ({ loan, onUpdate }) => {
     text: string,
     icon: SweetAlertIcon
   ) => {
-    
     Swal.fire({
       title: title,
       text: text,
@@ -51,7 +50,29 @@ const ManagerLoanCard: React.FC<LoanCardProps> = ({ loan, onUpdate }) => {
     } else {
       responseSwal('Error', 'Failed to update loan', 'error');
     }
-};
+  };
+
+  const handleDelete = async () => {
+    try {
+      const response = await axios.delete(`${import.meta.env.VITE_SERVER_URI}/api/loans/${loan.loan_id}`);
+      if (response.status === 200) {
+        // Display a success message if the deletion was successful
+        responseSwal('Success', 'Loan deleted successfully', 'success');
+        setTimeout(() => {
+          // Reload the page after 1.5 seconds
+          window.location.reload();
+        }, 1500);
+
+      } else {
+        // Display an error message if the deletion failed
+        responseSwal('Error', 'Failed to delete loan', 'error');
+      }
+    } catch (error) {
+      console.error('Error deleting loan:', error);
+      // Display an error message if the deletion failed
+      responseSwal('Error', 'Failed to delete loan', 'error');
+    }
+  };
 
   return (
     <div className="bg-gray-200 p-4 mb-4 rounded shadow-lg">
@@ -84,12 +105,18 @@ const ManagerLoanCard: React.FC<LoanCardProps> = ({ loan, onUpdate }) => {
         <span className="font-semibold">Current Loan :</span> ฿{loan.current_loan.toFixed(2)}
       </div>
       <div className="flex justify-end pr-8">
-      <button 
-        onClick={handleUpdate} 
-        className="text-white bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded-lg"
-      >
-        Fix
-      </button>
+        <button 
+          onClick={handleUpdate} 
+          className="text-white bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded-lg mr-2"
+        >
+          Update
+        </button>
+        <button 
+          onClick={handleDelete} 
+          className="text-white bg-red-500 hover:bg-red-700 px-4 py-2 rounded-lg"
+        >
+          Delete
+        </button>
       </div>
     </div>
   );

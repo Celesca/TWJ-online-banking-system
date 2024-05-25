@@ -177,7 +177,7 @@ customerRouter.delete('/:email', async (req: Request, res: Response) => {
     const [deleteResult] = await connection.query(deleteQuery, [email]);
     const deletedData = Array.from(Object.values(deleteResult));
     console.log('Deleted data:', deletedData);
-    
+
     // Check if the delete operation was successful based on the result
     if (deletedData && deletedData[4] > 0) {
       return res.status(200).json({ message: 'Customer deleted successfully' });

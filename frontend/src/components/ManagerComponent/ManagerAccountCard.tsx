@@ -82,14 +82,6 @@ const ManagerAccountCard: React.FC<AccountCardProps> = ({ account, onUpdate }) =
 
   return (
     <div className="bg-[#7b68ca] p-4 mb-4 rounded shadow-lg">
-      <div className="flex justify-end">
-        <button 
-          onClick={handleDelete} 
-          className="text-white bg-red-500 hover:bg-red-700 px-4 py-1 rounded-lg"
-        >
-          Delete
-        </button>
-      </div>
       <h2 className="font-bold mb-2">Account ID: {account.account_id}</h2>
       <div className="mb-2">
         <span className="font-semibold">Type :</span> {account.account_type_name}
@@ -121,10 +113,16 @@ const ManagerAccountCard: React.FC<AccountCardProps> = ({ account, onUpdate }) =
       <div className="flex justify-end pr-8">
       <button 
         onClick={handleUpdate} 
-        className="text-white bg-blue-500 hover:bg-blue-700 px-8 py-2 rounded-lg"
+        className="text-white mr-4 bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded-lg"
       >
         Update
       </button>
+        <button 
+          onClick={handleDelete} 
+          className="text-white bg-red-500 hover:bg-red-700 px-4 py-1 rounded-lg"
+        >
+          Delete
+        </button>
       </div>
     </div>
   );

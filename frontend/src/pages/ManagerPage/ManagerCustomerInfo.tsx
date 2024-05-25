@@ -4,7 +4,7 @@ import { useParams } from 'react-router';
 import { CustomerData } from '../../model/CustomerData';
 import { InsightAccount } from '../../model/InsightAccount';
 import { InsightLoan } from '../../model/InsightLoan';
-import CustomerSensitiveInfo from '../../components/CustomerSensitiveInfo';
+import CustomerSensitiveInfo from '../../components/ManagerComponent/CustomerSensitiveInfo';
 import ManagerAccountCard from '../../components/ManagerComponent/ManagerAccountCard';
 import ManagerLoanCard from '../../components/ManagerComponent/ManagerLoanCard';
 
@@ -60,7 +60,7 @@ const ManagerCustomerInfo = () => {
       </div>
       <div className="w-1/2 mx-auto">
         {customerData && (
-          <CustomerSensitiveInfo customer={customerData} onUpdate={setCustomerData as (updatedCustomer: CustomerData) => void} />
+          <CustomerSensitiveInfo customer={customerData} />
         )}
       </div>
       <div className="flex flex-1 justify-evenly mx-12 my-8">
@@ -87,7 +87,7 @@ const ManagerCustomerInfo = () => {
             <h1 className="text-white text-center text-3xl py-6 px-16">Loan</h1>
             {loanData.length > 0 ? (
               loanData.map((loan) => (
-                <ManagerLoanCard key={loan.loan_id} loan={loan} onUpdate={handleLoanUpdate} />
+                <ManagerLoanCard key={loan.loan_id} loan={loan} onUpdate={handleLoanUpdate}/>
               ))
             ) : (
               <div className="bg-[#5CCFC6]">

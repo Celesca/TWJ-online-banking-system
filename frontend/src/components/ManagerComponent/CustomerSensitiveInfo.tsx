@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { SweetAlertIcon } from 'sweetalert2';
-import { StaffData } from '../model/StaffData';
+import { StaffData } from '../../model/StaffData';
 
 interface CustomerData {
   email: string;
@@ -14,10 +14,9 @@ interface CustomerData {
 
 interface CustomerSensitiveInfoProps {
   customer: CustomerData;
-  onUpdate: (updatedCustomer: CustomerData) => void;
 }
 
-const CustomerSensitiveInfo: React.FC<CustomerSensitiveInfoProps> = ({ customer, onUpdate }) => {
+const CustomerSensitiveInfo: React.FC<CustomerSensitiveInfoProps> = ({ customer}) => {
   const [address, setAddress] = useState(customer.address);
   const [staffEmail, setStaffEmail] = useState(customer.staff_email);
   const [customerSalary, setCustomerSalary] = useState(customer.customer_salary);
@@ -63,15 +62,14 @@ const CustomerSensitiveInfo: React.FC<CustomerSensitiveInfoProps> = ({ customer,
       customer_salary: customerSalary,
       black_listed: blackListed
     };
-
-    // Update the state in the parent component
-    onUpdate(updatedCustomer);
+    
 
     // Send the update to the API
     try {
       const response = await axios.put(`${import.meta.env.VITE_SERVER_URI}/api/customers/${customer.email}`, updatedCustomer);
       if (response.status === 200) {
         responseSwal('Success', 'Customer updated successfully', 'success');
+        
       } else {
         responseSwal('Error', 'Failed to update customer', 'error');
       }
