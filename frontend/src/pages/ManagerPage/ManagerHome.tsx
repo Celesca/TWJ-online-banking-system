@@ -4,6 +4,7 @@ import Swal, { SweetAlertIcon } from "sweetalert2";
 import { WalletData } from "../../model/Wallet"; // Ensure correct path
 import { Link } from "react-router-dom";
 import "./Manager.css";
+import { StaffInfoData } from "../../model/StaffInfoData";
 
 export interface Card {
   link: string;
@@ -14,6 +15,7 @@ export interface Card {
 
 const ManageHomePage = () => {
   const [walletData, setWalletData] = useState<WalletData | null>(null);
+  const [staffData, setStaffData] = useState<StaffInfoData | null>(null);
   const [hasWallet, setHasWallet] = useState<boolean>(false);
   const [cashIn, setCashIn] = useState<number>(0);
   const [cashOut, setCashOut] = useState<number>(0);
@@ -27,13 +29,14 @@ const ManageHomePage = () => {
     });
   };
 
-  const queryBankWallet = async () => {
+  const queryBankWallet = async (email: string) => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_SERVER_URI}/api/manager/bank-account`);
+      const response = await axios.get(`${import.meta.env.VITE_SERVER_URI}/api/manager/bank-account/${email}`);
       console.log(response.data)
       console.log(response.data.update_balance[0])
       if (response.data) {
         setWalletData(response.data.balance[0]);
+        setStaffData(response.data.staff[0]);
         setCashIn(response.data.update_balance[0].update_balance);
         setCashOut(response.data.update_balance[2].update_balance);
         setHasWallet(true);
@@ -52,7 +55,7 @@ const ManageHomePage = () => {
     document.title = "TWJ Online Banking - Home";
     const username = localStorage.getItem("username");
     if (username) {
-      queryBankWallet();
+      queryBankWallet(username);
     } else {
       responseSwal("Please login first", "error").then(
         () => (window.location.href = "/login")
@@ -72,10 +75,12 @@ const ManageHomePage = () => {
   return (
     <div className="bg-indigo-500 homepage_container pt-8 px-16">
       <header className="text-greetings text-4xl p-4">
-        <h1 className="text-dark pb-1">TWJ Online Control Panel</h1>
+        {staffData && (
+          <h1 className="text-dark pb-1">Welcome, {staffData.first_name} {staffData.last_name}</h1>
+        )}
       </header>
       <div className="flex">
-        <div className="w-1/2 p-4 mt-12 balance-container">
+        <div className="w-1/2 p-4 mt-4 balance-container">
           <div className="bg-white rounded-lg shadow-lg p-12">
             <h2 className="text-lg text-center font-semibold">Bank Balance</h2>
             {hasWallet && walletData ? (

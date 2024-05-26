@@ -15,7 +15,8 @@ managerRouter.get('/customers', async (req: Request, res: Response) => {
   }
 });
 
-managerRouter.get('/bank-account', async (req: Request, res: Response) => {
+managerRouter.get('/bank-account/:email', async (req: Request, res: Response) => {
+  const { email } = req.params;
   const sql_query = `SELECT * FROM account WHERE account_id = "0000000001"`; // Change account_id as needed
   try {
     const [results] = await connection.query(sql_query);
@@ -25,9 +26,12 @@ managerRouter.get('/bank-account', async (req: Request, res: Response) => {
     ON t.transaction_type_id = tt.transaction_type_id
     GROUP BY tt.update_bank_balance ORDER BY tt.update_bank_balance DESC`;
     const [update_balance_results] = await connection.query(update_balance_query);
+    const staff_query = `SELECT * FROM staff WHERE email = ?`;
+    const [staff_results] = await connection.query(staff_query, [email]);
     res.json({
       balance: results,
       update_balance: update_balance_results,
+      staff: staff_results,
     });
   } catch (err) {
     console.log(err);

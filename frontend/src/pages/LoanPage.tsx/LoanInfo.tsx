@@ -14,6 +14,7 @@ const LoanInfo = () => {
   const [loanDetail, setLoanDetail] = useState<LoanDetail>();
   const [staffInfo, setStaffInfo] = useState<StaffData>();
   const [customerInfo, setCustomerInfo] = useState<CustomerData>();
+  const [transactionCount, setTransactionCount] = useState<number>(0);
 
   // Wallet
   const [walletData, setWalletData] = useState<WalletData[]>([]);
@@ -70,6 +71,12 @@ const LoanInfo = () => {
     setCustomerInfo(customer.data.users[0]);
   }
 
+  const queryTransactionCount = async (account_id: string) => {
+    const uri = import.meta.env.VITE_SERVER_URI + "/api/transactions/count/" + account_id;
+    const response = await axios.get(uri);
+    setTransactionCount(response.data[0].count);
+  }
+
   const queryLoanInfo = async (loan_id: string) => {
     const uri = import.meta.env.VITE_SERVER_URI + "/api/loans/info/" + loan_id;
     const response = await axios.get(uri);
@@ -91,11 +98,18 @@ const LoanInfo = () => {
       console.log(response.data);
       setSelectedWallet(0);
       setHasWallet(true);
+      
     } else {
       responseSwal("No wallet found", "Create wallet first", "error");
       setHasWallet(false);
     }
   };
+
+  useEffect(() => {
+    if (walletData.length > 0) {
+      queryTransactionCount(walletData[selectedWallet].account_id);
+    }
+  }, [selectedWallet]);
 
   useEffect(() => {
     const username = localStorage.getItem("username");
@@ -108,7 +122,7 @@ const LoanInfo = () => {
   }, []);
 
   return (
-    <div className="homepage_container">
+    <div className="homepage_container pb-24">
       <div className="flex w-100vw header-container">
         <h1 className="text-white text-3xl py-6 px-16">Loan Application</h1>
       </div>
@@ -131,7 +145,7 @@ const LoanInfo = () => {
                 Interest Period: {loanDetail?.interest_period} months
               </p>
               <p className="font-light text-sm text-gray-700 dark:text-gray-400">
-                Note: Requesting an amount not more than 2 times your salary.
+                <span className="text-red-500">Note: Requesting an transaction statement more than 10. </span>
                 Note: Interest rates are between 24% per year, calculated every
                 month.
               </p>
@@ -169,8 +183,8 @@ const LoanInfo = () => {
                   <p className="mb-3 mt-3 font-normal text-sm text-white">
                     Name: {customerInfo?.first_name} {customerInfo?.last_name}
                   </p>
-                  <p className="mb-3 font-normal text-sm text-white">
-                    Address: {customerInfo?.address}
+                  <p className="mb-3 font-normal text-sm text-[#56ffd8]">
+                    Transaction Statements: {transactionCount || 0}
                   </p>
                   <p className="mb-3 font-normal text-sm text-white">
                     Salary : {customerInfo?.customer_salary || '-'}
