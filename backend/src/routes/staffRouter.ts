@@ -156,3 +156,15 @@ staffRouter.put('/:email', async (req: Request, res: Response) => {
     return res.status(500).json(err);
   }
 });
+
+// Query histories by staff email
+staffRouter.get('/histories', async (req: Request, res: Response) => {
+  try {
+    const [rows] = await connection.query(`SELECT * FROM
+    interest_rate_change_history h JOIN staff s ON h.staff_email = s.email
+    WHERE h.entity_type IN ('account', 'loan')`);
+    return res.status(200).json(rows);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});

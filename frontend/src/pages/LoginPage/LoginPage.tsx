@@ -25,7 +25,7 @@ const LoginPage = () => {
         showConfirmButton: false,
         timer: 1500
       })
-      setTimeout(() => window.location.href = "/staff/customers", 1500)
+      setTimeout(() => window.location.href = "/staff/home", 1500)
     }
   }, [])
 

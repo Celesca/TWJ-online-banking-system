@@ -33,7 +33,14 @@ const AccountCard: React.FC<AccountCardProps> = ({ account, onUpdate }) => {
         return;
         }
 
-    const updatedAccount = { ...account, interest_rate_change: interestRateChange, status };
+        const updatedAccount = { 
+          ...account, 
+          interest_rate_change: interestRateChange, 
+          status, 
+          old_interest_rate: account.interest_rate_change, // Keep the old interest rate
+          staff_email: localStorage.getItem('username')
+        };
+      
 
     // Update the state in the parent component
     onUpdate(updatedAccount);

@@ -71,7 +71,7 @@ VALUES  ('0000000001',0,10000000.00,"RishW@mail.com",'2024-01-01 12:18:59',NULL,
 
 -- Loan
 INSERT INTO loan 
-(loan_type_id, loan_amount, current_loan, created_at, closed_date, npl, customer_email, interest_rate_change)
+(loan_id, loan_type_id, loan_amount, current_loan, created_at, closed_date, npl, customer_email, interest_rate_change)
 VALUES 
 (1, 30000.00, 0.00, "2024-02-15 10:13:47", "2024-04-15 12:59:35", 0, "Kondeeja@mil.com", 0.000),
 (1, 20000.00, 21728.33, "2024-02-16 16:26:24", NULL, 1, "Joneja@mail.com", 1.750),
