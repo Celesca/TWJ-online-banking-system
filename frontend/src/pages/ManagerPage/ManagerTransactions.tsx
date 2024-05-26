@@ -14,9 +14,17 @@ interface TransactionData {
   to_account_id: string;
 }
 
+interface SummaryData {
+  transaction_type_id: number;
+  transaction_type_name: string;
+  transaction_count: number;
+}
+
 const ManagerTransactionPage = () => {
   const [transactionData, setTransactionData] = useState<TransactionData[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [minData, setMinData] = useState<SummaryData>();
+  const [maxData, setMaxData] = useState<SummaryData>();
 
   const responseSwal = (title: string, text: string, icon: SweetAlertIcon) => {
     return Swal.fire({
@@ -28,12 +36,28 @@ const ManagerTransactionPage = () => {
     });
   };
 
+  const queryFrequencySummary = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_SERVER_URI}/api/manager/summary_frequency`
+      );
+      if (response.data) {
+        setMinData(response.data.min[0]);
+        setMaxData(response.data.max[0]);
+      } else {
+        responseSwal("No frequency data found", "", "error");
+      }
+    } catch (error) {
+      console.error("Error fetching frequency data:", error);
+      responseSwal("Error", "Failed to fetch frequency data", "error");
+    }
+  }
+
   const queryTransactions = async () => {
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_SERVER_URI}/api/transactions`
       );
-      console.log(response.data);
       if (response.data.length > 0) {
         setTransactionData(response.data);
       } else {
@@ -54,6 +78,7 @@ const ManagerTransactionPage = () => {
       });
     } else {
       queryTransactions();
+      queryFrequencySummary();
     }
   }, []);
 
@@ -69,9 +94,24 @@ const ManagerTransactionPage = () => {
   );
 
   return (
-    <div className="bg-gradient-to-r from-indigo-500 homepage_container">
+    <div className="bg-gradient-to-r from-indigo-500 homepage_container pb-24">
       <div className="flex w-100vw items-center justify-center header-container">
         <h1 className="text-white text-3xl py-6 px-16">All Transactions</h1>
+      </div>
+
+      <div className="bg-[#6a79ff] p-8">
+        <div className="flex flex-col md:flex-row items-center justify-center">
+          <div className="flex flex-col items-center md:items-start md:pl-16">
+            <h2 className="text-white text-lg">Min Frequency Transaction</h2>
+            <p className="text-white text-sm">Transaction Type: {minData?.transaction_type_name}</p>
+            <p className="text-white text-sm">Transaction Count: {minData?.transaction_count}</p>
+          </div>
+          <div className="flex flex-col items-center md:items-start md:pl-16">
+            <h2 className="text-white text-lg">Max Frequency Transaction</h2>
+            <p className="text-white text-sm">Transaction Type: {maxData?.transaction_type_name}</p>
+            <p className="text-white text-sm">Transaction Count: {maxData?.transaction_count}</p>
+          </div>
+        </div>
       </div>
 
       <form className="max-w-md mx-auto mt-8">

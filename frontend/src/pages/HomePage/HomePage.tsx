@@ -13,6 +13,8 @@ const HomePage = () => {
   const [walletData, setWalletData] = useState<WalletData[]>([]);
   const [hasWallet, setHasWallet] = useState<boolean>(false);
   const [selectedWallet, setSelectedWallet] = useState<number>(0);
+  const [cashIn, setCashIn] = useState<number>(0);
+  const [cashOut, setCashOut] = useState<number>(0);
 
   const responseSwal = (title: string, icon: SweetAlertIcon) => {
     return Swal.fire({
@@ -23,13 +25,21 @@ const HomePage = () => {
     });
   };
 
+    const querySummary = async (account_id: string) => {
+    const response = await axios.get(
+      import.meta.env.VITE_SERVER_URI + "/api/transactions/balance_summary/" + account_id
+    );
+    console.log(response.data.cash_in[0].cash_in);
+    setCashIn(response.data.cash_in[0].cash_in);
+    setCashOut(response.data.cash_out[0].cash_out);
+  }
+
   const queryWallet = async (email: string) => {
     const response = await axios.get(
       import.meta.env.VITE_SERVER_URI + "/api/accounts/" + email
     );
     if (response.data.length > 0) {
       setWalletData(response.data);
-      console.log(response.data);
       setSelectedWallet(0);
       setHasWallet(true);
     } else {
@@ -62,6 +72,11 @@ const HomePage = () => {
   };
 
   useEffect(() => {
+    const current_account_id = walletData[selectedWallet]?.account_id;
+    querySummary(current_account_id ? current_account_id.toString() : "");
+  }, [selectedWallet, queryWallet])
+
+  useEffect(() => {
     document.title = "TWJ Online Banking - Home";
     // Check the balance of the account
     const username = localStorage.getItem("username");
@@ -77,7 +92,7 @@ const HomePage = () => {
   const cards = Cards;
 
   return (
-    <div className="bg-indigo-500 homepage_container pt-12 px-16">
+    <div className="bg-indigo-500 homepage_container pt-12 px-16 pb-24">
       <header className="text-greetings text-4xl p-4">
         Hello,{" "}
         {walletData[selectedWallet]
@@ -86,13 +101,13 @@ const HomePage = () => {
         . <span>what to do today? </span>
       </header>
       <div className="flex">
-        <div className="w-1/2 p-4 mt-12 balance-container">
+        <div className="w-1/2 p-4 balance-container">
           <div className="bg-white rounded-lg shadow-lg p-12">
             {hasWallet && (
               <>
               <div className="text-end">
                 <Link to="/transactions">
-              <button className="p-2 rounded-lg bg-[#4048ff]">View Transaction</button>
+              <button className="p-2 rounded-lg text-white bg-[#4048ff]">View Transaction</button>
               </Link>
               </div>
                 <h2 className="text-lg text-center font-semibold">Balance</h2>
@@ -101,7 +116,18 @@ const HomePage = () => {
                   <div className="text-4xl font-semibold text-center pt-8">
                     ฿ {walletData[selectedWallet].balance.toFixed(2)}
                   </div>
-                </div>
+                  <div className="mt-8 text-xl text-center">Cash in / Cash out for this month</div>
+                <div className="flex mt-6">
+                <div className="flex-1 flex-col text-center text-green-500">
+                    <h1>Cash In</h1>
+                    <p>฿ {cashIn?.toFixed(2) || 0}</p>
+                  </div>
+                  <div className="flex-1 flex-col text-center text-red-500">
+                    <h1>Cash Out</h1>
+                    <p>฿ {cashOut?.toFixed(2) || 0}</p>
+                  </div>
+                  </div>
+              </div>
                 <SelectWallet
                   setSelectedWallet={setSelectedWallet}
                   walletData={walletData}

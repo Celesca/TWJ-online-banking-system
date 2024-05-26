@@ -19,6 +19,7 @@ const TransactionPage = () => {
     const [walletData, setWalletData] = useState<WalletData[]>([]);
     const [, setSelectedWallet] = useState<number>(0);
     const [transactionData, setTransactionData] = useState<TransactionData[]>([]);
+    const [transactionCount, setTransactionCount] = useState<number>(0);
   
     const responseSwal = (title: string, text: string, icon: SweetAlertIcon) => {
       return Swal.fire({
@@ -34,9 +35,13 @@ const TransactionPage = () => {
       const response = await axios.get(
         import.meta.env.VITE_SERVER_URI + "/api/transactions/" + account_id
       );
-      console.log(response.data)
+      const count_response = await axios.get(
+        import.meta.env.VITE_SERVER_URI + "/api/transactions/count/" + account_id
+      );
+
       if (response.data.length > 0) {
         setTransactionData(response.data);
+        setTransactionCount(count_response.data[0].count);
       } else {
         setTransactionData([]);
         responseSwal("No transaction found", "", "error");
@@ -73,7 +78,7 @@ const TransactionPage = () => {
     }, []);
   
     return (
-      <div className="bg-gradient-to-r from-indigo-500 homepage_container">
+      <div className="bg-gradient-to-r from-indigo-500 homepage_container pb-24">
         <div className="flex w-100vw items-center justify-center header-container">
         <h1 className="text-white text-3xl py-6 px-16">Transaction of account</h1>
 
@@ -93,6 +98,9 @@ const TransactionPage = () => {
               </select>
             </div>
     
+        </div>
+        <div>
+          <h1 className="text-dark text-center pt-8 text-2xl">Total number of transactions: {transactionCount}</h1>
         </div>
         {/* Display the Transactions */}
         <div className="flex flex-col">

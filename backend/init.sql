@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS transaction_tb (
 );
 
 CREATE TABLE IF NOT EXISTS loan (
-    loan_id int PRIMARY KEY UNIQUE AUTO_INCREMENT NOT NULL,
+    loan_id int AUTO_INCREMENT PRIMARY KEY UNIQUE NOT NULL,
     loan_type_id int NOT NULL,
     loan_amount DOUBLE(10,2) NOT NULL,
     current_loan DOUBLE(10,2) NOT NULL,
@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS loan (
     npl boolean DEFAULT false NOT NULL,
     customer_email varchar(30) NOT NULL,
     interest_rate_change DOUBLE(10,2) DEFAULT 0 NOT NULL,
-    FOREIGN KEY (customer_email) REFERENCES customer(email) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (customer_email) REFERENCES customer(email) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (loan_type_id) REFERENCES loan_type(loan_type_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -109,5 +109,5 @@ CREATE TABLE IF NOT EXISTS interest_rate_change_history (
     change_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     staff_email VARCHAR(100) NOT NULL,
     FOREIGN KEY (staff_email) REFERENCES staff(email),
-    CONSTRAINT check_entity_type CHECK (entity_type IN ('loan_type', 'account_type'))
+    CONSTRAINT check_entity_type CHECK (entity_type IN ('loan_type', 'account_type', 'account', 'loan'))
 );

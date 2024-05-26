@@ -1,21 +1,11 @@
 import { useEffect, useState } from "react";
 import Swal, { SweetAlertIcon } from "sweetalert2";
 import axios from "axios";
-import TransactionCard from "../../components/TransactionCard";
+import { HistoryData } from "../../model/HistoryData";
+import HistoryCard from "../../components/HistoryCard";
 
-interface TransactionData {
-  transaction_id: number;
-  amount: number;
-  transaction_date: string;
-  transaction_type_name: string;
-  update_bank_balance: number;
-  Payee: string;
-  from_account_id: string;
-  to_account_id: string;
-}
-
-const StaffTransactionPage = () => {
-  const [transactionData, setTransactionData] = useState<TransactionData[]>([]);
+const StaffHistory = () => {
+  const [historyData, setHistoryData] = useState<HistoryData[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   const responseSwal = (title: string, text: string, icon: SweetAlertIcon) => {
@@ -28,16 +18,16 @@ const StaffTransactionPage = () => {
     });
   };
 
-  const queryTransactions = async () => {
+  const queryHistories = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_SERVER_URI}/api/transactions`
+        `${import.meta.env.VITE_SERVER_URI}/api/histories`
       );
       console.log(response.data);
       if (response.data.length > 0) {
-        setTransactionData(response.data);
+        setHistoryData(response.data);
       } else {
-        setTransactionData([]);
+        setHistoryData([]);
         responseSwal("No transactions found", "", "error");
       }
     } catch (error) {
@@ -53,7 +43,7 @@ const StaffTransactionPage = () => {
         window.location.href = "/";
       });
     } else {
-      queryTransactions();
+      queryHistories();
     }
   }, []);
 
@@ -61,17 +51,16 @@ const StaffTransactionPage = () => {
     setSearchTerm(event.target.value);
   };
 
-  const filteredTransactions = transactionData.filter((transaction) =>
-    transaction.transaction_type_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    transaction.Payee?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    transaction.from_account_id?.toString().includes(searchTerm) ||
-    transaction.to_account_id?.toString().includes(searchTerm)
+  const filteredHistories = historyData.filter((history) =>
+    history.entity_type?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    history.entity_id?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    history.staff_email?.toString().includes(searchTerm)
   );
 
   return (
     <div className="bg-gradient-to-r from-indigo-500 homepage_container pb-24">
       <div className="flex w-100vw items-center justify-center header-container">
-        <h1 className="text-white text-3xl py-6 px-16">All Transactions</h1>
+        <h1 className="text-white text-3xl py-6 px-16">All History Changes</h1>
       </div>
 
       <form className="max-w-md mx-auto mt-8">
@@ -103,7 +92,7 @@ const StaffTransactionPage = () => {
             type="search"
             id="default-search"
             className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Search Transactions ..."
+            placeholder="Search Histories ..."
             required
             value={searchTerm}
             onChange={handleSearchChange}
@@ -113,9 +102,9 @@ const StaffTransactionPage = () => {
 
       {/* Display the Transactions */}
       <div className="flex flex-col">
-        {filteredTransactions.length > 0 ? (
-          filteredTransactions.map((transaction, index) => (
-            <TransactionCard key={index} transaction={transaction} />
+        {filteredHistories.length > 0 ? (
+          filteredHistories.map((history, index) => (
+            <HistoryCard key={index} history={history} />
           ))
         ) : (
           <div className="bg-[#7b68ca]">
@@ -127,4 +116,4 @@ const StaffTransactionPage = () => {
   );
 };
 
-export default StaffTransactionPage;
+export default StaffHistory;

@@ -49,7 +49,7 @@ const StaffCustomer = () => {
 
   useEffect(() => {
     const role = localStorage.getItem("role");
-    if (role !== "staff") {
+    if (role?.toLowerCase() !== "staff") {
       responseSwal(
         "You are not authorized to access this page",
         "We are redirecting you to the homepage",
@@ -83,7 +83,7 @@ const StaffCustomer = () => {
   }, [staffEmail]);
 
   return (
-    <div className="homepage_container">
+    <div className="homepage_container pb-24">
       <div className="flex w-100vw header-container">
         <h1 className="text-white text-3xl py-6 px-16">Customers List</h1>
       </div>

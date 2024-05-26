@@ -15,7 +15,8 @@ managerRouter.get('/customers', async (req: Request, res: Response) => {
   }
 });
 
-managerRouter.get('/bank-account', async (req: Request, res: Response) => {
+managerRouter.get('/bank-account/:email', async (req: Request, res: Response) => {
+  const { email } = req.params;
   const sql_query = `SELECT * FROM account WHERE account_id = "0000000001"`; // Change account_id as needed
   try {
     const [results] = await connection.query(sql_query);
@@ -25,9 +26,12 @@ managerRouter.get('/bank-account', async (req: Request, res: Response) => {
     ON t.transaction_type_id = tt.transaction_type_id
     GROUP BY tt.update_bank_balance ORDER BY tt.update_bank_balance DESC`;
     const [update_balance_results] = await connection.query(update_balance_query);
+    const staff_query = `SELECT * FROM staff WHERE email = ?`;
+    const [staff_results] = await connection.query(staff_query, [email]);
     res.json({
       balance: results,
       update_balance: update_balance_results,
+      staff: staff_results,
     });
   } catch (err) {
     console.log(err);
@@ -101,5 +105,31 @@ managerRouter.put('/loan_types/:id', async (req: Request, res: Response) => {
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
+  }
+});
+
+// Get the min and max frequency used of all
+managerRouter.get('/summary_frequency/', async (req: Request, res: Response) => {
+  const min_query = `SELECT tt.transaction_type_id, tt.transaction_type_name, COUNT(*) AS transaction_count
+  FROM transaction_tb t 
+  JOIN transaction_type tt ON t.transaction_type_id = tt.transaction_type_id
+  GROUP BY tt.transaction_type_id, tt.transaction_type_name
+  ORDER BY transaction_count ASC
+  LIMIT 1;`;
+  const max_query = `SELECT tt.transaction_type_id, tt.transaction_type_name, COUNT(*) AS transaction_count
+  FROM transaction_tb t 
+  JOIN transaction_type tt ON t.transaction_type_id = tt.transaction_type_id
+  GROUP BY tt.transaction_type_id, tt.transaction_type_name
+  ORDER BY transaction_count DESC
+  LIMIT 1;`;
+  try {
+    const [min_rows] = await connection.query(min_query);
+    const [max_rows] = await connection.query(max_query);
+    return res.status(200).json({
+      min: min_rows,
+      max: max_rows,
+    });
+  } catch (err) {
+    return res.status(500).json(err);
   }
 });
