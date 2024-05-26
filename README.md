@@ -4,6 +4,23 @@ TWJ Online Banking System is the project from CPE241 Database Systems.
 
 ## Feature
 
+* Customer
+  - Deposit to account
+  - Transfer money
+  - Loaning
+ 
+* Staff
+  - Change Interest Rate of account and loan of customer
+  - View all transactions
+ 
+* Manager
+  - Update / Delete Customer
+  - Update / Delete Staff
+  - Change interest rate of account types and loan types
+  - Change interest rate of account and loan
+  - View all transactions
+  - View change history
+
 ## Installation
 
 
