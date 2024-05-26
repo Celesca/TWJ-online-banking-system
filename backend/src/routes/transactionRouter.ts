@@ -72,7 +72,7 @@ transactionRouter.get('/balance_summary/:account_id', async (req: Request, res: 
     const [cash_out_rows] = await connection.query(cash_out_query, [account_id]);
     return res.status(200).json({
       cash_in: cash_in_rows,
-      cash_out: cash_out_rows
+      cash_out: cash_out_rows,
     });
   } catch (err) {
     return res.status(500).json(err);
