@@ -98,7 +98,7 @@ const handleDelete = async (email: string) => {
 
 
   return (
-    <div className="homepage_container">
+    <div className="homepage_container pb-24">
       <div className="flex w-100vw header-container">
         <h1 className="text-white text-3xl py-6 px-16">Staff List</h1>
       </div>

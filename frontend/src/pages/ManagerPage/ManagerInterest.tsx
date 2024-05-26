@@ -90,7 +90,7 @@ const ManagerInterestInfo: React.FC = () => {
   };
 
   return (
-    <div className="flex p-8 bg-gray-100 rounded-lg homepage_container shadow-md">
+    <div className="flex p-8 bg-gray-100 rounded-lg homepage_container shadow-md pb-24">
       <div className="w-1/2 p-4">
         <h2 className="text-2xl font-bold mb-4">Account Types</h2>
         <div>

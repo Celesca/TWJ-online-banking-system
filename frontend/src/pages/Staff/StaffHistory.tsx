@@ -58,7 +58,7 @@ const StaffHistory = () => {
   );
 
   return (
-    <div className="bg-gradient-to-r from-indigo-500 homepage_container">
+    <div className="bg-gradient-to-r from-indigo-500 homepage_container pb-24">
       <div className="flex w-100vw items-center justify-center header-container">
         <h1 className="text-white text-3xl py-6 px-16">All History Changes</h1>
       </div>

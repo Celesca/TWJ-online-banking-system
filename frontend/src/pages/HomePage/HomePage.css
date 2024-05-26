@@ -44,3 +44,7 @@
 .card-container:nth-child(5) {
     background-color: #FFD700;
 }
+
+.card-container:nth-child(6) {
+    background-color: #FF7F50;
+}

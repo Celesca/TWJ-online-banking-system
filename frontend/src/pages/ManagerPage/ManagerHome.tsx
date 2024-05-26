@@ -65,8 +65,8 @@ const ManageHomePage = () => {
     { link: "/manager/staffs", image: "/images/staff.png", title: "Staff", description: "View and manage staff" },
     { link: "/manager/transactions", image: "/images/transactions.png", title: "Transactions", description: "View and manage transactions"},
     { link: "/manager/loans", image: "/images/loans.png", title: "Loans", description: "View and manage loans"},
-    { link: "/manager/interests", image: "/images/interests.png", title: "Interests", description: "View and manage interests"}
-
+    { link: "/manager/interests", image: "/images/interests.png", title: "Interests", description: "View and manage interests"},
+    { link: "/manager/history", image: "/images/history.png", title: "History", description: "View and manage history"}
   ];
 
   return (
