@@ -48,7 +48,7 @@ const StaffTransactionPage = () => {
 
   useEffect(() => {
     const role = localStorage.getItem("role");
-    if (role !== "staff") {
+    if (role?.toLowerCase() !== "staff") {
       responseSwal("You are not authorized to access this page", "We are redirecting you to the homepage", "error").then(() => {
         window.location.href = "/";
       });

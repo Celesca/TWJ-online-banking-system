@@ -52,7 +52,7 @@ app.use('/api/deposits', depositRouter);
 app.use('/api/staffs', staffRouter);
 app.use('/api/loans', loanRouter);
 app.use('/api/manager', managerRouter);
-app.use('/api/histories', historyRouter)
+app.use('/api/histories', historyRouter);
 
 // Health Check
 app.get('/api/health', (req: Request, res: Response) => {

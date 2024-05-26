@@ -78,7 +78,7 @@ const LoginPage = () => {
         localStorage.setItem("role", staffResponse.data.role);
         if (staffResponse.data.role === "Manager") {
           responseSwal("Login Success", "success").then(() => window.location.href = "/manager/home");
-        } else {
+        } else if (staffResponse.data.role.toLowerCase() === "staff") {
           responseSwal("Login Success", "success").then(() => window.location.href = "/staff/home");
         }
       }

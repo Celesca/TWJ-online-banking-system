@@ -35,7 +35,7 @@ const Navbar = () => {
   
   }, [])
 
-  if (role === 'staff') return (
+  if (role.toLowerCase() === 'staff') return (
     <div>
 <nav className="bg-white border-gray-20">
   <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">

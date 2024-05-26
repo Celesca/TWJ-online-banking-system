@@ -33,7 +33,12 @@ const LoanCard: React.FC<LoanCardProps> = ({ loan, onUpdate }) => {
       return;
     }
 
-    const updatedLoan = { ...loan, interest_rate_change: interestRateChange, npl: parseFloat(status) };
+    const updatedLoan = { 
+      ...loan, 
+      interest_rate_change: interestRateChange, 
+      old_interest_rate: loan.interest_rate_change,
+      staff_email: localStorage.getItem('username'),
+      npl: parseFloat(status) };
     // Update the state in the parent component
     onUpdate(updatedLoan);
     // Send the update to the API
