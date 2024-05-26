@@ -107,3 +107,30 @@ managerRouter.put('/loan_types/:id', async (req: Request, res: Response) => {
     res.status(500).json(err);
   }
 });
+
+// Get the min and max frequency used of all
+managerRouter.get('/summary_frequency/', async (req: Request, res:Response) => {
+  const min_query = `SELECT tt.transaction_type_id, tt.transaction_type_name, COUNT(*) AS transaction_count
+  FROM transaction_tb t 
+  JOIN transaction_type tt ON t.transaction_type_id = tt.transaction_type_id
+  GROUP BY tt.transaction_type_id, tt.transaction_type_name
+  ORDER BY transaction_count ASC
+  LIMIT 1;`
+  const max_query = `SELECT tt.transaction_type_id, tt.transaction_type_name, COUNT(*) AS transaction_count
+  FROM transaction_tb t 
+  JOIN transaction_type tt ON t.transaction_type_id = tt.transaction_type_id
+  GROUP BY tt.transaction_type_id, tt.transaction_type_name
+  ORDER BY transaction_count DESC
+  LIMIT 1;`
+  try {
+    const [min_rows] = await connection.query(min_query);
+    const [max_rows] = await connection.query(max_query);
+    return res.status(200).json({
+      min: min_rows,
+      max: max_rows,
+    });
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+
+})
