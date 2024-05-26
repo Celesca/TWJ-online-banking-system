@@ -61,3 +61,20 @@ transactionRouter.get('/count/:account_id', async (req: Request, res: Response) 
     return res.status(500).json(err);
   }
 });
+
+// Get cash in and cash out summary by account_id
+transactionRouter.get('/balance_summary/:account_id', async (req: Request, res: Response) => {
+  const { account_id } = req.params;
+  const cash_in_query = `SELECT SUM(amount) AS cash_in FROM transaction_tb WHERE to_account_id = ?`;
+  const cash_out_query = `SELECT SUM(amount) AS cash_out FROM transaction_tb WHERE from_account_id = ?`;
+  try {
+    const [cash_in_rows] = await connection.query(cash_in_query, [account_id]);
+    const [cash_out_rows] = await connection.query(cash_out_query, [account_id]);
+    return res.status(200).json({
+      cash_in: cash_in_rows,
+      cash_out: cash_out_rows
+    });
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});

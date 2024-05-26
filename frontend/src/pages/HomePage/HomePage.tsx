@@ -25,16 +25,13 @@ const HomePage = () => {
     });
   };
 
-  const querySummary = async (account_id: string) => {
+    const querySummary = async (account_id: string) => {
     const response = await axios.get(
-      import.meta.env.VITE_SERVER_URI + "/api/transactions/summary/" + account_id
+      import.meta.env.VITE_SERVER_URI + "/api/transactions/balance_summary/" + account_id
     );
-    if (response.data.length > 0) {
-      setCashIn(response.data[0].cash_in);
-      setCashOut(response.data[0].cash_out);
-    } else {
-      responseSwal("No summary found", "error");
-    }
+    console.log(response.data.cash_in[0].cash_in);
+    setCashIn(response.data.cash_in[0].cash_in);
+    setCashOut(response.data.cash_out[0].cash_out);
   }
 
   const queryWallet = async (email: string) => {
@@ -43,7 +40,6 @@ const HomePage = () => {
     );
     if (response.data.length > 0) {
       setWalletData(response.data);
-      console.log(response.data);
       setSelectedWallet(0);
       setHasWallet(true);
     } else {
@@ -74,6 +70,11 @@ const HomePage = () => {
       }
     }
   };
+
+  useEffect(() => {
+    const current_account_id = walletData[selectedWallet]?.account_id;
+    querySummary(current_account_id ? current_account_id.toString() : "");
+  }, [selectedWallet, queryWallet])
 
   useEffect(() => {
     document.title = "TWJ Online Banking - Home";
@@ -119,11 +120,11 @@ const HomePage = () => {
                 <div className="flex mt-6">
                 <div className="flex-1 flex-col text-center text-green-500">
                     <h1>Cash In</h1>
-                    <p>฿ {cashIn.toFixed(2)}</p>
+                    <p>฿ {cashIn?.toFixed(2) || 0}</p>
                   </div>
                   <div className="flex-1 flex-col text-center text-red-500">
                     <h1>Cash Out</h1>
-                    <p>฿ {cashOut.toFixed(2)}</p>
+                    <p>฿ {cashOut?.toFixed(2) || 0}</p>
                   </div>
                   </div>
               </div>
