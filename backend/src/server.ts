@@ -14,6 +14,7 @@ import { depositRouter } from './routes/depositRouter';
 import { staffRouter } from './routes/staffRouter';
 import { loanRouter } from './routes/loanRouter';
 import { managerRouter } from './routes/managerRouter';
+import { historyRouter } from './routes/historyRouter';
 // import bcrypt from 'bcrypt';
 // import jwt from 'jsonwebtoken';
 
@@ -51,6 +52,7 @@ app.use('/api/deposits', depositRouter);
 app.use('/api/staffs', staffRouter);
 app.use('/api/loans', loanRouter);
 app.use('/api/manager', managerRouter);
+app.use('/api/histories', historyRouter)
 
 // Health Check
 app.get('/api/health', (req: Request, res: Response) => {

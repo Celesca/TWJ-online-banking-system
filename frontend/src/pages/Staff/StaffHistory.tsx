@@ -21,7 +21,7 @@ const StaffHistory = () => {
   const queryHistories = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_SERVER_URI}/api/staffs/histories`
+        `${import.meta.env.VITE_SERVER_URI}/api/histories`
       );
       console.log(response.data);
       if (response.data.length > 0) {
