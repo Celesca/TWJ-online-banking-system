@@ -2,6 +2,9 @@
 
 TWJ Online Banking System is the project from CPE241 Database Systems.
 
+![image](https://github.com/user-attachments/assets/c01edf4e-b66f-4cdc-9634-6c1d6b342594)
+
+
 ## Feature
 
 * Customer
